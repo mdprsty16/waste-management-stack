@@ -11,3 +11,77 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+model Nasabah {
+  id_nasabah String      @id @default(uuid())
+  nama       String      @db.VarChar(255)
+  rt         String?     @db.VarChar(10)
+  rw         String?     @db.VarChar(10)
+  created_at DateTime    @default(now()) @db.Timestamp(0)
+  transaksi  Transaksi[]
+
+  @@map("nasabah")
+}
+
+model JenisSampah {
+  id_jenis_sampah   String            @id @default(uuid())
+  nama_jenis        String            @db.VarChar(100) // Contoh: Plastik, Kertas
+  densitas_kg_per_m3 Float             @db.Float        // Untuk konversi volume
+  harga_per_kg      Float             @db.Float        // Harga beli per kg
+  kategori          String            @db.VarChar(50)  // Organik / Anorganik
+  created_at        DateTime          @default(now()) @db.Timestamp(0)
+  detail_transaksi  DetailTransaksi[]
+
+  @@map("jenis_sampah")
+}
+
+model Transaksi {
+  id_transaksi    String            @id @default(uuid())
+  id_nasabah      String
+  tanggal         DateTime          @db.Date
+  total_berat_kg  Float             @db.Float
+  total_volume_m3 Float             @db.Float
+  total_harga     Float             @db.Float
+  created_at      DateTime          @default(now()) @db.Timestamp(0)
+  nasabah         Nasabah           @relation(fields: [id_nasabah], references: [id_nasabah], onDelete: Cascade)
+  detail_transaksi DetailTransaksi[]
+
+  @@index([id_nasabah])
+  @@map("transaksi")
+}
+
+model DetailTransaksi {
+  id_detail       String      @id @default(uuid())
+  id_transaksi    String
+  id_jenis_sampah String
+  berat_kg        Float       @db.Float
+  volume_m3       Float       @db.Float // Hasil konversi dari (berat_kg / densitas_kg_per_m3)
+  subtotal_harga  Float       @db.Float // Hasil dari (berat_kg * harga_per_kg)
+  transaksi       Transaksi   @relation(fields: [id_transaksi], references: [id_transaksi], onDelete: Cascade)
+  jenis_sampah    JenisSampah @relation(fields: [id_jenis_sampah], references: [id_jenis_sampah], onDelete: Restrict)
+
+  @@index([id_transaksi])
+  @@index([id_jenis_sampah])
+  @@map("detail_transaksi")
+}
+
+model DailyAggregate {
+  id                   String   @id @default(uuid())
+  date                 DateTime @unique @db.Date
+  volume               Float    @db.Float // Total volume harian untuk modeling
+  is_open              Int      @db.TinyInt // 1 = buka, 0 = tutup
+  is_collection_day    Int      @db.TinyInt // 1 = hari pengangkutan, 0 = tidak
+  
+  // Fitur Kalender (Calendar Features)
+  day_of_week          Int      @db.TinyInt // 1 - 7 (Senin - Minggu)
+  is_weekend           Int      @db.TinyInt // 1 = Ya, 0 = Tidak
+  week_of_month        Int      @db.TinyInt // 1 - 5
+  month                Int      @db.TinyInt // 1 - 12
+  is_holiday           Int      @db.TinyInt // 1 = Ya, 0 = Tidak
+  days_since_collection Int      @db.Int
+  
+  // Target Klasifikasi ML
+  overload_risk        String   @db.VarChar(20) // Aman, Waspada, Overload
+
+  @@map("daily_aggregate")
+}
