@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Admin: 'Admin',
   Nasabah: 'Nasabah',
+  KategoriSampah: 'KategoriSampah',
   JenisSampah: 'JenisSampah',
   Transaksi: 'Transaksi',
   DetailTransaksi: 'DetailTransaksi'
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "nasabah" | "jenisSampah" | "transaksi" | "detailTransaksi"
+    modelProps: "admin" | "nasabah" | "kategoriSampah" | "jenisSampah" | "transaksi" | "detailTransaksi"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -537,6 +538,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.NasabahCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.NasabahCountAggregateOutputType> | number
+        }
+      }
+    }
+    KategoriSampah: {
+      payload: Prisma.$KategoriSampahPayload<ExtArgs>
+      fields: Prisma.KategoriSampahFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.KategoriSampahFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.KategoriSampahFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload>
+        }
+        findFirst: {
+          args: Prisma.KategoriSampahFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.KategoriSampahFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload>
+        }
+        findMany: {
+          args: Prisma.KategoriSampahFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload>[]
+        }
+        create: {
+          args: Prisma.KategoriSampahCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload>
+        }
+        createMany: {
+          args: Prisma.KategoriSampahCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.KategoriSampahDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload>
+        }
+        update: {
+          args: Prisma.KategoriSampahUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload>
+        }
+        deleteMany: {
+          args: Prisma.KategoriSampahDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.KategoriSampahUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.KategoriSampahUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KategoriSampahPayload>
+        }
+        aggregate: {
+          args: Prisma.KategoriSampahAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateKategoriSampah>
+        }
+        groupBy: {
+          args: Prisma.KategoriSampahGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KategoriSampahGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.KategoriSampahCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KategoriSampahCountAggregateOutputType> | number
         }
       }
     }
@@ -795,6 +862,8 @@ export const NasabahScalarFieldEnum = {
   nomor_hp: 'nomor_hp',
   rt: 'rt',
   rw: 'rw',
+  saldo: 'saldo',
+  total_berat_sampah: 'total_berat_sampah',
   is_active: 'is_active',
   created_at: 'created_at'
 } as const
@@ -802,12 +871,23 @@ export const NasabahScalarFieldEnum = {
 export type NasabahScalarFieldEnum = (typeof NasabahScalarFieldEnum)[keyof typeof NasabahScalarFieldEnum]
 
 
+export const KategoriSampahScalarFieldEnum = {
+  id_kategori: 'id_kategori',
+  nama_kategori: 'nama_kategori',
+  deskripsi: 'deskripsi',
+  is_active: 'is_active',
+  created_at: 'created_at'
+} as const
+
+export type KategoriSampahScalarFieldEnum = (typeof KategoriSampahScalarFieldEnum)[keyof typeof KategoriSampahScalarFieldEnum]
+
+
 export const JenisSampahScalarFieldEnum = {
   id_jenis_sampah: 'id_jenis_sampah',
+  id_kategori: 'id_kategori',
   nama_jenis: 'nama_jenis',
   densitas_kg_per_m3: 'densitas_kg_per_m3',
   harga_per_kg: 'harga_per_kg',
-  kategori: 'kategori',
   is_active: 'is_active',
   created_at: 'created_at'
 } as const
@@ -879,10 +959,19 @@ export const NasabahOrderByRelevanceFieldEnum = {
 export type NasabahOrderByRelevanceFieldEnum = (typeof NasabahOrderByRelevanceFieldEnum)[keyof typeof NasabahOrderByRelevanceFieldEnum]
 
 
+export const KategoriSampahOrderByRelevanceFieldEnum = {
+  id_kategori: 'id_kategori',
+  nama_kategori: 'nama_kategori',
+  deskripsi: 'deskripsi'
+} as const
+
+export type KategoriSampahOrderByRelevanceFieldEnum = (typeof KategoriSampahOrderByRelevanceFieldEnum)[keyof typeof KategoriSampahOrderByRelevanceFieldEnum]
+
+
 export const JenisSampahOrderByRelevanceFieldEnum = {
   id_jenis_sampah: 'id_jenis_sampah',
-  nama_jenis: 'nama_jenis',
-  kategori: 'kategori'
+  id_kategori: 'id_kategori',
+  nama_jenis: 'nama_jenis'
 } as const
 
 export type JenisSampahOrderByRelevanceFieldEnum = (typeof JenisSampahOrderByRelevanceFieldEnum)[keyof typeof JenisSampahOrderByRelevanceFieldEnum]
@@ -927,16 +1016,16 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
 
 
 /**
- * Reference to a field of type 'Boolean'
+ * Reference to a field of type 'Float'
  */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
 
 
 /**
- * Reference to a field of type 'Float'
+ * Reference to a field of type 'Boolean'
  */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1058,6 +1147,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   admin?: Prisma.AdminOmit
   nasabah?: Prisma.NasabahOmit
+  kategoriSampah?: Prisma.KategoriSampahOmit
   jenisSampah?: Prisma.JenisSampahOmit
   transaksi?: Prisma.TransaksiOmit
   detailTransaksi?: Prisma.DetailTransaksiOmit

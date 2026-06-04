@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -24,47 +22,65 @@ model Admin {
 }
 
 model Nasabah {
-  id_nasabah String      @id @default(uuid())
-  // Opsional: kode unik agar mudah dibedakan di dropdown jika nama sama
-  kode_nasabah String?   @unique @db.VarChar(20) 
-  nama       String      @db.VarChar(255)
-  nomor_hp   String?     @unique @db.VarChar(20) // Tambahan untuk pembeda di dropdown
-  rt         String?     @db.VarChar(10)
-  rw         String?     @db.VarChar(10)
-  is_active  Boolean     @default(true) // Untuk soft delete
-  created_at DateTime    @default(now()) @db.Timestamp(0)
-  transaksi  Transaksi[]
+  id_nasabah           String      @id @default(uuid())
+  kode_nasabah         String?     @unique @db.VarChar(20) 
+  nama                 String      @db.VarChar(255)
+  nomor_hp             String?     @unique @db.VarChar(20) 
+  rt                   String?     @db.VarChar(10)
+  rw                   String?     @db.VarChar(10)
+  
+  // Kolom akumulasi transaksi nasabah
+  saldo                Float       @default(0) @db.Float  // Total uang/tabungan yang dimiliki
+  total_berat_sampah   Float       @default(0) @db.Float  // Total berat sampah yang pernah disetor (untuk reward/fitur ML)
+  
+  is_active            Boolean     @default(true) 
+  created_at           DateTime    @default(now()) @db.Timestamp(0)
+  transaksi            Transaksi[]
 
-  @@index([nama]) // Indexing untuk mempercepat pencarian autocomplete
+  @@index([nama]) 
   @@map("nasabah")
 }
 
-model JenisSampah {
-  id_jenis_sampah   String   @id @default(uuid())
-  nama_jenis        String   @unique @db.VarChar(100) // Jadikan unique agar tidak ada duplikasi jenis
-  densitas_kg_per_m3 Float    @db.Float
-  harga_per_kg      Float    @db.Float
-  kategori          String   @db.VarChar(50)
-  is_active         Boolean  @default(true) // Jika jenis sampah ini sudah tidak diterima lagi
-  created_at        DateTime @default(now()) @db.Timestamp(0)
-  detail_transaksi  DetailTransaksi[]
+model KategoriSampah {
+  id_kategori   String        @id @default(uuid())
+  nama_kategori String        @unique @db.VarChar(100) // Contoh: Plastik, Kertas, Logam, Kaca
+  deskripsi     String?       @db.VarChar(255)         // Petunjuk ringkas pemilahan untuk edukasi user
+  is_active     Boolean       @default(true)
+  created_at    DateTime      @default(now()) @db.Timestamp(0)
+  jenis_sampah  JenisSampah[]
 
-  @@index([nama_jenis]) // Indexing untuk pencarian autocomplete
+  @@map("kategori_sampah")
+}
+
+model JenisSampah {
+  id_jenis_sampah    String          @id @default(uuid())
+  id_kategori        String          // Foreign key ke KategoriSampah
+  nama_jenis         String          @unique @db.VarChar(100) 
+  densitas_kg_per_m3 Float           @db.Float
+  harga_per_kg       Float           @db.Float
+  is_active          Boolean         @default(true) 
+  created_at         DateTime        @default(now()) @db.Timestamp(0)
+  
+  kategori           KategoriSampah  @relation(fields: [id_kategori], references: [id_kategori], onDelete: Restrict)
+  detail_transaksi   DetailTransaksi[]
+
+  @@index([nama_jenis]) 
+  @@index([id_kategori])
   @@map("jenis_sampah")
 }
 
 model Transaksi {
   id_transaksi    String   @id @default(uuid())
   id_nasabah      String
-  id_admin        String?  // Relasi ke siapa yang input data ini
+  id_admin        String?  
   tanggal         DateTime @db.Date
   total_berat_kg  Float    @db.Float
   total_volume_m3 Float    @db.Float
   total_harga     Float    @db.Float
   created_at      DateTime @default(now()) @db.Timestamp(0)
   
-  nasabah         Nasabah  @relation(fields: [id_nasabah], references: [id_nasabah], onDelete: Cascade)
-  admin           Admin?   @relation(fields: [id_admin], references: [id_admin], onDelete: SetNull)
+  nasabah          Nasabah           @relation(fields: [id_nasabah], references: [id_nasabah], onDelete: Cascade)
+  admin            Admin?            @relation(fields: [id_admin], references: [id_admin], onDelete: SetNull)
   detail_transaksi DetailTransaksi[]
 
   @@index([id_nasabah])
@@ -80,8 +96,8 @@ model DetailTransaksi {
   volume_m3       Float       @db.Float
   subtotal_harga  Float       @db.Float
   
-  transaksi       Transaksi   @relation(fields: [id_transaksi], references: [id_transaksi], onDelete: Cascade)
-  jenis_sampah    JenisSampah @relation(fields: [id_jenis_sampah], references: [id_jenis_sampah], onDelete: Restrict)
+  transaksi    Transaksi   @relation(fields: [id_transaksi], references: [id_transaksi], onDelete: Cascade)
+  jenis_sampah JenisSampah @relation(fields: [id_jenis_sampah], references: [id_jenis_sampah], onDelete: Restrict)
 
   @@index([id_transaksi])
   @@index([id_jenis_sampah])

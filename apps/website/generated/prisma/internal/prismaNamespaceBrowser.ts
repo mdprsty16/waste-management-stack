@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Admin: 'Admin',
   Nasabah: 'Nasabah',
+  KategoriSampah: 'KategoriSampah',
   JenisSampah: 'JenisSampah',
   Transaksi: 'Transaksi',
   DetailTransaksi: 'DetailTransaksi'
@@ -92,6 +93,8 @@ export const NasabahScalarFieldEnum = {
   nomor_hp: 'nomor_hp',
   rt: 'rt',
   rw: 'rw',
+  saldo: 'saldo',
+  total_berat_sampah: 'total_berat_sampah',
   is_active: 'is_active',
   created_at: 'created_at'
 } as const
@@ -99,12 +102,23 @@ export const NasabahScalarFieldEnum = {
 export type NasabahScalarFieldEnum = (typeof NasabahScalarFieldEnum)[keyof typeof NasabahScalarFieldEnum]
 
 
+export const KategoriSampahScalarFieldEnum = {
+  id_kategori: 'id_kategori',
+  nama_kategori: 'nama_kategori',
+  deskripsi: 'deskripsi',
+  is_active: 'is_active',
+  created_at: 'created_at'
+} as const
+
+export type KategoriSampahScalarFieldEnum = (typeof KategoriSampahScalarFieldEnum)[keyof typeof KategoriSampahScalarFieldEnum]
+
+
 export const JenisSampahScalarFieldEnum = {
   id_jenis_sampah: 'id_jenis_sampah',
+  id_kategori: 'id_kategori',
   nama_jenis: 'nama_jenis',
   densitas_kg_per_m3: 'densitas_kg_per_m3',
   harga_per_kg: 'harga_per_kg',
-  kategori: 'kategori',
   is_active: 'is_active',
   created_at: 'created_at'
 } as const
@@ -176,10 +190,19 @@ export const NasabahOrderByRelevanceFieldEnum = {
 export type NasabahOrderByRelevanceFieldEnum = (typeof NasabahOrderByRelevanceFieldEnum)[keyof typeof NasabahOrderByRelevanceFieldEnum]
 
 
+export const KategoriSampahOrderByRelevanceFieldEnum = {
+  id_kategori: 'id_kategori',
+  nama_kategori: 'nama_kategori',
+  deskripsi: 'deskripsi'
+} as const
+
+export type KategoriSampahOrderByRelevanceFieldEnum = (typeof KategoriSampahOrderByRelevanceFieldEnum)[keyof typeof KategoriSampahOrderByRelevanceFieldEnum]
+
+
 export const JenisSampahOrderByRelevanceFieldEnum = {
   id_jenis_sampah: 'id_jenis_sampah',
-  nama_jenis: 'nama_jenis',
-  kategori: 'kategori'
+  id_kategori: 'id_kategori',
+  nama_jenis: 'nama_jenis'
 } as const
 
 export type JenisSampahOrderByRelevanceFieldEnum = (typeof JenisSampahOrderByRelevanceFieldEnum)[keyof typeof JenisSampahOrderByRelevanceFieldEnum]

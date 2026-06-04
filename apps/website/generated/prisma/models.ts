@@ -10,6 +10,7 @@
  */
 export type * from './models/Admin'
 export type * from './models/Nasabah'
+export type * from './models/KategoriSampah'
 export type * from './models/JenisSampah'
 export type * from './models/Transaksi'
 export type * from './models/DetailTransaksi'

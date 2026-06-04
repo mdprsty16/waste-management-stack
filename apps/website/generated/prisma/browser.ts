@@ -28,6 +28,11 @@ export type Admin = Prisma.AdminModel
  */
 export type Nasabah = Prisma.NasabahModel
 /**
+ * Model KategoriSampah
+ * 
+ */
+export type KategoriSampah = Prisma.KategoriSampahModel
+/**
  * Model JenisSampah
  * 
  */
