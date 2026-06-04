@@ -41,6 +41,7 @@ export type TransaksiSumAggregateOutputType = {
 export type TransaksiMinAggregateOutputType = {
   id_transaksi: string | null
   id_nasabah: string | null
+  id_admin: string | null
   tanggal: Date | null
   total_berat_kg: number | null
   total_volume_m3: number | null
@@ -51,6 +52,7 @@ export type TransaksiMinAggregateOutputType = {
 export type TransaksiMaxAggregateOutputType = {
   id_transaksi: string | null
   id_nasabah: string | null
+  id_admin: string | null
   tanggal: Date | null
   total_berat_kg: number | null
   total_volume_m3: number | null
@@ -61,6 +63,7 @@ export type TransaksiMaxAggregateOutputType = {
 export type TransaksiCountAggregateOutputType = {
   id_transaksi: number
   id_nasabah: number
+  id_admin: number
   tanggal: number
   total_berat_kg: number
   total_volume_m3: number
@@ -85,6 +88,7 @@ export type TransaksiSumAggregateInputType = {
 export type TransaksiMinAggregateInputType = {
   id_transaksi?: true
   id_nasabah?: true
+  id_admin?: true
   tanggal?: true
   total_berat_kg?: true
   total_volume_m3?: true
@@ -95,6 +99,7 @@ export type TransaksiMinAggregateInputType = {
 export type TransaksiMaxAggregateInputType = {
   id_transaksi?: true
   id_nasabah?: true
+  id_admin?: true
   tanggal?: true
   total_berat_kg?: true
   total_volume_m3?: true
@@ -105,6 +110,7 @@ export type TransaksiMaxAggregateInputType = {
 export type TransaksiCountAggregateInputType = {
   id_transaksi?: true
   id_nasabah?: true
+  id_admin?: true
   tanggal?: true
   total_berat_kg?: true
   total_volume_m3?: true
@@ -202,6 +208,7 @@ export type TransaksiGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type TransaksiGroupByOutputType = {
   id_transaksi: string
   id_nasabah: string
+  id_admin: string | null
   tanggal: Date
   total_berat_kg: number
   total_volume_m3: number
@@ -235,24 +242,28 @@ export type TransaksiWhereInput = {
   NOT?: Prisma.TransaksiWhereInput | Prisma.TransaksiWhereInput[]
   id_transaksi?: Prisma.StringFilter<"Transaksi"> | string
   id_nasabah?: Prisma.StringFilter<"Transaksi"> | string
+  id_admin?: Prisma.StringNullableFilter<"Transaksi"> | string | null
   tanggal?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
   total_berat_kg?: Prisma.FloatFilter<"Transaksi"> | number
   total_volume_m3?: Prisma.FloatFilter<"Transaksi"> | number
   total_harga?: Prisma.FloatFilter<"Transaksi"> | number
   created_at?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
   nasabah?: Prisma.XOR<Prisma.NasabahScalarRelationFilter, Prisma.NasabahWhereInput>
+  admin?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
   detail_transaksi?: Prisma.DetailTransaksiListRelationFilter
 }
 
 export type TransaksiOrderByWithRelationInput = {
   id_transaksi?: Prisma.SortOrder
   id_nasabah?: Prisma.SortOrder
+  id_admin?: Prisma.SortOrderInput | Prisma.SortOrder
   tanggal?: Prisma.SortOrder
   total_berat_kg?: Prisma.SortOrder
   total_volume_m3?: Prisma.SortOrder
   total_harga?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   nasabah?: Prisma.NasabahOrderByWithRelationInput
+  admin?: Prisma.AdminOrderByWithRelationInput
   detail_transaksi?: Prisma.DetailTransaksiOrderByRelationAggregateInput
   _relevance?: Prisma.TransaksiOrderByRelevanceInput
 }
@@ -263,18 +274,21 @@ export type TransaksiWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TransaksiWhereInput[]
   NOT?: Prisma.TransaksiWhereInput | Prisma.TransaksiWhereInput[]
   id_nasabah?: Prisma.StringFilter<"Transaksi"> | string
+  id_admin?: Prisma.StringNullableFilter<"Transaksi"> | string | null
   tanggal?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
   total_berat_kg?: Prisma.FloatFilter<"Transaksi"> | number
   total_volume_m3?: Prisma.FloatFilter<"Transaksi"> | number
   total_harga?: Prisma.FloatFilter<"Transaksi"> | number
   created_at?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
   nasabah?: Prisma.XOR<Prisma.NasabahScalarRelationFilter, Prisma.NasabahWhereInput>
+  admin?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
   detail_transaksi?: Prisma.DetailTransaksiListRelationFilter
 }, "id_transaksi">
 
 export type TransaksiOrderByWithAggregationInput = {
   id_transaksi?: Prisma.SortOrder
   id_nasabah?: Prisma.SortOrder
+  id_admin?: Prisma.SortOrderInput | Prisma.SortOrder
   tanggal?: Prisma.SortOrder
   total_berat_kg?: Prisma.SortOrder
   total_volume_m3?: Prisma.SortOrder
@@ -293,6 +307,7 @@ export type TransaksiScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TransaksiScalarWhereWithAggregatesInput | Prisma.TransaksiScalarWhereWithAggregatesInput[]
   id_transaksi?: Prisma.StringWithAggregatesFilter<"Transaksi"> | string
   id_nasabah?: Prisma.StringWithAggregatesFilter<"Transaksi"> | string
+  id_admin?: Prisma.StringNullableWithAggregatesFilter<"Transaksi"> | string | null
   tanggal?: Prisma.DateTimeWithAggregatesFilter<"Transaksi"> | Date | string
   total_berat_kg?: Prisma.FloatWithAggregatesFilter<"Transaksi"> | number
   total_volume_m3?: Prisma.FloatWithAggregatesFilter<"Transaksi"> | number
@@ -308,12 +323,14 @@ export type TransaksiCreateInput = {
   total_harga: number
   created_at?: Date | string
   nasabah: Prisma.NasabahCreateNestedOneWithoutTransaksiInput
+  admin?: Prisma.AdminCreateNestedOneWithoutTransaksiInput
   detail_transaksi?: Prisma.DetailTransaksiCreateNestedManyWithoutTransaksiInput
 }
 
 export type TransaksiUncheckedCreateInput = {
   id_transaksi?: string
   id_nasabah: string
+  id_admin?: string | null
   tanggal: Date | string
   total_berat_kg: number
   total_volume_m3: number
@@ -330,12 +347,14 @@ export type TransaksiUpdateInput = {
   total_harga?: Prisma.FloatFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   nasabah?: Prisma.NasabahUpdateOneRequiredWithoutTransaksiNestedInput
+  admin?: Prisma.AdminUpdateOneWithoutTransaksiNestedInput
   detail_transaksi?: Prisma.DetailTransaksiUpdateManyWithoutTransaksiNestedInput
 }
 
 export type TransaksiUncheckedUpdateInput = {
   id_transaksi?: Prisma.StringFieldUpdateOperationsInput | string
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  id_admin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total_berat_kg?: Prisma.FloatFieldUpdateOperationsInput | number
   total_volume_m3?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -347,6 +366,7 @@ export type TransaksiUncheckedUpdateInput = {
 export type TransaksiCreateManyInput = {
   id_transaksi?: string
   id_nasabah: string
+  id_admin?: string | null
   tanggal: Date | string
   total_berat_kg: number
   total_volume_m3: number
@@ -366,6 +386,7 @@ export type TransaksiUpdateManyMutationInput = {
 export type TransaksiUncheckedUpdateManyInput = {
   id_transaksi?: Prisma.StringFieldUpdateOperationsInput | string
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  id_admin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total_berat_kg?: Prisma.FloatFieldUpdateOperationsInput | number
   total_volume_m3?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -392,6 +413,7 @@ export type TransaksiOrderByRelevanceInput = {
 export type TransaksiCountOrderByAggregateInput = {
   id_transaksi?: Prisma.SortOrder
   id_nasabah?: Prisma.SortOrder
+  id_admin?: Prisma.SortOrder
   tanggal?: Prisma.SortOrder
   total_berat_kg?: Prisma.SortOrder
   total_volume_m3?: Prisma.SortOrder
@@ -408,6 +430,7 @@ export type TransaksiAvgOrderByAggregateInput = {
 export type TransaksiMaxOrderByAggregateInput = {
   id_transaksi?: Prisma.SortOrder
   id_nasabah?: Prisma.SortOrder
+  id_admin?: Prisma.SortOrder
   tanggal?: Prisma.SortOrder
   total_berat_kg?: Prisma.SortOrder
   total_volume_m3?: Prisma.SortOrder
@@ -418,6 +441,7 @@ export type TransaksiMaxOrderByAggregateInput = {
 export type TransaksiMinOrderByAggregateInput = {
   id_transaksi?: Prisma.SortOrder
   id_nasabah?: Prisma.SortOrder
+  id_admin?: Prisma.SortOrder
   tanggal?: Prisma.SortOrder
   total_berat_kg?: Prisma.SortOrder
   total_volume_m3?: Prisma.SortOrder
@@ -434,6 +458,48 @@ export type TransaksiSumOrderByAggregateInput = {
 export type TransaksiScalarRelationFilter = {
   is?: Prisma.TransaksiWhereInput
   isNot?: Prisma.TransaksiWhereInput
+}
+
+export type TransaksiCreateNestedManyWithoutAdminInput = {
+  create?: Prisma.XOR<Prisma.TransaksiCreateWithoutAdminInput, Prisma.TransaksiUncheckedCreateWithoutAdminInput> | Prisma.TransaksiCreateWithoutAdminInput[] | Prisma.TransaksiUncheckedCreateWithoutAdminInput[]
+  connectOrCreate?: Prisma.TransaksiCreateOrConnectWithoutAdminInput | Prisma.TransaksiCreateOrConnectWithoutAdminInput[]
+  createMany?: Prisma.TransaksiCreateManyAdminInputEnvelope
+  connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+}
+
+export type TransaksiUncheckedCreateNestedManyWithoutAdminInput = {
+  create?: Prisma.XOR<Prisma.TransaksiCreateWithoutAdminInput, Prisma.TransaksiUncheckedCreateWithoutAdminInput> | Prisma.TransaksiCreateWithoutAdminInput[] | Prisma.TransaksiUncheckedCreateWithoutAdminInput[]
+  connectOrCreate?: Prisma.TransaksiCreateOrConnectWithoutAdminInput | Prisma.TransaksiCreateOrConnectWithoutAdminInput[]
+  createMany?: Prisma.TransaksiCreateManyAdminInputEnvelope
+  connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+}
+
+export type TransaksiUpdateManyWithoutAdminNestedInput = {
+  create?: Prisma.XOR<Prisma.TransaksiCreateWithoutAdminInput, Prisma.TransaksiUncheckedCreateWithoutAdminInput> | Prisma.TransaksiCreateWithoutAdminInput[] | Prisma.TransaksiUncheckedCreateWithoutAdminInput[]
+  connectOrCreate?: Prisma.TransaksiCreateOrConnectWithoutAdminInput | Prisma.TransaksiCreateOrConnectWithoutAdminInput[]
+  upsert?: Prisma.TransaksiUpsertWithWhereUniqueWithoutAdminInput | Prisma.TransaksiUpsertWithWhereUniqueWithoutAdminInput[]
+  createMany?: Prisma.TransaksiCreateManyAdminInputEnvelope
+  set?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  disconnect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  delete?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  update?: Prisma.TransaksiUpdateWithWhereUniqueWithoutAdminInput | Prisma.TransaksiUpdateWithWhereUniqueWithoutAdminInput[]
+  updateMany?: Prisma.TransaksiUpdateManyWithWhereWithoutAdminInput | Prisma.TransaksiUpdateManyWithWhereWithoutAdminInput[]
+  deleteMany?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
+}
+
+export type TransaksiUncheckedUpdateManyWithoutAdminNestedInput = {
+  create?: Prisma.XOR<Prisma.TransaksiCreateWithoutAdminInput, Prisma.TransaksiUncheckedCreateWithoutAdminInput> | Prisma.TransaksiCreateWithoutAdminInput[] | Prisma.TransaksiUncheckedCreateWithoutAdminInput[]
+  connectOrCreate?: Prisma.TransaksiCreateOrConnectWithoutAdminInput | Prisma.TransaksiCreateOrConnectWithoutAdminInput[]
+  upsert?: Prisma.TransaksiUpsertWithWhereUniqueWithoutAdminInput | Prisma.TransaksiUpsertWithWhereUniqueWithoutAdminInput[]
+  createMany?: Prisma.TransaksiCreateManyAdminInputEnvelope
+  set?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  disconnect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  delete?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  connect?: Prisma.TransaksiWhereUniqueInput | Prisma.TransaksiWhereUniqueInput[]
+  update?: Prisma.TransaksiUpdateWithWhereUniqueWithoutAdminInput | Prisma.TransaksiUpdateWithWhereUniqueWithoutAdminInput[]
+  updateMany?: Prisma.TransaksiUpdateManyWithWhereWithoutAdminInput | Prisma.TransaksiUpdateManyWithWhereWithoutAdminInput[]
+  deleteMany?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
 }
 
 export type TransaksiCreateNestedManyWithoutNasabahInput = {
@@ -492,6 +558,68 @@ export type TransaksiUpdateOneRequiredWithoutDetail_transaksiNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TransaksiUpdateToOneWithWhereWithoutDetail_transaksiInput, Prisma.TransaksiUpdateWithoutDetail_transaksiInput>, Prisma.TransaksiUncheckedUpdateWithoutDetail_transaksiInput>
 }
 
+export type TransaksiCreateWithoutAdminInput = {
+  id_transaksi?: string
+  tanggal: Date | string
+  total_berat_kg: number
+  total_volume_m3: number
+  total_harga: number
+  created_at?: Date | string
+  nasabah: Prisma.NasabahCreateNestedOneWithoutTransaksiInput
+  detail_transaksi?: Prisma.DetailTransaksiCreateNestedManyWithoutTransaksiInput
+}
+
+export type TransaksiUncheckedCreateWithoutAdminInput = {
+  id_transaksi?: string
+  id_nasabah: string
+  tanggal: Date | string
+  total_berat_kg: number
+  total_volume_m3: number
+  total_harga: number
+  created_at?: Date | string
+  detail_transaksi?: Prisma.DetailTransaksiUncheckedCreateNestedManyWithoutTransaksiInput
+}
+
+export type TransaksiCreateOrConnectWithoutAdminInput = {
+  where: Prisma.TransaksiWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransaksiCreateWithoutAdminInput, Prisma.TransaksiUncheckedCreateWithoutAdminInput>
+}
+
+export type TransaksiCreateManyAdminInputEnvelope = {
+  data: Prisma.TransaksiCreateManyAdminInput | Prisma.TransaksiCreateManyAdminInput[]
+  skipDuplicates?: boolean
+}
+
+export type TransaksiUpsertWithWhereUniqueWithoutAdminInput = {
+  where: Prisma.TransaksiWhereUniqueInput
+  update: Prisma.XOR<Prisma.TransaksiUpdateWithoutAdminInput, Prisma.TransaksiUncheckedUpdateWithoutAdminInput>
+  create: Prisma.XOR<Prisma.TransaksiCreateWithoutAdminInput, Prisma.TransaksiUncheckedCreateWithoutAdminInput>
+}
+
+export type TransaksiUpdateWithWhereUniqueWithoutAdminInput = {
+  where: Prisma.TransaksiWhereUniqueInput
+  data: Prisma.XOR<Prisma.TransaksiUpdateWithoutAdminInput, Prisma.TransaksiUncheckedUpdateWithoutAdminInput>
+}
+
+export type TransaksiUpdateManyWithWhereWithoutAdminInput = {
+  where: Prisma.TransaksiScalarWhereInput
+  data: Prisma.XOR<Prisma.TransaksiUpdateManyMutationInput, Prisma.TransaksiUncheckedUpdateManyWithoutAdminInput>
+}
+
+export type TransaksiScalarWhereInput = {
+  AND?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
+  OR?: Prisma.TransaksiScalarWhereInput[]
+  NOT?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
+  id_transaksi?: Prisma.StringFilter<"Transaksi"> | string
+  id_nasabah?: Prisma.StringFilter<"Transaksi"> | string
+  id_admin?: Prisma.StringNullableFilter<"Transaksi"> | string | null
+  tanggal?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
+  total_berat_kg?: Prisma.FloatFilter<"Transaksi"> | number
+  total_volume_m3?: Prisma.FloatFilter<"Transaksi"> | number
+  total_harga?: Prisma.FloatFilter<"Transaksi"> | number
+  created_at?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
+}
+
 export type TransaksiCreateWithoutNasabahInput = {
   id_transaksi?: string
   tanggal: Date | string
@@ -499,11 +627,13 @@ export type TransaksiCreateWithoutNasabahInput = {
   total_volume_m3: number
   total_harga: number
   created_at?: Date | string
+  admin?: Prisma.AdminCreateNestedOneWithoutTransaksiInput
   detail_transaksi?: Prisma.DetailTransaksiCreateNestedManyWithoutTransaksiInput
 }
 
 export type TransaksiUncheckedCreateWithoutNasabahInput = {
   id_transaksi?: string
+  id_admin?: string | null
   tanggal: Date | string
   total_berat_kg: number
   total_volume_m3: number
@@ -538,19 +668,6 @@ export type TransaksiUpdateManyWithWhereWithoutNasabahInput = {
   data: Prisma.XOR<Prisma.TransaksiUpdateManyMutationInput, Prisma.TransaksiUncheckedUpdateManyWithoutNasabahInput>
 }
 
-export type TransaksiScalarWhereInput = {
-  AND?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
-  OR?: Prisma.TransaksiScalarWhereInput[]
-  NOT?: Prisma.TransaksiScalarWhereInput | Prisma.TransaksiScalarWhereInput[]
-  id_transaksi?: Prisma.StringFilter<"Transaksi"> | string
-  id_nasabah?: Prisma.StringFilter<"Transaksi"> | string
-  tanggal?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
-  total_berat_kg?: Prisma.FloatFilter<"Transaksi"> | number
-  total_volume_m3?: Prisma.FloatFilter<"Transaksi"> | number
-  total_harga?: Prisma.FloatFilter<"Transaksi"> | number
-  created_at?: Prisma.DateTimeFilter<"Transaksi"> | Date | string
-}
-
 export type TransaksiCreateWithoutDetail_transaksiInput = {
   id_transaksi?: string
   tanggal: Date | string
@@ -559,11 +676,13 @@ export type TransaksiCreateWithoutDetail_transaksiInput = {
   total_harga: number
   created_at?: Date | string
   nasabah: Prisma.NasabahCreateNestedOneWithoutTransaksiInput
+  admin?: Prisma.AdminCreateNestedOneWithoutTransaksiInput
 }
 
 export type TransaksiUncheckedCreateWithoutDetail_transaksiInput = {
   id_transaksi?: string
   id_nasabah: string
+  id_admin?: string | null
   tanggal: Date | string
   total_berat_kg: number
   total_volume_m3: number
@@ -595,9 +714,53 @@ export type TransaksiUpdateWithoutDetail_transaksiInput = {
   total_harga?: Prisma.FloatFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   nasabah?: Prisma.NasabahUpdateOneRequiredWithoutTransaksiNestedInput
+  admin?: Prisma.AdminUpdateOneWithoutTransaksiNestedInput
 }
 
 export type TransaksiUncheckedUpdateWithoutDetail_transaksiInput = {
+  id_transaksi?: Prisma.StringFieldUpdateOperationsInput | string
+  id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  id_admin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total_berat_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  total_volume_m3?: Prisma.FloatFieldUpdateOperationsInput | number
+  total_harga?: Prisma.FloatFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransaksiCreateManyAdminInput = {
+  id_transaksi?: string
+  id_nasabah: string
+  tanggal: Date | string
+  total_berat_kg: number
+  total_volume_m3: number
+  total_harga: number
+  created_at?: Date | string
+}
+
+export type TransaksiUpdateWithoutAdminInput = {
+  id_transaksi?: Prisma.StringFieldUpdateOperationsInput | string
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total_berat_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  total_volume_m3?: Prisma.FloatFieldUpdateOperationsInput | number
+  total_harga?: Prisma.FloatFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  nasabah?: Prisma.NasabahUpdateOneRequiredWithoutTransaksiNestedInput
+  detail_transaksi?: Prisma.DetailTransaksiUpdateManyWithoutTransaksiNestedInput
+}
+
+export type TransaksiUncheckedUpdateWithoutAdminInput = {
+  id_transaksi?: Prisma.StringFieldUpdateOperationsInput | string
+  id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total_berat_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  total_volume_m3?: Prisma.FloatFieldUpdateOperationsInput | number
+  total_harga?: Prisma.FloatFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  detail_transaksi?: Prisma.DetailTransaksiUncheckedUpdateManyWithoutTransaksiNestedInput
+}
+
+export type TransaksiUncheckedUpdateManyWithoutAdminInput = {
   id_transaksi?: Prisma.StringFieldUpdateOperationsInput | string
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
   tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -609,6 +772,7 @@ export type TransaksiUncheckedUpdateWithoutDetail_transaksiInput = {
 
 export type TransaksiCreateManyNasabahInput = {
   id_transaksi?: string
+  id_admin?: string | null
   tanggal: Date | string
   total_berat_kg: number
   total_volume_m3: number
@@ -623,11 +787,13 @@ export type TransaksiUpdateWithoutNasabahInput = {
   total_volume_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   total_harga?: Prisma.FloatFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  admin?: Prisma.AdminUpdateOneWithoutTransaksiNestedInput
   detail_transaksi?: Prisma.DetailTransaksiUpdateManyWithoutTransaksiNestedInput
 }
 
 export type TransaksiUncheckedUpdateWithoutNasabahInput = {
   id_transaksi?: Prisma.StringFieldUpdateOperationsInput | string
+  id_admin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total_berat_kg?: Prisma.FloatFieldUpdateOperationsInput | number
   total_volume_m3?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -638,6 +804,7 @@ export type TransaksiUncheckedUpdateWithoutNasabahInput = {
 
 export type TransaksiUncheckedUpdateManyWithoutNasabahInput = {
   id_transaksi?: Prisma.StringFieldUpdateOperationsInput | string
+  id_admin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tanggal?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total_berat_kg?: Prisma.FloatFieldUpdateOperationsInput | number
   total_volume_m3?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -679,12 +846,14 @@ export type TransaksiCountOutputTypeCountDetail_transaksiArgs<ExtArgs extends ru
 export type TransaksiSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id_transaksi?: boolean
   id_nasabah?: boolean
+  id_admin?: boolean
   tanggal?: boolean
   total_berat_kg?: boolean
   total_volume_m3?: boolean
   total_harga?: boolean
   created_at?: boolean
   nasabah?: boolean | Prisma.NasabahDefaultArgs<ExtArgs>
+  admin?: boolean | Prisma.Transaksi$adminArgs<ExtArgs>
   detail_transaksi?: boolean | Prisma.Transaksi$detail_transaksiArgs<ExtArgs>
   _count?: boolean | Prisma.TransaksiCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transaksi"]>
@@ -694,6 +863,7 @@ export type TransaksiSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type TransaksiSelectScalar = {
   id_transaksi?: boolean
   id_nasabah?: boolean
+  id_admin?: boolean
   tanggal?: boolean
   total_berat_kg?: boolean
   total_volume_m3?: boolean
@@ -701,9 +871,10 @@ export type TransaksiSelectScalar = {
   created_at?: boolean
 }
 
-export type TransaksiOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id_transaksi" | "id_nasabah" | "tanggal" | "total_berat_kg" | "total_volume_m3" | "total_harga" | "created_at", ExtArgs["result"]["transaksi"]>
+export type TransaksiOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id_transaksi" | "id_nasabah" | "id_admin" | "tanggal" | "total_berat_kg" | "total_volume_m3" | "total_harga" | "created_at", ExtArgs["result"]["transaksi"]>
 export type TransaksiInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   nasabah?: boolean | Prisma.NasabahDefaultArgs<ExtArgs>
+  admin?: boolean | Prisma.Transaksi$adminArgs<ExtArgs>
   detail_transaksi?: boolean | Prisma.Transaksi$detail_transaksiArgs<ExtArgs>
   _count?: boolean | Prisma.TransaksiCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -712,11 +883,13 @@ export type $TransaksiPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "Transaksi"
   objects: {
     nasabah: Prisma.$NasabahPayload<ExtArgs>
+    admin: Prisma.$AdminPayload<ExtArgs> | null
     detail_transaksi: Prisma.$DetailTransaksiPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id_transaksi: string
     id_nasabah: string
+    id_admin: string | null
     tanggal: Date
     total_berat_kg: number
     total_volume_m3: number
@@ -1063,6 +1236,7 @@ readonly fields: TransaksiFieldRefs;
 export interface Prisma__TransaksiClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   nasabah<T extends Prisma.NasabahDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NasabahDefaultArgs<ExtArgs>>): Prisma.Prisma__NasabahClient<runtime.Types.Result.GetResult<Prisma.$NasabahPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  admin<T extends Prisma.Transaksi$adminArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaksi$adminArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   detail_transaksi<T extends Prisma.Transaksi$detail_transaksiArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaksi$detail_transaksiArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DetailTransaksiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1095,6 +1269,7 @@ export interface Prisma__TransaksiClient<T, Null = never, ExtArgs extends runtim
 export interface TransaksiFieldRefs {
   readonly id_transaksi: Prisma.FieldRef<"Transaksi", 'String'>
   readonly id_nasabah: Prisma.FieldRef<"Transaksi", 'String'>
+  readonly id_admin: Prisma.FieldRef<"Transaksi", 'String'>
   readonly tanggal: Prisma.FieldRef<"Transaksi", 'DateTime'>
   readonly total_berat_kg: Prisma.FieldRef<"Transaksi", 'Float'>
   readonly total_volume_m3: Prisma.FieldRef<"Transaksi", 'Float'>
@@ -1445,6 +1620,25 @@ export type TransaksiDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many Transaksis to delete.
    */
   limit?: number
+}
+
+/**
+ * Transaksi.admin
+ */
+export type Transaksi$adminArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Admin
+   */
+  select?: Prisma.AdminSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Admin
+   */
+  omit?: Prisma.AdminOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminInclude<ExtArgs> | null
+  where?: Prisma.AdminWhereInput
 }
 
 /**

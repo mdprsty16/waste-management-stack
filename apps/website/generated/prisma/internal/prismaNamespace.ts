@@ -384,11 +384,11 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  Admin: 'Admin',
   Nasabah: 'Nasabah',
   JenisSampah: 'JenisSampah',
   Transaksi: 'Transaksi',
-  DetailTransaksi: 'DetailTransaksi',
-  DailyAggregate: 'DailyAggregate'
+  DetailTransaksi: 'DetailTransaksi'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,10 +404,76 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "nasabah" | "jenisSampah" | "transaksi" | "detailTransaksi" | "dailyAggregate"
+    modelProps: "admin" | "nasabah" | "jenisSampah" | "transaksi" | "detailTransaksi"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    Admin: {
+      payload: Prisma.$AdminPayload<ExtArgs>
+      fields: Prisma.AdminFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AdminFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AdminFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        findFirst: {
+          args: Prisma.AdminFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AdminFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        findMany: {
+          args: Prisma.AdminFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>[]
+        }
+        create: {
+          args: Prisma.AdminCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        createMany: {
+          args: Prisma.AdminCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AdminDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        update: {
+          args: Prisma.AdminUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        deleteMany: {
+          args: Prisma.AdminDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AdminUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AdminUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        aggregate: {
+          args: Prisma.AdminAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdmin>
+        }
+        groupBy: {
+          args: Prisma.AdminGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AdminCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminCountAggregateOutputType> | number
+        }
+      }
+    }
     Nasabah: {
       payload: Prisma.$NasabahPayload<ExtArgs>
       fields: Prisma.NasabahFieldRefs
@@ -672,72 +738,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    DailyAggregate: {
-      payload: Prisma.$DailyAggregatePayload<ExtArgs>
-      fields: Prisma.DailyAggregateFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.DailyAggregateFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.DailyAggregateFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload>
-        }
-        findFirst: {
-          args: Prisma.DailyAggregateFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.DailyAggregateFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload>
-        }
-        findMany: {
-          args: Prisma.DailyAggregateFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload>[]
-        }
-        create: {
-          args: Prisma.DailyAggregateCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload>
-        }
-        createMany: {
-          args: Prisma.DailyAggregateCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.DailyAggregateDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload>
-        }
-        update: {
-          args: Prisma.DailyAggregateUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload>
-        }
-        deleteMany: {
-          args: Prisma.DailyAggregateDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.DailyAggregateUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.DailyAggregateUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DailyAggregatePayload>
-        }
-        aggregate: {
-          args: Prisma.DailyAggregateAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateDailyAggregate>
-        }
-        groupBy: {
-          args: Prisma.DailyAggregateGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DailyAggregateGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.DailyAggregateCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DailyAggregateCountAggregateOutputType> | number
-        }
-      }
-    }
   }
 } & {
   other: {
@@ -777,11 +777,25 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const AdminScalarFieldEnum = {
+  id_admin: 'id_admin',
+  username: 'username',
+  password: 'password',
+  nama_admin: 'nama_admin',
+  created_at: 'created_at'
+} as const
+
+export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+
+
 export const NasabahScalarFieldEnum = {
   id_nasabah: 'id_nasabah',
+  kode_nasabah: 'kode_nasabah',
   nama: 'nama',
+  nomor_hp: 'nomor_hp',
   rt: 'rt',
   rw: 'rw',
+  is_active: 'is_active',
   created_at: 'created_at'
 } as const
 
@@ -794,6 +808,7 @@ export const JenisSampahScalarFieldEnum = {
   densitas_kg_per_m3: 'densitas_kg_per_m3',
   harga_per_kg: 'harga_per_kg',
   kategori: 'kategori',
+  is_active: 'is_active',
   created_at: 'created_at'
 } as const
 
@@ -803,6 +818,7 @@ export type JenisSampahScalarFieldEnum = (typeof JenisSampahScalarFieldEnum)[key
 export const TransaksiScalarFieldEnum = {
   id_transaksi: 'id_transaksi',
   id_nasabah: 'id_nasabah',
+  id_admin: 'id_admin',
   tanggal: 'tanggal',
   total_berat_kg: 'total_berat_kg',
   total_volume_m3: 'total_volume_m3',
@@ -825,30 +841,22 @@ export const DetailTransaksiScalarFieldEnum = {
 export type DetailTransaksiScalarFieldEnum = (typeof DetailTransaksiScalarFieldEnum)[keyof typeof DetailTransaksiScalarFieldEnum]
 
 
-export const DailyAggregateScalarFieldEnum = {
-  id: 'id',
-  date: 'date',
-  volume: 'volume',
-  is_open: 'is_open',
-  is_collection_day: 'is_collection_day',
-  day_of_week: 'day_of_week',
-  is_weekend: 'is_weekend',
-  week_of_month: 'week_of_month',
-  month: 'month',
-  is_holiday: 'is_holiday',
-  days_since_collection: 'days_since_collection',
-  overload_risk: 'overload_risk'
-} as const
-
-export type DailyAggregateScalarFieldEnum = (typeof DailyAggregateScalarFieldEnum)[keyof typeof DailyAggregateScalarFieldEnum]
-
-
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const AdminOrderByRelevanceFieldEnum = {
+  id_admin: 'id_admin',
+  username: 'username',
+  password: 'password',
+  nama_admin: 'nama_admin'
+} as const
+
+export type AdminOrderByRelevanceFieldEnum = (typeof AdminOrderByRelevanceFieldEnum)[keyof typeof AdminOrderByRelevanceFieldEnum]
 
 
 export const NullsOrder = {
@@ -861,7 +869,9 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 export const NasabahOrderByRelevanceFieldEnum = {
   id_nasabah: 'id_nasabah',
+  kode_nasabah: 'kode_nasabah',
   nama: 'nama',
+  nomor_hp: 'nomor_hp',
   rt: 'rt',
   rw: 'rw'
 } as const
@@ -880,7 +890,8 @@ export type JenisSampahOrderByRelevanceFieldEnum = (typeof JenisSampahOrderByRel
 
 export const TransaksiOrderByRelevanceFieldEnum = {
   id_transaksi: 'id_transaksi',
-  id_nasabah: 'id_nasabah'
+  id_nasabah: 'id_nasabah',
+  id_admin: 'id_admin'
 } as const
 
 export type TransaksiOrderByRelevanceFieldEnum = (typeof TransaksiOrderByRelevanceFieldEnum)[keyof typeof TransaksiOrderByRelevanceFieldEnum]
@@ -893,14 +904,6 @@ export const DetailTransaksiOrderByRelevanceFieldEnum = {
 } as const
 
 export type DetailTransaksiOrderByRelevanceFieldEnum = (typeof DetailTransaksiOrderByRelevanceFieldEnum)[keyof typeof DetailTransaksiOrderByRelevanceFieldEnum]
-
-
-export const DailyAggregateOrderByRelevanceFieldEnum = {
-  id: 'id',
-  overload_risk: 'overload_risk'
-} as const
-
-export type DailyAggregateOrderByRelevanceFieldEnum = (typeof DailyAggregateOrderByRelevanceFieldEnum)[keyof typeof DailyAggregateOrderByRelevanceFieldEnum]
 
 
 
@@ -920,6 +923,13 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1046,11 +1056,11 @@ export type PrismaClientOptions = ({
   queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
+  admin?: Prisma.AdminOmit
   nasabah?: Prisma.NasabahOmit
   jenisSampah?: Prisma.JenisSampahOmit
   transaksi?: Prisma.TransaksiOmit
   detailTransaksi?: Prisma.DetailTransaksiOmit
-  dailyAggregate?: Prisma.DailyAggregateOmit
 }
 
 /* Types for Logging */

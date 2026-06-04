@@ -51,11 +51,11 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Admin: 'Admin',
   Nasabah: 'Nasabah',
   JenisSampah: 'JenisSampah',
   Transaksi: 'Transaksi',
-  DetailTransaksi: 'DetailTransaksi',
-  DailyAggregate: 'DailyAggregate'
+  DetailTransaksi: 'DetailTransaksi'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -74,11 +74,25 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const AdminScalarFieldEnum = {
+  id_admin: 'id_admin',
+  username: 'username',
+  password: 'password',
+  nama_admin: 'nama_admin',
+  created_at: 'created_at'
+} as const
+
+export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+
+
 export const NasabahScalarFieldEnum = {
   id_nasabah: 'id_nasabah',
+  kode_nasabah: 'kode_nasabah',
   nama: 'nama',
+  nomor_hp: 'nomor_hp',
   rt: 'rt',
   rw: 'rw',
+  is_active: 'is_active',
   created_at: 'created_at'
 } as const
 
@@ -91,6 +105,7 @@ export const JenisSampahScalarFieldEnum = {
   densitas_kg_per_m3: 'densitas_kg_per_m3',
   harga_per_kg: 'harga_per_kg',
   kategori: 'kategori',
+  is_active: 'is_active',
   created_at: 'created_at'
 } as const
 
@@ -100,6 +115,7 @@ export type JenisSampahScalarFieldEnum = (typeof JenisSampahScalarFieldEnum)[key
 export const TransaksiScalarFieldEnum = {
   id_transaksi: 'id_transaksi',
   id_nasabah: 'id_nasabah',
+  id_admin: 'id_admin',
   tanggal: 'tanggal',
   total_berat_kg: 'total_berat_kg',
   total_volume_m3: 'total_volume_m3',
@@ -122,30 +138,22 @@ export const DetailTransaksiScalarFieldEnum = {
 export type DetailTransaksiScalarFieldEnum = (typeof DetailTransaksiScalarFieldEnum)[keyof typeof DetailTransaksiScalarFieldEnum]
 
 
-export const DailyAggregateScalarFieldEnum = {
-  id: 'id',
-  date: 'date',
-  volume: 'volume',
-  is_open: 'is_open',
-  is_collection_day: 'is_collection_day',
-  day_of_week: 'day_of_week',
-  is_weekend: 'is_weekend',
-  week_of_month: 'week_of_month',
-  month: 'month',
-  is_holiday: 'is_holiday',
-  days_since_collection: 'days_since_collection',
-  overload_risk: 'overload_risk'
-} as const
-
-export type DailyAggregateScalarFieldEnum = (typeof DailyAggregateScalarFieldEnum)[keyof typeof DailyAggregateScalarFieldEnum]
-
-
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const AdminOrderByRelevanceFieldEnum = {
+  id_admin: 'id_admin',
+  username: 'username',
+  password: 'password',
+  nama_admin: 'nama_admin'
+} as const
+
+export type AdminOrderByRelevanceFieldEnum = (typeof AdminOrderByRelevanceFieldEnum)[keyof typeof AdminOrderByRelevanceFieldEnum]
 
 
 export const NullsOrder = {
@@ -158,7 +166,9 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 export const NasabahOrderByRelevanceFieldEnum = {
   id_nasabah: 'id_nasabah',
+  kode_nasabah: 'kode_nasabah',
   nama: 'nama',
+  nomor_hp: 'nomor_hp',
   rt: 'rt',
   rw: 'rw'
 } as const
@@ -177,7 +187,8 @@ export type JenisSampahOrderByRelevanceFieldEnum = (typeof JenisSampahOrderByRel
 
 export const TransaksiOrderByRelevanceFieldEnum = {
   id_transaksi: 'id_transaksi',
-  id_nasabah: 'id_nasabah'
+  id_nasabah: 'id_nasabah',
+  id_admin: 'id_admin'
 } as const
 
 export type TransaksiOrderByRelevanceFieldEnum = (typeof TransaksiOrderByRelevanceFieldEnum)[keyof typeof TransaksiOrderByRelevanceFieldEnum]
@@ -190,12 +201,4 @@ export const DetailTransaksiOrderByRelevanceFieldEnum = {
 } as const
 
 export type DetailTransaksiOrderByRelevanceFieldEnum = (typeof DetailTransaksiOrderByRelevanceFieldEnum)[keyof typeof DetailTransaksiOrderByRelevanceFieldEnum]
-
-
-export const DailyAggregateOrderByRelevanceFieldEnum = {
-  id: 'id',
-  overload_risk: 'overload_risk'
-} as const
-
-export type DailyAggregateOrderByRelevanceFieldEnum = (typeof DailyAggregateOrderByRelevanceFieldEnum)[keyof typeof DailyAggregateOrderByRelevanceFieldEnum]
 

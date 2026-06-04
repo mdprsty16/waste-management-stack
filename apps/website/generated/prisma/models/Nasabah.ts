@@ -26,25 +26,34 @@ export type AggregateNasabah = {
 
 export type NasabahMinAggregateOutputType = {
   id_nasabah: string | null
+  kode_nasabah: string | null
   nama: string | null
+  nomor_hp: string | null
   rt: string | null
   rw: string | null
+  is_active: boolean | null
   created_at: Date | null
 }
 
 export type NasabahMaxAggregateOutputType = {
   id_nasabah: string | null
+  kode_nasabah: string | null
   nama: string | null
+  nomor_hp: string | null
   rt: string | null
   rw: string | null
+  is_active: boolean | null
   created_at: Date | null
 }
 
 export type NasabahCountAggregateOutputType = {
   id_nasabah: number
+  kode_nasabah: number
   nama: number
+  nomor_hp: number
   rt: number
   rw: number
+  is_active: number
   created_at: number
   _all: number
 }
@@ -52,25 +61,34 @@ export type NasabahCountAggregateOutputType = {
 
 export type NasabahMinAggregateInputType = {
   id_nasabah?: true
+  kode_nasabah?: true
   nama?: true
+  nomor_hp?: true
   rt?: true
   rw?: true
+  is_active?: true
   created_at?: true
 }
 
 export type NasabahMaxAggregateInputType = {
   id_nasabah?: true
+  kode_nasabah?: true
   nama?: true
+  nomor_hp?: true
   rt?: true
   rw?: true
+  is_active?: true
   created_at?: true
 }
 
 export type NasabahCountAggregateInputType = {
   id_nasabah?: true
+  kode_nasabah?: true
   nama?: true
+  nomor_hp?: true
   rt?: true
   rw?: true
+  is_active?: true
   created_at?: true
   _all?: true
 }
@@ -149,9 +167,12 @@ export type NasabahGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type NasabahGroupByOutputType = {
   id_nasabah: string
+  kode_nasabah: string | null
   nama: string
+  nomor_hp: string | null
   rt: string | null
   rw: string | null
+  is_active: boolean
   created_at: Date
   _count: NasabahCountAggregateOutputType | null
   _min: NasabahMinAggregateOutputType | null
@@ -178,18 +199,24 @@ export type NasabahWhereInput = {
   OR?: Prisma.NasabahWhereInput[]
   NOT?: Prisma.NasabahWhereInput | Prisma.NasabahWhereInput[]
   id_nasabah?: Prisma.StringFilter<"Nasabah"> | string
+  kode_nasabah?: Prisma.StringNullableFilter<"Nasabah"> | string | null
   nama?: Prisma.StringFilter<"Nasabah"> | string
+  nomor_hp?: Prisma.StringNullableFilter<"Nasabah"> | string | null
   rt?: Prisma.StringNullableFilter<"Nasabah"> | string | null
   rw?: Prisma.StringNullableFilter<"Nasabah"> | string | null
+  is_active?: Prisma.BoolFilter<"Nasabah"> | boolean
   created_at?: Prisma.DateTimeFilter<"Nasabah"> | Date | string
   transaksi?: Prisma.TransaksiListRelationFilter
 }
 
 export type NasabahOrderByWithRelationInput = {
   id_nasabah?: Prisma.SortOrder
+  kode_nasabah?: Prisma.SortOrderInput | Prisma.SortOrder
   nama?: Prisma.SortOrder
+  nomor_hp?: Prisma.SortOrderInput | Prisma.SortOrder
   rt?: Prisma.SortOrderInput | Prisma.SortOrder
   rw?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   transaksi?: Prisma.TransaksiOrderByRelationAggregateInput
   _relevance?: Prisma.NasabahOrderByRelevanceInput
@@ -197,21 +224,27 @@ export type NasabahOrderByWithRelationInput = {
 
 export type NasabahWhereUniqueInput = Prisma.AtLeast<{
   id_nasabah?: string
+  kode_nasabah?: string
+  nomor_hp?: string
   AND?: Prisma.NasabahWhereInput | Prisma.NasabahWhereInput[]
   OR?: Prisma.NasabahWhereInput[]
   NOT?: Prisma.NasabahWhereInput | Prisma.NasabahWhereInput[]
   nama?: Prisma.StringFilter<"Nasabah"> | string
   rt?: Prisma.StringNullableFilter<"Nasabah"> | string | null
   rw?: Prisma.StringNullableFilter<"Nasabah"> | string | null
+  is_active?: Prisma.BoolFilter<"Nasabah"> | boolean
   created_at?: Prisma.DateTimeFilter<"Nasabah"> | Date | string
   transaksi?: Prisma.TransaksiListRelationFilter
-}, "id_nasabah">
+}, "id_nasabah" | "kode_nasabah" | "nomor_hp">
 
 export type NasabahOrderByWithAggregationInput = {
   id_nasabah?: Prisma.SortOrder
+  kode_nasabah?: Prisma.SortOrderInput | Prisma.SortOrder
   nama?: Prisma.SortOrder
+  nomor_hp?: Prisma.SortOrderInput | Prisma.SortOrder
   rt?: Prisma.SortOrderInput | Prisma.SortOrder
   rw?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   _count?: Prisma.NasabahCountOrderByAggregateInput
   _max?: Prisma.NasabahMaxOrderByAggregateInput
@@ -223,69 +256,93 @@ export type NasabahScalarWhereWithAggregatesInput = {
   OR?: Prisma.NasabahScalarWhereWithAggregatesInput[]
   NOT?: Prisma.NasabahScalarWhereWithAggregatesInput | Prisma.NasabahScalarWhereWithAggregatesInput[]
   id_nasabah?: Prisma.StringWithAggregatesFilter<"Nasabah"> | string
+  kode_nasabah?: Prisma.StringNullableWithAggregatesFilter<"Nasabah"> | string | null
   nama?: Prisma.StringWithAggregatesFilter<"Nasabah"> | string
+  nomor_hp?: Prisma.StringNullableWithAggregatesFilter<"Nasabah"> | string | null
   rt?: Prisma.StringNullableWithAggregatesFilter<"Nasabah"> | string | null
   rw?: Prisma.StringNullableWithAggregatesFilter<"Nasabah"> | string | null
+  is_active?: Prisma.BoolWithAggregatesFilter<"Nasabah"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Nasabah"> | Date | string
 }
 
 export type NasabahCreateInput = {
   id_nasabah?: string
+  kode_nasabah?: string | null
   nama: string
+  nomor_hp?: string | null
   rt?: string | null
   rw?: string | null
+  is_active?: boolean
   created_at?: Date | string
   transaksi?: Prisma.TransaksiCreateNestedManyWithoutNasabahInput
 }
 
 export type NasabahUncheckedCreateInput = {
   id_nasabah?: string
+  kode_nasabah?: string | null
   nama: string
+  nomor_hp?: string | null
   rt?: string | null
   rw?: string | null
+  is_active?: boolean
   created_at?: Date | string
   transaksi?: Prisma.TransaksiUncheckedCreateNestedManyWithoutNasabahInput
 }
 
 export type NasabahUpdateInput = {
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  kode_nasabah?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor_hp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transaksi?: Prisma.TransaksiUpdateManyWithoutNasabahNestedInput
 }
 
 export type NasabahUncheckedUpdateInput = {
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  kode_nasabah?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor_hp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transaksi?: Prisma.TransaksiUncheckedUpdateManyWithoutNasabahNestedInput
 }
 
 export type NasabahCreateManyInput = {
   id_nasabah?: string
+  kode_nasabah?: string | null
   nama: string
+  nomor_hp?: string | null
   rt?: string | null
   rw?: string | null
+  is_active?: boolean
   created_at?: Date | string
 }
 
 export type NasabahUpdateManyMutationInput = {
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  kode_nasabah?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor_hp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NasabahUncheckedUpdateManyInput = {
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  kode_nasabah?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor_hp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -297,25 +354,34 @@ export type NasabahOrderByRelevanceInput = {
 
 export type NasabahCountOrderByAggregateInput = {
   id_nasabah?: Prisma.SortOrder
+  kode_nasabah?: Prisma.SortOrder
   nama?: Prisma.SortOrder
+  nomor_hp?: Prisma.SortOrder
   rt?: Prisma.SortOrder
   rw?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
 export type NasabahMaxOrderByAggregateInput = {
   id_nasabah?: Prisma.SortOrder
+  kode_nasabah?: Prisma.SortOrder
   nama?: Prisma.SortOrder
+  nomor_hp?: Prisma.SortOrder
   rt?: Prisma.SortOrder
   rw?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
 export type NasabahMinOrderByAggregateInput = {
   id_nasabah?: Prisma.SortOrder
+  kode_nasabah?: Prisma.SortOrder
   nama?: Prisma.SortOrder
+  nomor_hp?: Prisma.SortOrder
   rt?: Prisma.SortOrder
   rw?: Prisma.SortOrder
+  is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -324,16 +390,12 @@ export type NasabahScalarRelationFilter = {
   isNot?: Prisma.NasabahWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type NasabahCreateNestedOneWithoutTransaksiInput = {
@@ -352,17 +414,23 @@ export type NasabahUpdateOneRequiredWithoutTransaksiNestedInput = {
 
 export type NasabahCreateWithoutTransaksiInput = {
   id_nasabah?: string
+  kode_nasabah?: string | null
   nama: string
+  nomor_hp?: string | null
   rt?: string | null
   rw?: string | null
+  is_active?: boolean
   created_at?: Date | string
 }
 
 export type NasabahUncheckedCreateWithoutTransaksiInput = {
   id_nasabah?: string
+  kode_nasabah?: string | null
   nama: string
+  nomor_hp?: string | null
   rt?: string | null
   rw?: string | null
+  is_active?: boolean
   created_at?: Date | string
 }
 
@@ -384,17 +452,23 @@ export type NasabahUpdateToOneWithWhereWithoutTransaksiInput = {
 
 export type NasabahUpdateWithoutTransaksiInput = {
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  kode_nasabah?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor_hp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NasabahUncheckedUpdateWithoutTransaksiInput = {
   id_nasabah?: Prisma.StringFieldUpdateOperationsInput | string
+  kode_nasabah?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nama?: Prisma.StringFieldUpdateOperationsInput | string
+  nomor_hp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -431,9 +505,12 @@ export type NasabahCountOutputTypeCountTransaksiArgs<ExtArgs extends runtime.Typ
 
 export type NasabahSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id_nasabah?: boolean
+  kode_nasabah?: boolean
   nama?: boolean
+  nomor_hp?: boolean
   rt?: boolean
   rw?: boolean
+  is_active?: boolean
   created_at?: boolean
   transaksi?: boolean | Prisma.Nasabah$transaksiArgs<ExtArgs>
   _count?: boolean | Prisma.NasabahCountOutputTypeDefaultArgs<ExtArgs>
@@ -443,13 +520,16 @@ export type NasabahSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type NasabahSelectScalar = {
   id_nasabah?: boolean
+  kode_nasabah?: boolean
   nama?: boolean
+  nomor_hp?: boolean
   rt?: boolean
   rw?: boolean
+  is_active?: boolean
   created_at?: boolean
 }
 
-export type NasabahOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id_nasabah" | "nama" | "rt" | "rw" | "created_at", ExtArgs["result"]["nasabah"]>
+export type NasabahOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id_nasabah" | "kode_nasabah" | "nama" | "nomor_hp" | "rt" | "rw" | "is_active" | "created_at", ExtArgs["result"]["nasabah"]>
 export type NasabahInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transaksi?: boolean | Prisma.Nasabah$transaksiArgs<ExtArgs>
   _count?: boolean | Prisma.NasabahCountOutputTypeDefaultArgs<ExtArgs>
@@ -462,9 +542,12 @@ export type $NasabahPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id_nasabah: string
+    kode_nasabah: string | null
     nama: string
+    nomor_hp: string | null
     rt: string | null
     rw: string | null
+    is_active: boolean
     created_at: Date
   }, ExtArgs["result"]["nasabah"]>
   composites: {}
@@ -837,9 +920,12 @@ export interface Prisma__NasabahClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface NasabahFieldRefs {
   readonly id_nasabah: Prisma.FieldRef<"Nasabah", 'String'>
+  readonly kode_nasabah: Prisma.FieldRef<"Nasabah", 'String'>
   readonly nama: Prisma.FieldRef<"Nasabah", 'String'>
+  readonly nomor_hp: Prisma.FieldRef<"Nasabah", 'String'>
   readonly rt: Prisma.FieldRef<"Nasabah", 'String'>
   readonly rw: Prisma.FieldRef<"Nasabah", 'String'>
+  readonly is_active: Prisma.FieldRef<"Nasabah", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"Nasabah", 'DateTime'>
 }
     

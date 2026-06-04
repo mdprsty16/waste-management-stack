@@ -8,9 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Admin'
 export type * from './models/Nasabah'
 export type * from './models/JenisSampah'
 export type * from './models/Transaksi'
 export type * from './models/DetailTransaksi'
-export type * from './models/DailyAggregate'
 export type * from './commonInputTypes'
