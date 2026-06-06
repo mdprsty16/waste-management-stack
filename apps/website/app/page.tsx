@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 /* ──────────────── SVG Icon Components (simple & clean) ──────────────── */
 
@@ -173,14 +174,22 @@ const kategoriSampah = [
 
 /* ──────────────── Main Page Component ──────────────── */
 
+const CURRENT_YEAR = 2026;
+
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 2200);
+    return () => clearTimeout(timer);
   }, []);
 
   const navLinks = [
@@ -193,6 +202,31 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* ════════════ SPLASH SCREEN ════════════ */}
+      {showSplash && (
+        <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center transition-opacity duration-500"
+          style={{ opacity: showSplash ? 1 : 0 }}
+        >
+          <div className="animate-fade-in-up">
+            <Image
+              src="/logo2.png"
+              alt="Logo BSSB IKMP"
+              width={180}
+              height={180}
+              priority
+              className="mx-auto"
+            />
+          </div>
+          <div className="mt-6 animate-fade-in-up delay-300">
+            <p className="text-green-800 font-semibold text-lg">Bank Sampah Sampul Berkasih</p>
+            <p className="text-gray-400 text-sm text-center">IKMP • Go Green</p>
+          </div>
+          <div className="mt-8 animate-fade-in-up delay-400">
+            <div className="w-8 h-8 border-3 border-green-200 border-t-green-600 rounded-full animate-spin"></div>
+          </div>
+        </div>
+      )}
+
       {/* ════════════ NAVBAR ════════════ */}
       <nav
         id="navbar"
@@ -206,9 +240,13 @@ export default function Home() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <a href="#beranda" className="flex items-center gap-2">
-              <div className="w-9 h-9 bg-green-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">BS</span>
-              </div>
+              <Image
+                src="/logo2.png"
+                alt="Logo BSSB"
+                width={40}
+                height={40}
+                className="rounded-lg"
+              />
               <div>
                 <span className="font-bold text-green-800 text-sm leading-none block">BSSB</span>
                 <span className="text-[10px] text-gray-500 leading-none">IKMP</span>
@@ -271,21 +309,34 @@ export default function Home() {
 
       {/* ════════════ HERO SECTION ════════════ */}
       <section id="beranda" className="pt-16">
-        <div className="bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
+        <div className="relative overflow-hidden">
+          {/* Background Image */}
+          <Image
+            src="/bgherosection.png"
+            alt="Kegiatan Bank Sampah"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          {/* Green Overlay for readability */}
+          <div className="absolute inset-0 bg-gradient-to-br from-green-900/85 via-green-800/80 to-green-700/75"></div>
+          {/* Subtle pattern overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(255,255,255,0.05)_0%,transparent_60%)]"></div>
+
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-white">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-sm px-3 py-1.5 rounded-full mb-6">
                 <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></span>
                 Bank Sampah Aktif
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4 drop-shadow-lg">
                 Bank Sampah
                 <br />
                 Sampul Berkasih
               </h1>
 
-              <p className="text-green-100 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
+              <p className="text-green-100 text-base sm:text-lg leading-relaxed mb-8 max-w-lg drop-shadow-sm">
                 Menjaga lingkungan, membangun ekonomi masyarakat Kuningan melalui
                 pengelolaan sampah yang bertanggung jawab.
               </p>
@@ -294,7 +345,7 @@ export default function Home() {
                 <a
                   href="#layanan"
                   id="cta-setor-sampah"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-green-700 font-semibold px-6 py-3 rounded-lg hover:bg-green-50 transition-colors text-sm"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-green-700 font-semibold px-6 py-3 rounded-lg hover:bg-green-50 transition-colors text-sm shadow-lg"
                 >
                   Mulai Setor Sampah
                   <ArrowRightIcon />
@@ -302,7 +353,7 @@ export default function Home() {
                 <a
                   href="#tentang"
                   id="cta-pelajari"
-                  className="inline-flex items-center justify-center gap-2 border border-white/30 text-white font-medium px-6 py-3 rounded-lg hover:bg-white/10 transition-colors text-sm"
+                  className="inline-flex items-center justify-center gap-2 border border-white/30 text-white font-medium px-6 py-3 rounded-lg hover:bg-white/10 backdrop-blur-sm transition-colors text-sm"
                 >
                   Pelajari Lebih Lanjut
                 </a>
@@ -578,10 +629,14 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">BS</span>
-                </div>
+              <div className="flex items-center gap-3 mb-3">
+                <Image
+                  src="/logo2.png"
+                  alt="Logo BSSB"
+                  width={44}
+                  height={44}
+                  className="rounded-lg"
+                />
                 <div>
                   <span className="font-bold text-sm block leading-none">BSSB IKMP</span>
                   <span className="text-[10px] text-green-300 leading-none">Bank Sampah Sampul Berkasih</span>
@@ -624,7 +679,7 @@ export default function Home() {
           {/* Copyright */}
           <div className="border-t border-green-800 mt-8 pt-6 text-center">
             <p className="text-sm text-green-300">
-              © {new Date().getFullYear()} Bank Sampah Sampul Berkasih (BSSB) IKMP. Hak cipta dilindungi.
+              © {CURRENT_YEAR} Bank Sampah Sampul Berkasih (BSSB) IKMP. Hak cipta dilindungi.
             </p>
           </div>
         </div>
