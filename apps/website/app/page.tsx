@@ -107,6 +107,76 @@ function ArrowRightIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+/* ──── Kategori Sampah Icon Components ──── */
+
+function PlasticIcon({ className = "w-8 h-8" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 4h10l-1 4H8L7 4z" />
+      <path d="M8 8l-1 12a1 1 0 001 1h8a1 1 0 001-1L16 8" />
+      <path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1" />
+      <path d="M10 12h4" />
+      <path d="M10 16h4" />
+    </svg>
+  );
+}
+
+function PaperIcon({ className = "w-8 h-8" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+      <polyline points="14,2 14,8 20,8" />
+      <line x1="8" y1="13" x2="16" y2="13" />
+      <line x1="8" y1="17" x2="16" y2="17" />
+      <line x1="8" y1="9" x2="10" y2="9" />
+    </svg>
+  );
+}
+
+function MetalIcon({ className = "w-8 h-8" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+    </svg>
+  );
+}
+
+function GlassIcon({ className = "w-8 h-8" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 2h8l-1.5 9a3.5 3.5 0 01-2.5 1 3.5 3.5 0 01-2.5-1L8 2z" />
+      <line x1="12" y1="12" x2="12" y2="19" />
+      <path d="M8 22h8" />
+      <line x1="12" y1="19" x2="12" y2="22" />
+    </svg>
+  );
+}
+
+function ElectronicsIcon({ className = "w-8 h-8" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2v6" />
+      <path d="M6 8h12" />
+      <rect x="7" y="8" width="10" height="8" rx="1" />
+      <path d="M9 16v4" />
+      <path d="M15 16v4" />
+      <path d="M7 20h10" />
+      <circle cx="10" cy="12" r="1" fill="currentColor" />
+      <circle cx="14" cy="12" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function OilIcon({ className = "w-8 h-8" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2c0 0-5 6-5 10a5 5 0 0010 0C17 8 12 2 12 2z" />
+      <path d="M12 18v3" />
+      <path d="M10 21h4" />
+    </svg>
+  );
+}
+
 /* ──────────────── Counter Hook ──────────────── */
 
 function useCountUp(end: number, duration: number = 2000) {
@@ -164,12 +234,12 @@ function StatCard({ icon, value, label, suffix = "" }: { icon: React.ReactNode; 
 /* ──────────────── Kategori Sampah Data ──────────────── */
 
 const kategoriSampah = [
-  { nama: "Plastik", emoji: "♻️", deskripsi: "Botol, gelas, kantong plastik, dan kemasan plastik lainnya", warna: "bg-blue-50 border-blue-200" },
-  { nama: "Kertas", emoji: "📄", deskripsi: "Koran, majalah, kardus, dan kertas bekas lainnya", warna: "bg-amber-50 border-amber-200" },
-  { nama: "Logam", emoji: "🔩", deskripsi: "Kaleng, besi, aluminium, dan logam bekas lainnya", warna: "bg-gray-50 border-gray-200" },
-  { nama: "Kaca", emoji: "🫙", deskripsi: "Botol kaca, gelas kaca, dan pecahan kaca lainnya", warna: "bg-cyan-50 border-cyan-200" },
-  { nama: "Elektronik", emoji: "🔌", deskripsi: "Kabel, charger, komponen elektronik bekas", warna: "bg-purple-50 border-purple-200" },
-  { nama: "Minyak Jelantah", emoji: "🛢️", deskripsi: "Minyak goreng bekas yang sudah tidak terpakai", warna: "bg-yellow-50 border-yellow-200" },
+  { nama: "Plastik", icon: <PlasticIcon className="w-7 h-7" />, deskripsi: "Botol, gelas, kantong plastik, dan kemasan plastik lainnya", warna: "bg-blue-50 border-blue-200", iconColor: "text-blue-500" },
+  { nama: "Kertas", icon: <PaperIcon className="w-7 h-7" />, deskripsi: "Koran, majalah, kardus, dan kertas bekas lainnya", warna: "bg-amber-50 border-amber-200", iconColor: "text-amber-500" },
+  { nama: "Logam", icon: <MetalIcon className="w-7 h-7" />, deskripsi: "Kaleng, besi, aluminium, dan logam bekas lainnya", warna: "bg-gray-50 border-gray-200", iconColor: "text-gray-500" },
+  { nama: "Kaca", icon: <GlassIcon className="w-7 h-7" />, deskripsi: "Botol kaca, gelas kaca, dan pecahan kaca lainnya", warna: "bg-cyan-50 border-cyan-200", iconColor: "text-cyan-500" },
+  { nama: "Elektronik", icon: <ElectronicsIcon className="w-7 h-7" />, deskripsi: "Kabel, charger, komponen elektronik bekas", warna: "bg-purple-50 border-purple-200", iconColor: "text-purple-500" },
+  { nama: "Minyak Jelantah", icon: <OilIcon className="w-7 h-7" />, deskripsi: "Minyak goreng bekas yang sudah tidak terpakai", warna: "bg-yellow-50 border-yellow-200", iconColor: "text-yellow-500" },
 ];
 
 /* ──────────────── Main Page Component ──────────────── */
@@ -499,7 +569,7 @@ export default function Home() {
                 className={`p-5 rounded-xl border ${item.warna} hover:shadow-md transition-all duration-300`}
               >
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">{item.emoji}</span>
+                  <div className={`flex-shrink-0 ${item.iconColor}`}>{item.icon}</div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">{item.nama}</h3>
                     <p className="text-sm text-gray-500 leading-relaxed">{item.deskripsi}</p>
