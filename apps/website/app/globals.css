@@ -92,3 +92,13 @@ body {
 .hover-pulse:hover {
   animation: pulse-subtle 1s ease-in-out infinite;
 }
+
+/* Float animation for background elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
