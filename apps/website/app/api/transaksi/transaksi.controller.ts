@@ -1,4 +1,5 @@
 import { successResponse, errorResponse } from '../../lib/response';
+import { handleControllerError } from '../../lib/errorHandler';
 import * as transaksiService from './transaksi.service';
 
 export async function getTransaksiController(req: Request) {
@@ -6,9 +7,7 @@ export async function getTransaksiController(req: Request) {
     const result = await transaksiService.getAllTransaksiService();
     return successResponse(result.data, 'Berhasil mengambil semua data transaksi');
   } catch (error) {
-    console.error('Error di getTransaksiController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat mengambil semua data transaksi');
   }
 }
 
@@ -20,9 +19,7 @@ export async function getTransaksiByIdController(req: Request, id: string) {
     }
     return successResponse(result.data, 'Berhasil mengambil detail transaksi');
   } catch (error) {
-    console.error('Error di getTransaksiByIdController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat mengambil detail transaksi');
   }
 }
 
@@ -31,7 +28,6 @@ export async function createTransaksiController(req: Request) {
     const body = await req.json();
     const { id_nasabah, tanggal, items } = body;
 
-    // Ambil id_admin dari header (asumsi disuntik oleh middleware auth kamu)
     const id_admin = req.headers.get('x-admin-id') || null;
 
     if (!id_nasabah || !items || !Array.isArray(items) || items.length === 0) {
@@ -46,8 +42,6 @@ export async function createTransaksiController(req: Request) {
 
     return successResponse(result.data, 'Transaksi berhasil dicatat', 201);
   } catch (error) {
-    console.error('Error di createTransaksiController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat mencatat transaksi');
   }
 }

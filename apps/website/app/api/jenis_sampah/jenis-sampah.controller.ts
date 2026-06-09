@@ -1,4 +1,5 @@
 import { successResponse, errorResponse } from '../../lib/response';
+import { handleControllerError } from '../../lib/errorHandler';
 import * as jenisSampahService from './jenis-sampah.service';
 
 export async function getJenisSampahController(req: Request) {
@@ -10,9 +11,7 @@ export async function getJenisSampahController(req: Request) {
     const result = await jenisSampahService.getAllJenisSampahService(isActiveQuery, idKategori);
     return successResponse(result.data, 'Berhasil mengambil data jenis sampah');
   } catch (error) {
-    console.error('Error di getJenisSampahController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat mengambil data jenis sampah');
   }
 }
 
@@ -24,9 +23,7 @@ export async function getJenisSampahByIdController(req: Request, id: string) {
     }
     return successResponse(result.data, 'Berhasil mengambil detail jenis sampah');
   } catch (error) {
-    console.error('Error di getJenisSampahByIdController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat mengambil detail jenis sampah');
   }
 }
 
@@ -48,9 +45,7 @@ export async function createJenisSampahController(req: Request) {
 
     return successResponse(result.data, 'Jenis sampah berhasil ditambahkan', 201);
   } catch (error) {
-    console.error('Error di createJenisSampahController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat menambahkan jenis sampah');
   }
 }
 
@@ -77,9 +72,7 @@ export async function updateJenisSampahController(req: Request, id: string) {
 
     return successResponse(result.data, 'Jenis sampah berhasil diperbarui');
   } catch (error) {
-    console.error('Error di updateJenisSampahController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat memperbarui jenis sampah');
   }
 }
 
@@ -91,8 +84,6 @@ export async function deleteJenisSampahController(req: Request, id: string) {
     }
     return successResponse(null, result.message || 'Berhasil dihapus');
   } catch (error) {
-    console.error('Error di deleteJenisSampahController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat menghapus jenis sampah');
   }
 }
