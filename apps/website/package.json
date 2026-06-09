@@ -2,12 +2,12 @@
   "name": "website",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev -p 4500",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
+"scripts": {
+  "dev": "NODE_OPTIONS='--no-warnings' next dev -p 4500",
+  "build": "next build",
+  "start": "next start",
+  "lint": "eslint"
+},
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.8.0",
     "@prisma/client": "^7.8.0",
