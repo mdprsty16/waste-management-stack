@@ -3,6 +3,128 @@
 import { useNasabah } from "@/hooks/useNasabah";
 import { useTransaksi } from "@/hooks/useTransaksi";
 
+/* ── Simple SVG Bar Chart ── */
+function BarChart({
+  data,
+  title,
+}: {
+  data: { label: string; value: number; color: string }[];
+  title: string;
+}) {
+  const maxVal = Math.max(...data.map((d) => d.value), 1);
+
+  return (
+    <div className="bg-white p-8 rounded-3xl border-2 border-gray-100 shadow-lg">
+      <h3 className="text-xl font-extrabold text-gray-900 mb-6">{title}</h3>
+      <div className="flex items-end justify-between gap-3 h-48">
+        {data.map((d, i) => (
+          <div key={i} className="flex flex-col items-center flex-1 gap-2">
+            <span className="text-xs font-bold text-gray-600">
+              {d.value > 0 ? d.value : "—"}
+            </span>
+            <div
+              className="w-full rounded-t-xl transition-all duration-700 ease-out min-h-[4px]"
+              style={{
+                height: `${Math.max((d.value / maxVal) * 100, 3)}%`,
+                backgroundColor: d.color,
+                opacity: d.value > 0 ? 1 : 0.2,
+              }}
+            />
+            <span className="text-xs font-bold text-gray-500 text-center leading-tight">
+              {d.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Simple SVG Line Chart ── */
+function LineChart({
+  data,
+  title,
+  color = "#16a34a",
+}: {
+  data: { label: string; value: number }[];
+  title: string;
+  color?: string;
+}) {
+  const maxVal = Math.max(...data.map((d) => d.value), 1);
+  const width = 500;
+  const height = 180;
+  const padX = 40;
+  const padY = 20;
+  const chartW = width - padX * 2;
+  const chartH = height - padY * 2;
+
+  const points = data.map((d, i) => ({
+    x: padX + (i / Math.max(data.length - 1, 1)) * chartW,
+    y: padY + chartH - (d.value / maxVal) * chartH,
+  }));
+
+  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+  const areaPath = `${linePath} L ${points[points.length - 1]?.x || padX} ${padY + chartH} L ${padX} ${padY + chartH} Z`;
+
+  return (
+    <div className="bg-white p-8 rounded-3xl border-2 border-gray-100 shadow-lg">
+      <h3 className="text-xl font-extrabold text-gray-900 mb-6">{title}</h3>
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full" preserveAspectRatio="xMidYMid meet">
+        {/* Grid lines */}
+        {[0, 0.25, 0.5, 0.75, 1].map((pct, i) => (
+          <line
+            key={i}
+            x1={padX}
+            x2={width - padX}
+            y1={padY + chartH * (1 - pct)}
+            y2={padY + chartH * (1 - pct)}
+            stroke="#f1f5f9"
+            strokeWidth="1"
+          />
+        ))}
+
+        {/* Area fill */}
+        <path d={areaPath} fill={color} opacity="0.08" />
+
+        {/* Line */}
+        <path d={linePath} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+
+        {/* Data points */}
+        {points.map((p, i) => (
+          <g key={i}>
+            <circle cx={p.x} cy={p.y} r="4" fill="white" stroke={color} strokeWidth="2" />
+            <text x={p.x} y={padY + chartH + 14} textAnchor="middle" className="text-[10px]" fill="#94a3b8" fontWeight="600">
+              {data[i].label}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+/* ── Dummy chart data (nanti dari API) ── */
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"];
+
+const barChartData = [
+  { label: "Organik", value: 320, color: "#16a34a" },
+  { label: "Non-Organik", value: 580, color: "#2563eb" },
+  { label: "B3", value: 45, color: "#dc2626" },
+  { label: "Plastik", value: 420, color: "#7c3aed" },
+  { label: "Kertas", value: 280, color: "#d97706" },
+  { label: "Logam", value: 150, color: "#64748b" },
+];
+
+const lineChartData = MONTHS.map((m, i) => ({
+  label: m,
+  value: [12, 18, 25, 22, 35, 42][i],
+}));
+
+const weightTrendData = MONTHS.map((m, i) => ({
+  label: m,
+  value: [120, 210, 340, 290, 450, 520][i],
+}));
+
 export default function DashboardOverviewPage() {
     const { nasabahData, isLoading: loadingNasabah } = useNasabah();
     const { transaksiData, isLoading: loadingTransaksi } = useTransaksi();
@@ -75,7 +197,6 @@ export default function DashboardOverviewPage() {
                     </div>
                     <div>
                         <p className="text-xl font-bold text-gray-600 mb-2">Total Nasabah</p>
-                        {/* Menampilkan Variabel Asli */}
                         <h3 className="text-5xl font-black text-gray-900">{totalNasabah.toLocaleString('id-ID')}</h3>
                     </div>
                 </div>
@@ -89,7 +210,6 @@ export default function DashboardOverviewPage() {
                     </div>
                     <div>
                         <p className="text-xl font-bold text-gray-600 mb-2">Sampah (Bulan ini)</p>
-                        {/* Menampilkan Variabel Asli */}
                         <h3 className="text-5xl font-black text-gray-900">{sampahTerkumpul} <span className="text-2xl text-gray-500 font-bold">Kg</span></h3>
                     </div>
                 </div>
@@ -103,7 +223,6 @@ export default function DashboardOverviewPage() {
                     </div>
                     <div>
                         <p className="text-xl font-bold text-gray-600 mb-2">Total Uang Diberikan</p>
-                        {/* Menampilkan Variabel Asli */}
                         <h3 className="text-5xl font-black text-gray-900">Rp {saldoTerdistribusi.toLocaleString('id-ID')}</h3>
                     </div>
                 </div>
@@ -117,10 +236,30 @@ export default function DashboardOverviewPage() {
                     </div>
                     <div>
                         <p className="text-xl font-bold text-gray-600 mb-2">Total Transaksi</p>
-                        {/* Menampilkan Variabel Asli */}
                         <h3 className="text-5xl font-black text-gray-900">{totalTransaksi.toLocaleString('id-ID')}</h3>
                     </div>
                 </div>
+            </div>
+
+            {/* ═══ CHARTS ═══ */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <BarChart
+                data={barChartData}
+                title="📊 Sampah per Kategori (Kg)"
+              />
+              <LineChart
+                data={lineChartData}
+                title="📈 Tren Transaksi Bulanan"
+                color="#16a34a"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 gap-8">
+              <LineChart
+                data={weightTrendData}
+                title="📉 Tren Sampah Terkumpul (Kg/Bulan)"
+                color="#2563eb"
+              />
             </div>
 
             {/* Tabel Transaksi */}

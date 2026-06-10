@@ -122,10 +122,9 @@ export default function Sidebar({ isOpen, onClose, onLogout }: SidebarProps) {
                 className={`
                   flex items-center gap-3 px-4 py-3 rounded-xl
                   transition-all duration-200 text-[15px]
-                  ${
-                    isActive
-                      ? "bg-green-100 text-green-800 font-bold shadow-sm"
-                      : "text-gray-600 font-medium hover:bg-gray-100 hover:text-gray-900"
+                  ${isActive
+                    ? "bg-green-100 text-green-800 font-bold shadow-sm"
+                    : "text-gray-600 font-medium hover:bg-gray-100 hover:text-gray-900"
                   }
                 `}
                 onClick={onClose}
