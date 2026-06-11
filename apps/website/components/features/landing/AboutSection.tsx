@@ -22,8 +22,11 @@ export default function AboutSection() {
     <section id="tentang" className="py-20 sm:py-28 relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 particle-bg" />
+      {/* Decorative blob */}
+      <div className="absolute top-10 right-0 w-[500px] h-[500px] bg-green-100/30 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[300px] bg-amber-100/20 rounded-full blur-[100px] pointer-events-none" />
 
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      <div ref={ref} className="reveal w-full px-6 sm:px-8 lg:px-12 relative z-10">
         {/* Section header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 font-bold text-sm px-4 py-2 rounded-full mb-4">
@@ -41,10 +44,10 @@ export default function AboutSection() {
         </div>
 
         {/* Content grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20 max-w-[1400px] mx-auto">
           {/* Left — text */}
           <div className="space-y-8">
-            <div className="bg-white p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+            <div className="bg-white p-8 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl transition-shadow duration-500">
               <p className="text-lg text-gray-600 font-medium leading-relaxed">
                 Bank Sampah Sampul Berkasih (BSSB) didirikan dengan semangat memberdayakan masyarakat melalui pengelolaan sampah yang bertanggung jawab.
                 Kami percaya bahwa setiap sampah memiliki nilai — dan melalui kerja sama komunitas, kita bisa menciptakan lingkungan yang lebih bersih
@@ -53,7 +56,7 @@ export default function AboutSection() {
             </div>
 
             {/* Visi */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-3xl border-2 border-green-200 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-3xl border-2 border-green-200 relative overflow-hidden hover:-translate-y-1 transition-transform duration-500">
               <div className="absolute top-0 right-0 w-32 h-32 bg-green-200/30 rounded-full blur-3xl -translate-y-8 translate-x-8" />
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4">
@@ -71,7 +74,7 @@ export default function AboutSection() {
             </div>
 
             {/* Misi */}
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-8 rounded-3xl border-2 border-amber-200 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-8 rounded-3xl border-2 border-amber-200 relative overflow-hidden hover:-translate-y-1 transition-transform duration-500">
               <div className="absolute bottom-0 left-0 w-32 h-32 bg-amber-200/30 rounded-full blur-3xl translate-y-8 -translate-x-8" />
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4">
@@ -103,12 +106,12 @@ export default function AboutSection() {
 
           {/* Right — visual */}
           <div className="space-y-6">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-gray-300/50 aspect-[4/3]">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-gray-300/50 aspect-[4/3] group">
               <Image
                 src="/hero1.png"
                 alt="Kegiatan Bank Sampah"
                 fill
-                className="object-cover"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-8">

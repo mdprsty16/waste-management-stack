@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 // ============================================================
 // Sidebar — Navigasi kiri dashboard
 // Di-extract dari app/dashboard/layout.tsx agar modular
+// FIXED position: sidebar tidak ikut scroll
 // ============================================================
 
 // --- Ikon SVG ---
@@ -85,9 +86,9 @@ export default function Sidebar({ isOpen, onClose, onLogout }: SidebarProps) {
       <aside
         className={`
           fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-200
-          flex flex-col
+          flex flex-col h-screen
           transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0 lg:static
+          lg:translate-x-0
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >

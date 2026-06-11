@@ -130,7 +130,7 @@ export default function StatsSection() {
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-green-200/20 rounded-full blur-[100px] pointer-events-none" />
 
-      <div ref={revealRef} className="reveal max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      <div ref={revealRef} className="reveal w-full px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 font-bold text-sm px-4 py-2 rounded-full mb-4">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -9,7 +9,7 @@ import type { Admin } from "@/types/auth.types";
 
 // ============================================================
 // AdminLayout — Gabungan Sidebar + Header + proteksi sesi
-// Dipakai di app/dashboard/layout.tsx sebagai wrapper
+// Sidebar fixed, konten utama scroll independent
 // ============================================================
 
 export interface AdminLayoutProps {
@@ -22,13 +22,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [admin, setAdmin] = useState<Admin | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  // Cek sesi admin saat pertama kali load
   const checkSession = useCallback(async () => {
     try {
       const res = await getMeService();
       setAdmin(res.data);
     } catch {
-      // Sesi tidak valid → redirect ke login
       router.replace("/login");
     } finally {
       setIsCheckingAuth(false);
@@ -39,7 +37,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     checkSession();
   }, [checkSession]);
 
-  // Handle logout
   const handleLogout = async () => {
     try {
       await logoutService();
@@ -49,7 +46,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     router.replace("/login");
   };
 
-  // Loading screen saat cek sesi
   if (isCheckingAuth) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -64,24 +60,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
+    <div className="min-h-screen bg-gray-50">
+      {/* Sidebar — fixed, tidak ikut scroll */}
       <Sidebar
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         onLogout={handleLogout}
       />
 
-      {/* Area konten utama */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Header */}
+      {/* Area konten — diberi margin kiri agar tidak tertutup sidebar */}
+      <div className="lg:ml-72 min-h-screen flex flex-col">
+        {/* Header — sticky di atas */}
         <Header
           adminName={admin?.nama_admin || "Admin"}
           onMenuToggle={() => setIsMobileMenuOpen(true)}
         />
 
-        {/* Konten halaman */}
-        <main className="flex-1 p-6 sm:p-8 lg:p-10 overflow-y-auto">
+        {/* Konten halaman — ini yang scroll */}
+        <main className="flex-1 p-6 sm:p-8 lg:p-10">
           {children}
         </main>
       </div>

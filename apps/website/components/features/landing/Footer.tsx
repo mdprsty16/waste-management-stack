@@ -6,7 +6,7 @@ const YEAR = new Date().getFullYear();
 export default function Footer() {
   return (
     <footer className="bg-green-950 text-white">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 py-14">
+      <div className="w-full px-6 sm:px-8 lg:px-12 py-14">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-4">
             <Image

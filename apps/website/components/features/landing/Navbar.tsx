@@ -39,13 +39,14 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-500 ${
         scrolled
           ? "glass shadow-lg shadow-green-900/5 py-3"
           : "bg-transparent py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
+      {/* Full-width container — no max-width constraint */}
+      <div className="w-full px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
           <a href="#beranda" className="flex items-center gap-3 group">
             <Image

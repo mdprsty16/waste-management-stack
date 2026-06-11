@@ -122,8 +122,11 @@ export default function WasteCategorySection() {
   return (
     <section id="kategori" className="py-20 sm:py-28 relative overflow-hidden">
       <div className="absolute inset-0 particle-bg" />
+      {/* Decorative blobs */}
+      <div className="absolute top-20 right-0 w-[400px] h-[400px] bg-blue-100/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-10 left-0 w-[300px] h-[300px] bg-red-100/15 rounded-full blur-[100px] pointer-events-none" />
 
-      <div ref={revealRef} className="reveal max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      <div ref={revealRef} className="reveal w-full px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 font-bold text-sm px-4 py-2 rounded-full mb-4">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -139,7 +142,7 @@ export default function WasteCategorySection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1400px] mx-auto">
           {CATEGORIES.map((cat) => {
             const isOpen = expandedId === cat.id;
             return (
