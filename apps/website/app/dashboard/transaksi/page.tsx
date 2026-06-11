@@ -1,1 +1,10 @@
-// TES
+"use client";
+
+export default function TransaksiPage() {
+  return (
+    <div className="space-y-6">
+      <h2 className="text-3xl font-extrabold text-gray-900">Transaksi</h2>
+      <p className="text-lg text-gray-600 font-medium">Halaman ini sedang dalam pengembangan.</p>
+    </div>
+  );
+}
