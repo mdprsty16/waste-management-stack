@@ -57,10 +57,10 @@ export default function Navbar() {
               className="rounded-xl shadow-md group-hover:shadow-lg transition-shadow"
             />
             <div>
-              <span className="font-black text-green-900 text-lg block leading-tight tracking-tight">
+              <span className={`font-black text-lg block leading-tight tracking-tight transition-colors duration-500 ${scrolled ? "text-green-900" : "text-green-600"}`}>
                 BSSB
               </span>
-              <span className="text-xs font-bold text-green-600 tracking-widest">
+              <span className={`text-xs font-bold tracking-widest transition-colors duration-500 ${scrolled ? "text-green-600" : "text-green-600"}`}>
                 IKMP KUNINGAN
               </span>
             </div>
@@ -72,7 +72,7 @@ export default function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className="text-base font-bold text-gray-600 hover:text-green-700 link-underline transition-colors"
+                className={`text-base font-bold link-underline transition-colors duration-500 ${scrolled ? "text-gray-600 hover:text-green-700" : "text-white hover:text-green-300"}`}
               >
                 {l.label}
               </a>
