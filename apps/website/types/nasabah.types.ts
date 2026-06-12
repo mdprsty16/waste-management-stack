@@ -14,7 +14,6 @@ export interface Nasabah {
 }
 
 export interface CreateNasabahRequest {
-  kode_nasabah?: string;
   nama: string;
   nomor_hp?: string;
   rt?: string;

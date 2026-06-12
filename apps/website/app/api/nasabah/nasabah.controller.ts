@@ -30,14 +30,14 @@ export async function getNasabahByIdController(req: Request, id: string) {
 export async function createNasabahController(req: Request) {
   try {
     const body = await req.json();
-    const { kode_nasabah, nama, nomor_hp, rt, rw } = body;
+    const { nama, nomor_hp, rt, rw } = body;
 
     if (!nama) {
       return errorResponse('Field nama wajib diisi', 400);
     }
 
+    // kode_nasabah di-generate otomatis oleh service (SLB-001, SLB-002, ...)
     const result = await nasabahService.createNasabahService({
-      kode_nasabah,
       nama,
       nomor_hp,
       rt,

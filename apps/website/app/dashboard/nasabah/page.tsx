@@ -63,7 +63,6 @@ export default function NasabahPage() {
         });
       } else {
         await create({
-          kode_nasabah: kodeNasabah || undefined,
           nama,
           nomor_hp: nomorHp || undefined,
           rt: rt || undefined,
@@ -300,13 +299,24 @@ export default function NasabahPage() {
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}
         title={editing ? "✏️ Edit Profil Nasabah" : "✨ Tambah Nasabah Baru"}>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Kode Nasabah (Opsional)"
-            value={kodeNasabah}
-            onChange={(e) => setKodeNasabah(e.target.value)}
-            placeholder="Contoh: NSB-001"
-            className="focus:border-green-500 focus:ring-green-500 rounded-xl"
-          />
+          {editing ? (
+            <Input
+              label="Kode Nasabah"
+              value={kodeNasabah}
+              onChange={(e) => setKodeNasabah(e.target.value)}
+              placeholder="Contoh: SLB-001"
+              className="focus:border-green-500 focus:ring-green-500 rounded-xl"
+            />
+          ) : (
+            <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-4 py-3">
+              <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-sm font-semibold text-green-800">
+                Kode nasabah <code className="bg-green-100 px-1.5 py-0.5 rounded font-mono text-green-900">SLB-xxx</code> akan digenerate otomatis oleh sistem.
+              </p>
+            </div>
+          )}
           <Input
             label="Nama Nasabah"
             value={nama}

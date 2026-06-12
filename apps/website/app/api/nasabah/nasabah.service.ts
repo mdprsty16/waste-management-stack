@@ -18,13 +18,30 @@ export async function getNasabahByIdService(id: string) {
 }
 
 export async function createNasabahService(body: {
-  kode_nasabah?: string;
   nama: string;
   nomor_hp?: string;
   rt?: string;
   rw?: string;
 }) {
-  const data = await nasabahRepo.createNasabah(body);
+  // Auto-generate kode_nasabah: SLB-001, SLB-002, ...
+  const lastKode = await nasabahRepo.findLastKodeNasabah();
+
+  let nextNumber = 1;
+  if (lastKode) {
+    // Ambil angka dari "SLB-003" → 3, lalu tambah 1
+    const match = lastKode.match(/SLB-(\d+)/);
+    if (match) {
+      nextNumber = parseInt(match[1], 10) + 1;
+    }
+  }
+
+  // Format: SLB-001, SLB-012, SLB-999
+  const kodeNasabah = `SLB-${String(nextNumber).padStart(3, '0')}`;
+
+  const data = await nasabahRepo.createNasabah({
+    ...body,
+    kode_nasabah: kodeNasabah,
+  });
   return { success: true, data, status: 201 };
 }
 
