@@ -1,4 +1,5 @@
 import { successResponse, errorResponse } from '../../lib/response';
+import { handleControllerError } from '../../lib/errorHandler';
 import * as nasabahService from './nasabah.service';
 
 export async function getNasabahController(req: Request) {
@@ -10,9 +11,7 @@ export async function getNasabahController(req: Request) {
     const result = await nasabahService.getAllNasabahService(isActiveQuery, searchQuery);
     return successResponse(result.data, 'Berhasil mengambil data nasabah');
   } catch (error) {
-    console.error('Error di getNasabahController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat mengambil data nasabah');
   }
 }
 
@@ -24,9 +23,7 @@ export async function getNasabahByIdController(req: Request, id: string) {
     }
     return successResponse(result.data, 'Berhasil mengambil detail nasabah');
   } catch (error) {
-    console.error('Error di getNasabahByIdController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat mengambil detail nasabah');
   }
 }
 
@@ -49,9 +46,7 @@ export async function createNasabahController(req: Request) {
 
     return successResponse(result.data, 'Nasabah baru berhasil ditambahkan', 201);
   } catch (error) {
-    console.error('Error di createNasabahController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat menambahkan nasabah baru');
   }
 }
 
@@ -79,9 +74,7 @@ export async function updateNasabahController(req: Request, id: string) {
 
     return successResponse(result.data, 'Data nasabah berhasil diperbarui');
   } catch (error) {
-    console.error('Error di updateNasabahController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat memperbarui data nasabah');
   }
 }
 
@@ -93,8 +86,6 @@ export async function deleteNasabahController(req: Request, id: string) {
     }
     return successResponse(null, result.message || 'Berhasil dihapus');
   } catch (error) {
-    console.error('Error di deleteNasabahController:', error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return errorResponse('Terjadi kesalahan pada server', 500, errorMessage);
+    return handleControllerError(error, 'Terjadi kesalahan saat menghapus data nasabah');
   }
 }
