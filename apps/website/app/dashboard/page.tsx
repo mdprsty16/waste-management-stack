@@ -1,45 +1,41 @@
 "use client";
 
+import { useState } from "react";
 import { useNasabah } from "@/hooks/useNasabah";
 import { useTransaksi } from "@/hooks/useTransaksi";
+import { useDailyTrend } from "@/hooks/useDailyTrend";
+import { useKategoriStats } from "@/hooks/useKategoriStats";
 import Card from "@/components/ui/Card";
 import StatCard from "@/components/features/dashboard/StatCard";
-import BarChart from "@/components/features/dashboard/BarChart";
-import LineChart from "@/components/features/dashboard/LineChart";
+import BarChart, { getColorForIndex } from "@/components/features/dashboard/BarChart";
+import WeeklyTrendChart from "@/components/features/dashboard/WeeklyTrendChart";
+import AlertBanner from "@/components/features/dashboard/AlertBanner";
 import Button from "@/components/ui/Button";
 
 // ============================================================
-// Dashboard Overview — Menggunakan komponen dari:
+// Dashboard Overview — Ringkasan utama dashboard
+//
+// Komponen yang digunakan:
 // - components/ui/Card, Button
-// - components/features/dashboard/StatCard, BarChart, LineChart
-// - hooks/useNasabah, hooks/useTransaksi
+// - components/features/dashboard/StatCard, BarChart, WeeklyTrendChart, AlertBanner
+//
+// Hooks yang digunakan:
+// - hooks/useNasabah, useTransaksi, useDailyTrend, useKategoriStats
+//
+// Data dinamis dari API:
+// - /api/nasabah → jumlah nasabah
+// - /api/transaksi → total sampah, uang, dan riwayat
+// - /api/daily → tren mingguan + prediksi ML + alert
+// - /api/dashboard/kategori-stats → distribusi kategori sampah
 // ============================================================
-
-/* ── Dummy chart data (nanti dari API) ── */
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"];
-
-const barChartData = [
-  { label: "Organik", value: 320, color: "#16a34a" },
-  { label: "Non-Organik", value: 580, color: "#2563eb" },
-  { label: "B3", value: 45, color: "#dc2626" },
-  { label: "Plastik", value: 420, color: "#7c3aed" },
-  { label: "Kertas", value: 280, color: "#d97706" },
-  { label: "Logam", value: 150, color: "#64748b" },
-];
-
-const lineChartData = MONTHS.map((m, i) => ({
-  label: m,
-  value: [12, 18, 25, 22, 35, 42][i],
-}));
-
-const weightTrendData = MONTHS.map((m, i) => ({
-  label: m,
-  value: [120, 210, 340, 290, 450, 520][i],
-}));
 
 export default function DashboardOverviewPage() {
   const { nasabahData, isLoading: loadingNasabah } = useNasabah();
   const { transaksiData, isLoading: loadingTransaksi } = useTransaksi();
+  const { data: dailyData, isLoading: loadingDaily } = useDailyTrend();
+  const { data: kategoriData, isLoading: loadingKategori } = useKategoriStats();
+
+  const [alertDismissed, setAlertDismissed] = useState(false);
 
   const isLoading = loadingNasabah || loadingTransaksi;
   const totalNasabah = nasabahData.length;
@@ -53,6 +49,14 @@ export default function DashboardOverviewPage() {
 
   const totalTransaksi = transaksiData.length;
 
+  // Transformasi data kategori dari API menjadi format BarChart (dinamis)
+  const barChartData = kategoriData.map((item, i) => ({
+    label: item.kategori,
+    value: Number(item.total_kg.toFixed(1)),
+    color: getColorForIndex(i),
+  }));
+
+  // 5 transaksi terbaru
   const recentTransactions = transaksiData.slice(0, 5).map((trx) => {
     const categoryName =
       trx.detail_transaksi?.[0]?.jenis_sampah?.kategori?.nama_kategori || "Campuran";
@@ -73,6 +77,67 @@ export default function DashboardOverviewPage() {
     };
   });
 
+  // Handler: Kirim notifikasi penjemputan ke mitra
+  const handleSendPickupNotification = () => {
+    // TODO: Implementasi kirim notifikasi ke mitra logistik
+    alert(
+      "📧 Notifikasi penjemputan telah dikirim ke mitra logistik!\n\n" +
+      `Prediksi volume: ${dailyData.grafik_mingguan.prediksi_minggu_depan.total_kg} Kg\n` +
+      "Status: Menunggu konfirmasi mitra..."
+    );
+  };
+
+  // Handler: Unduh laporan dengan data prediksi ML
+  const handleDownloadReport = () => {
+    // Generate CSV dengan data prediksi
+    const now = new Date();
+    const monthName = now.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+
+    let csv = "LAPORAN BULANAN BANK SAMPAH SAMPUL BERKASIH\n";
+    csv += `Periode: ${monthName}\n`;
+    csv += `Tanggal Unduh: ${now.toLocaleDateString("id-ID")}\n\n`;
+
+    // Data statistik
+    csv += "=== RINGKASAN STATISTIK ===\n";
+    csv += `Total Nasabah,${totalNasabah}\n`;
+    csv += `Total Sampah Terkumpul (Kg),${sampahTerkumpul}\n`;
+    csv += `Total Uang Diberikan,Rp ${saldoTerdistribusi.toLocaleString("id-ID")}\n`;
+    csv += `Total Transaksi,${totalTransaksi}\n\n`;
+
+    // Data per kategori
+    csv += "=== DISTRIBUSI SAMPAH PER KATEGORI ===\n";
+    csv += "Kategori,Total (Kg)\n";
+    kategoriData.forEach((k) => {
+      csv += `${k.kategori},${k.total_kg}\n`;
+    });
+    csv += "\n";
+
+    // Data tren mingguan
+    csv += "=== TREN SAMPAH MINGGUAN ===\n";
+    csv += "Minggu,Total (Kg),Sumber\n";
+    dailyData.grafik_mingguan.aktual.forEach((a) => {
+      csv += `${a.label},${a.total_kg},Data Aktual DB\n`;
+    });
+    csv += `${dailyData.grafik_mingguan.prediksi_minggu_depan.label},${dailyData.grafik_mingguan.prediksi_minggu_depan.total_kg},Prediksi ML\n\n`;
+
+    // Rekomendasi operasional
+    csv += "=== REKOMENDASI OPERASIONAL MINGGU DEPAN (ANALISA ML) ===\n";
+    csv += `Estimasi Volume Sampah,${dailyData.grafik_mingguan.prediksi_minggu_depan.total_kg} Kg\n`;
+    const estimasiTruk = Math.ceil(dailyData.grafik_mingguan.prediksi_minggu_depan.total_kg / 500);
+    csv += `Estimasi Kebutuhan Armada,${estimasiTruk} unit truk (kapasitas 500 Kg/truk)\n`;
+    csv += `Status Alert,${dailyData.alert_sistem.is_alert ? "URGENT - Segera jadwalkan penjemputan" : "AMAN - Operasi normal"}\n`;
+    csv += `Catatan,${dailyData.alert_sistem.pesan}\n`;
+
+    // Download CSV
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `Laporan_BSSB_${monthName.replace(" ", "_")}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (isLoading) {
     return (
       <div className="p-10 text-center">
@@ -83,20 +148,40 @@ export default function DashboardOverviewPage() {
   }
 
   return (
-    <div className="space-y-10 animate-fade-in-up">
-      {/* Header */}
+    <div className="space-y-8 animate-fade-in-up">
+      {/* ═══ ALERT BANNER — Conditional rendering dari ML ═══ */}
+      {!alertDismissed && (
+        <AlertBanner
+          alert={dailyData.alert_sistem}
+          onDismiss={() => setAlertDismissed(true)}
+          onAction={handleSendPickupNotification}
+        />
+      )}
+
+      {/* ═══ HEADER ═══ */}
       <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6">
         <div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
             Ringkasan Hari Ini
           </h2>
           <p className="text-lg text-gray-600 font-medium">
-            Data di bawah ini ditarik langsung dari Database!
+            Data realtime dari database + prediksi machine learning
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button variant="secondary" size="lg">
-            Unduh Laporan
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={handleDownloadReport}
+            icon={
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+            }
+          >
+            Unduh Laporan + Prediksi
           </Button>
           <Button variant="primary" size="lg">
             + Tambah Transaksi Baru
@@ -104,8 +189,8 @@ export default function DashboardOverviewPage() {
         </div>
       </div>
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-8">
+      {/* ═══ STAT CARDS ═══ */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-6">
         <StatCard
           icon={
             <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -124,7 +209,7 @@ export default function DashboardOverviewPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
           }
-          label="Sampah (Bulan ini)"
+          label="Sampah Terkumpul"
           value={`${sampahTerkumpul} Kg`}
           iconBg="bg-green-100"
           iconColor="text-green-700"
@@ -153,17 +238,23 @@ export default function DashboardOverviewPage() {
         />
       </div>
 
-      {/* Charts */}
+      {/* ═══ 2 GRAFIK UTAMA — Berdampingan ═══ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <BarChart data={barChartData} title="📊 Sampah per Kategori (Kg)" />
-        <LineChart data={lineChartData} title="📈 Tren Transaksi Bulanan" color="#16a34a" />
+        {/* Kiri: Distribusi Kategori (Dinamis dari API) */}
+        <BarChart
+          data={barChartData}
+          title="📊 Distribusi Sampah per Kategori (Kg)"
+          isLoading={loadingKategori}
+        />
+
+        {/* Kanan: Tren Mingguan + Prediksi ML */}
+        <WeeklyTrendChart
+          data={dailyData.grafik_mingguan}
+          title="📈 Tren Sampah Mingguan + Prediksi ML"
+        />
       </div>
 
-      <div className="grid grid-cols-1 gap-8">
-        <LineChart data={weightTrendData} title="📉 Tren Sampah Terkumpul (Kg/Bulan)" color="#2563eb" />
-      </div>
-
-      {/* Transaction Table */}
+      {/* ═══ TABEL TRANSAKSI TERBARU ═══ */}
       <Card
         title="Riwayat Transaksi Terbaru"
         action={
