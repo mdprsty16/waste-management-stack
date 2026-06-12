@@ -8,7 +8,7 @@ import AboutSection from "@/components/features/landing/AboutSection";
 import StatsSection from "@/components/features/landing/StatsSection";
 import FeaturesSection from "@/components/features/landing/FeaturesSection";
 import WasteCategorySection from "@/components/features/landing/WasteCategorySection";
-import CTASection from "@/components/features/landing/CTASection";
+
 import Footer from "@/components/features/landing/Footer";
 
 export default function Home() {
@@ -43,8 +43,7 @@ export default function Home() {
       <div className="section-divider" />
       <WasteCategorySection />
 
-      {/* ═══ CTA ═══ */}
-      <CTASection />
+
 
       {/* ═══ FOOTER ═══ */}
       <Footer />

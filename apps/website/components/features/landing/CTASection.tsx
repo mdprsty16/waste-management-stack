@@ -17,15 +17,7 @@ export default function CTASection() {
           <p className="text-lg text-green-200 font-medium mb-8 max-w-lg mx-auto">
             Masuk ke dashboard untuk mulai mencatat setoran dan memantau laporan.
           </p>
-          <a
-            href="/login"
-            className="hover-pulse inline-flex items-center gap-3 bg-white text-green-800 font-black text-xl px-10 py-5 rounded-2xl shadow-2xl hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(255,255,255,0.15)] transition-all duration-300"
-          >
-            MASUK DASHBOARD
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12,5 19,12 12,19" />
-            </svg>
-          </a>
+
         </div>
       </div>
     </section>

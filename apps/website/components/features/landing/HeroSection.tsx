@@ -95,20 +95,7 @@ export default function HeroSection() {
             sampah dalam satu aplikasi yang simpel.
           </p>
 
-          <div className="animate-fade-in-up delay-400 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <a
-              href="/login"
-              className="hover-pulse flex items-center justify-center gap-3 bg-white text-green-800 font-black text-lg sm:text-xl px-10 py-5 rounded-2xl shadow-2xl hover:bg-green-50 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(255,255,255,0.15)] transition-all duration-300"
-            >
-              MASUK SEKARANG <ArrowIcon c="w-6 h-6" />
-            </a>
-            <a
-              href="#tentang"
-              className="flex items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold text-lg sm:text-xl px-10 py-5 rounded-2xl hover:bg-white/20 hover:-translate-y-0.5 transition-all duration-300"
-            >
-              TENTANG KAMI <DownIcon c="w-5 h-5" />
-            </a>
-          </div>
+
 
           {/* Image indicators */}
           <div className="mt-14 flex gap-2">

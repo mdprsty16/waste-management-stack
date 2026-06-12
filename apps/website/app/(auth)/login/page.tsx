@@ -25,16 +25,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex relative">
-      {/* Navigasi kembali ke landing page — floating button */}
-      <Link
-        href="/"
-        className="fixed top-6 left-6 z-50 inline-flex items-center gap-2 bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg text-gray-700 hover:text-green-700 hover:border-green-300 font-bold text-sm px-4 py-2.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5"
-      >
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
-        </svg>
-        Kembali ke Beranda
-      </Link>
 
       {/* Left side — decorative panel (hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden">
@@ -96,6 +86,17 @@ export default function LoginPage() {
         {/* Subtle background decoration */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-green-100/30 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-100/20 rounded-full blur-[80px] pointer-events-none" />
+
+        {/* Navigasi kembali ke landing page — kiri atas panel */}
+        <Link
+          href="/"
+          className="absolute top-12 left-12 z-20 inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm text-gray-600 hover:text-green-700 hover:border-green-300 hover:shadow-md font-bold text-sm px-4 py-2.5 rounded-xl transition-all duration-300 group"
+        >
+          <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+          </svg>
+          Kembali ke Beranda
+        </Link>
 
         <div className="w-full max-w-md relative z-10">
           {/* Mobile logo */}
