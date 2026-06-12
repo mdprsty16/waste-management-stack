@@ -1,9 +1,5 @@
-// ============================================================
-// Nasabah Types — Interface untuk data nasabah
-// Digunakan oleh: services/nasabah.service.ts, hooks/useLandingStats.ts
-// ============================================================
+// types/nasabah.types.ts
 
-/** Data Nasabah dari GET /api/nasabah */
 export interface Nasabah {
   id_nasabah: string;
   kode_nasabah: string | null;
@@ -15,4 +11,21 @@ export interface Nasabah {
   total_berat_sampah: number;
   is_active: boolean;
   created_at: string;
+}
+
+export interface CreateNasabahRequest {
+  kode_nasabah?: string;
+  nama: string;
+  nomor_hp?: string;
+  rt?: string;
+  rw?: string;
+}
+
+export interface UpdateNasabahRequest {
+  kode_nasabah?: string;
+  nama: string;
+  nomor_hp?: string;
+  rt?: string;
+  rw?: string;
+  is_active?: boolean;
 }

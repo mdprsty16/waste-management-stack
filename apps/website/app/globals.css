@@ -320,3 +320,13 @@ body {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(22, 163, 74, 0.2), transparent);
 }
+
+/* Float animation for background elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}

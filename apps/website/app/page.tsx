@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useCallback } from "react";
 import SplashScreen from "@/components/features/landing/SplashScreen";
 import Navbar from "@/components/features/landing/Navbar";

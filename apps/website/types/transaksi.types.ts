@@ -1,9 +1,20 @@
-// ============================================================
-// Transaksi Types — Interface untuk data transaksi
-// Digunakan oleh: services/transaksi.service.ts, hooks/useLandingStats.ts
-// ============================================================
+// types/transaksi.types.ts
 
-/** Data Transaksi dari GET /api/transaksi */
+import type { Nasabah } from './nasabah.types';
+import type { JenisSampah } from './jenis-sampah.types';
+
+/** Detail per-item dalam satu transaksi */
+export interface DetailTransaksi {
+  id_detail: string;
+  id_transaksi: string;
+  id_jenis_sampah: string;
+  berat_kg: number;
+  volume_m3: number;
+  subtotal_harga: number;
+  jenis_sampah?: JenisSampah;    // Relasi (dari include)
+}
+
+/** Data transaksi (dikembalikan oleh GET /api/transaksi) */
 export interface Transaksi {
   id_transaksi: string;
   id_nasabah: string;
@@ -13,8 +24,20 @@ export interface Transaksi {
   total_volume_m3: number;
   total_harga: number;
   created_at: string;
-  nasabah?: {
-    nama: string;
-    kode_nasabah: string | null;
-  };
+  nasabah?: Pick<Nasabah, 'nama' | 'kode_nasabah'>;  // Hanya nama & kode
+  admin?: { nama_admin: string; username: string };
+  detail_transaksi?: DetailTransaksi[];
+}
+
+/** Satu item sampah dalam body POST /api/transaksi */
+export interface TransaksiItemInput {
+  id_jenis_sampah: string;
+  berat_kg: number;
+}
+
+/** Body request untuk POST /api/transaksi */
+export interface CreateTransaksiRequest {
+  id_nasabah: string;
+  tanggal?: string;               // ISO date string (opsional, default hari ini)
+  items: TransaksiItemInput[];    // Array items — MINIMAL 1
 }
