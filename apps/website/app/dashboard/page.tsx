@@ -140,9 +140,13 @@ export default function DashboardOverviewPage() {
 
   if (isLoading) {
     return (
-      <div className="p-10 text-center">
-        <div className="w-10 h-10 border-4 border-green-200 border-t-green-600 rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-xl font-bold text-green-700">Memuat Data Dashboard...</p>
+      <div className="flex flex-col items-center justify-center py-20 animate-fade-in">
+        <div className="relative w-16 h-16 mb-6">
+          <div className="absolute inset-0 rounded-full border-4 border-green-100" />
+          <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-green-600 animate-spin" />
+        </div>
+        <p className="text-xl font-bold text-gray-700">Memuat Data Dashboard...</p>
+        <p className="text-sm text-gray-400 mt-1">Mengambil data realtime dan prediksi ML</p>
       </div>
     );
   }
@@ -158,34 +162,43 @@ export default function DashboardOverviewPage() {
         />
       )}
 
-      {/* ═══ HEADER ═══ */}
-      <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6">
-        <div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
-            Ringkasan Hari Ini
-          </h2>
-          <p className="text-lg text-gray-600 font-medium">
-            Data realtime dari database + prediksi machine learning
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={handleDownloadReport}
-            icon={
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-            }
-          >
-            Unduh Laporan + Prediksi
-          </Button>
-          <Button variant="primary" size="lg">
-            + Tambah Transaksi Baru
-          </Button>
+      {/* ═══ PREMIUM GRADIENT HEADER ═══ */}
+      <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 p-8 rounded-3xl shadow-xl shadow-green-100 text-white relative overflow-hidden">
+        <div className="absolute right-0 top-0 w-80 h-80 bg-white/10 rounded-full blur-3xl transform translate-x-20 -translate-y-20" />
+        <div className="absolute left-1/2 bottom-0 w-40 h-40 bg-white/5 rounded-full blur-2xl transform -translate-y-5" />
+        <div className="relative z-10 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6">
+          <div className="space-y-2">
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              Ringkasan Hari Ini
+            </h2>
+            <p className="text-green-100 text-lg font-medium">
+              Data realtime dari database + prediksi machine learning
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={handleDownloadReport}
+              className="bg-white/15 text-white border-white/30 hover:bg-white/25 backdrop-blur-sm"
+              icon={
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+              }
+            >
+              Unduh Laporan + Prediksi
+            </Button>
+            <Button 
+              variant="secondary" 
+              size="lg"
+              className="bg-white text-green-700 border-none hover:bg-green-50 hover:scale-[1.02] transition-all duration-200 shadow-lg font-extrabold"
+            >
+              + Tambah Transaksi Baru
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -254,54 +267,81 @@ export default function DashboardOverviewPage() {
         />
       </div>
 
-      {/* ═══ TABEL TRANSAKSI TERBARU ═══ */}
+      {/* ═══ TABEL TRANSAKSI TERBARU — Premium redesign ═══ */}
       <Card
         title="Riwayat Transaksi Terbaru"
         action={
           <a
             href="/dashboard/transaksi"
-            className="text-base font-bold text-green-700 hover:text-green-900 transition-colors bg-green-100 px-4 py-2 rounded-lg"
+            className="inline-flex items-center gap-2 text-sm font-bold text-green-700 hover:text-green-900 transition-all bg-green-50 hover:bg-green-100 px-5 py-2.5 rounded-xl border border-green-200"
           >
-            Lihat Semua Riwayat →
+            Lihat Semua Riwayat
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
           </a>
         }
         padding={false}
+        className="border-none shadow-xl shadow-gray-100/50"
       >
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-gray-50 text-gray-700 uppercase text-sm font-extrabold tracking-wider">
+            <thead className="bg-gray-50/80 border-b-2 border-gray-100">
               <tr>
-                <th className="px-8 py-5">Kode</th>
-                <th className="px-8 py-5">Nama Nasabah</th>
-                <th className="px-8 py-5">Kategori</th>
-                <th className="px-8 py-5">Berat</th>
-                <th className="px-8 py-5">Total Harga</th>
-                <th className="px-8 py-5">Waktu</th>
-                <th className="px-8 py-5">Status</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Kode</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Nama Nasabah</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Kategori</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Berat</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Total Harga</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Waktu</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y-2 divide-gray-100">
+            <tbody className="divide-y divide-gray-100">
               {recentTransactions.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-8 py-10 text-center text-gray-500 font-medium text-lg">
-                    Belum ada transaksi di database.
+                  <td colSpan={7} className="px-6 py-16 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <svg className="w-12 h-12 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                      </svg>
+                      <p className="text-gray-500 font-medium text-lg">Belum ada transaksi di database.</p>
+                    </div>
                   </td>
                 </tr>
               )}
               {recentTransactions.map((trx) => (
-                <tr key={trx.id} className="hover:bg-green-50 transition-colors">
-                  <td className="px-8 py-6 text-lg font-bold text-gray-900">{trx.id}</td>
-                  <td className="px-8 py-6 text-lg font-semibold text-gray-800">{trx.name}</td>
-                  <td className="px-8 py-6">
-                    <span className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-bold border border-gray-300">
+                <tr key={trx.id} className="hover:bg-green-50/50 transition-colors duration-150">
+                  <td className="px-6 py-4">
+                    <code className="text-xs font-mono font-bold bg-gray-100 text-gray-800 px-2.5 py-1 rounded-md border border-gray-200">
+                      {trx.id}
+                    </code>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="font-bold text-gray-900">{trx.name}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
                       {trx.type}
                     </span>
                   </td>
-                  <td className="px-8 py-6 text-lg font-bold text-gray-700">{trx.weight}</td>
-                  <td className="px-8 py-6 text-xl font-black text-green-700">{trx.amount}</td>
-                  <td className="px-8 py-6 text-lg font-medium text-gray-600">{trx.date}</td>
-                  <td className="px-8 py-6">
-                    <span className="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-sm font-bold border-2 border-green-300">
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1 font-semibold text-gray-800 text-sm bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-lg">
+                      <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                      </svg>
+                      {trx.weight}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-base font-black text-emerald-600">{trx.amount}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-sm font-medium text-gray-500">{trx.date}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border-2 border-emerald-200">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
                       {trx.status}
                     </span>
                   </td>
