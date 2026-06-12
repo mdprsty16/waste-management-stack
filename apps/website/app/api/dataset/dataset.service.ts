@@ -41,7 +41,7 @@ export async function getDatasetService(format?: string) {
     id_kategori: item.jenis_sampah?.id_kategori || '',
     nama_kategori: item.jenis_sampah?.kategori?.nama_kategori || '',
     // DI SINI PERBAIKANNYA: Tambahkan 'S' di ujung properti prisma-nya
-    densitas_kg_per_m3: item.jenis_sampah?.densitas_kg_per_m3S || 0, 
+    densitas_kg_per_m3: item.jenis_sampah?.densitas_kg_per_m3 || 0, 
     harga_per_kg: item.jenis_sampah?.harga_per_kg || 0,
     berat_kg: item.berat_kg,
     volume_m3: item.volume_m3,

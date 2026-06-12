@@ -886,7 +886,7 @@ export const JenisSampahScalarFieldEnum = {
   id_jenis_sampah: 'id_jenis_sampah',
   id_kategori: 'id_kategori',
   nama_jenis: 'nama_jenis',
-  densitas_kg_per_m3S: 'densitas_kg_per_m3S',
+  densitas_kg_per_m3: 'densitas_kg_per_m3',
   harga_per_kg: 'harga_per_kg',
   is_active: 'is_active',
   created_at: 'created_at'
