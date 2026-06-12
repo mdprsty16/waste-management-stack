@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { getAllNasabahService } from "@/services/nasabah.service";
-import { getAllTransaksiService } from "@/services/transaksi.service";
+import { getNasabah } from "@/services/nasabah.service";
+import { getTransaksi } from "@/services/transaksi.service";
 
 export interface LandingStats {
   totalNasabah: number;
@@ -24,11 +24,11 @@ export function useLandingStats() {
     setIsLoading(true);
     try {
       // Fetch nasabah melalui service layer
-      const nasabahResponse = await getAllNasabahService();
+      const nasabahResponse = await getNasabah();
       const nasabahCount = (nasabahResponse.data || []).length;
 
       // Fetch transaksi melalui service layer
-      const transaksiResponse = await getAllTransaksiService();
+      const transaksiResponse = await getTransaksi();
       const transaksiData = transaksiResponse.data || [];
 
       let totalSampahKg = 0;
