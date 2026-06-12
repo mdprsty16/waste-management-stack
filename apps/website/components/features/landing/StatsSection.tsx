@@ -97,11 +97,7 @@ const UsersIcon = () => (
   </svg>
 );
 
-const HandshakeIcon = () => (
-  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z" />
-  </svg>
-);
+
 
 const RecycleIcon = () => (
   <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -151,7 +147,7 @@ export default function StatsSection() {
             Memuat data...
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             <StatCard
               icon={<UsersIcon />}
               value={stats.totalNasabah}
@@ -159,12 +155,7 @@ export default function StatsSection() {
               suffix="+"
               color="blue"
             />
-            <StatCard
-              icon={<HandshakeIcon />}
-              value={stats.totalKerjaSama}
-              label="Kerja Sama"
-              color="purple"
-            />
+
             <StatCard
               icon={<RecycleIcon />}
               value={stats.totalSampahKg}
