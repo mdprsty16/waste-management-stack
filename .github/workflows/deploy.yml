@@ -1,0 +1,64 @@
+name: Build and Deploy Website
+
+on:
+  push:
+    branches:
+      - master # Memicu otomatisasi setiap kali kamu melakukan push ke branch master
+
+# Berikan izin penuh pada workflow untuk memperbarui Packages di GHCR milik mdprsty16
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: actions/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/website
+          file: ./apps/website/Dockerfile
+          push: true
+          # github.repository_owner otomatis mendeteksi scope 'mdprsty16'
+          tags: ghcr.io/${{ github.repository_owner }}/waste-management-website:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Executing remote SSH commands to deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            cd ~/waste-management
+            
+            # Login ke GHCR di dalam lingkungan VPS agar diizinkan menarik image terbaru
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Tarik paket image website terbaru
+            docker compose pull website
+            
+            # Restart layanan website secara langsung tanpa mematikan Traefik (Zero Downtime)
+            docker compose up -d website
+            
+            # Hapus sisa-sisa cache image lama yang sudah tidak terpakai di VPS
+            docker image prune -f
