@@ -195,14 +195,16 @@ export default function TransaksiPage() {
               <table className="w-full text-sm">
                 <thead><tr className="bg-gray-50/80 border-b border-gray-100">
                   <th className="p-4 text-left text-xs font-extrabold text-gray-500 uppercase tracking-wider">Jenis Sampah</th>
-                  <th className="p-4 text-right text-xs font-extrabold text-gray-500 uppercase tracking-wider">Berat (Kg)</th>
+                  <th className="p-4 text-right text-xs font-extrabold text-gray-500 uppercase tracking-wider">Berat / Jumlah</th>
                   <th className="p-4 text-right text-xs font-extrabold text-gray-500 uppercase tracking-wider">Subtotal</th>
                 </tr></thead>
                 <tbody className="divide-y divide-gray-100">
                   {detail.detail_transaksi?.map((d) => (
                     <tr key={d.id_detail} className="hover:bg-green-50/30 transition-colors">
                       <td className="p-4 font-semibold text-gray-800">{d.jenis_sampah?.nama_jenis || d.id_jenis_sampah}</td>
-                      <td className="p-4 text-right font-semibold text-gray-700">{d.berat_kg}</td>
+                      <td className="p-4 text-right font-semibold text-gray-700">
+                        {Number(d.berat_kg).toFixed(2)} {d.jenis_sampah?.satuan === 'pcs' ? 'pcs' : 'Kg'}
+                      </td>
                       <td className="p-4 text-right font-bold text-emerald-600">Rp {d.subtotal_harga.toLocaleString("id-ID")}</td>
                     </tr>
                   ))}

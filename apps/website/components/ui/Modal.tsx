@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useCallback, type ReactNode } from "react";
+import { useEffect, useCallback, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 // ============================================================
 // Modal — Dialog overlay untuk form dan konfirmasi
-// Dibutuhkan oleh Adhim: form Tambah/Edit data master
+// Menggunakan React Portal agar selalu ter-center di viewport
+// (tidak terpengaruh parent transform/animation)
 // ============================================================
 
 export interface ModalProps {
@@ -29,6 +31,13 @@ export default function Modal({
   children,
   size = "md",
 }: ModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  // Portal: Pastikan hanya render di client (setelah mount)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Tutup dengan Escape
   const handleKeyDown = useCallback(
     (e: globalThis.KeyboardEvent) => {
@@ -49,15 +58,17 @@ export default function Modal({
     };
   }, [isOpen, handleKeyDown]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  // Render via Portal ke document.body — bypass parent transforms
+  return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden="true"
+        style={{ animation: "fadeIn 0.2s ease-out forwards" }}
       />
 
       {/* Modal Panel */}
@@ -65,16 +76,16 @@ export default function Modal({
         className={`
           relative w-full ${sizeStyles[size]}
           bg-white rounded-2xl shadow-2xl
-          animate-scale-in
-          max-h-[90vh] flex flex-col overflow-hidden
+          max-h-[85vh] flex flex-col overflow-hidden
         `}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? "modal-title" : undefined}
+        style={{ animation: "scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards" }}
       >
-        {/* Header */}
+        {/* Header — Fixed di atas modal */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+          <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 flex-shrink-0">
             <h2
               id="modal-title"
               className="text-xl font-extrabold text-gray-900"
@@ -127,6 +138,7 @@ export default function Modal({
           </button>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
