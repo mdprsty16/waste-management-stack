@@ -15,7 +15,7 @@ export interface WeeklyTrendChartProps {
 
 export default function WeeklyTrendChart({
   data,
-  title = "📈 Tren Sampah Mingguan",
+  title = "Tren Sampah Mingguan",
 }: WeeklyTrendChartProps) {
   // Gabungkan aktual + prediksi untuk skala chart
   const allPoints = [

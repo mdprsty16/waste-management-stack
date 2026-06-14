@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { getNasabah } from "@/services/nasabah.service";
-import { getTransaksi } from "@/services/transaksi.service";
+import { apiClient } from "@/services/api.client";
 
 export interface LandingStats {
   totalNasabah: number;
@@ -23,30 +22,9 @@ export function useLandingStats() {
   const fetchStats = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Fetch nasabah melalui service layer
-      const nasabahResponse = await getNasabah();
-      const nasabahCount = (nasabahResponse.data || []).length;
-
-      // Fetch transaksi melalui service layer
-      const transaksiResponse = await getTransaksi();
-      const transaksiData = transaksiResponse.data || [];
-
-      let totalSampahKg = 0;
-      let totalHematRupiah = 0;
-      transaksiData.forEach((trx) => {
-        totalSampahKg += trx.total_berat_kg || 0;
-        totalHematRupiah += trx.total_harga || 0;
-      });
-
-      // totalSampahTerolah = jumlah transaksi yang sudah selesai (semua dianggap selesai)
-      const totalSampahTerolah = transaksiData.length;
-
-      setStats({
-        totalNasabah: nasabahCount,
-        totalSampahKg: Math.round(totalSampahKg),
-        totalSampahTerolah,
-        totalHematRupiah: Math.round(totalHematRupiah),
-      });
+      // Panggil endpoint dedicated yang menghitung di server (1 call, efisien)
+      const res = await apiClient.get<LandingStats>('/api/dashboard/summary');
+      setStats(res.data);
     } catch (err: any) {
       setError(err.message);
       // Jika API gagal, tampilkan nol

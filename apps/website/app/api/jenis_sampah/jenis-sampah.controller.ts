@@ -30,7 +30,7 @@ export async function getJenisSampahByIdController(req: Request, id: string) {
 export async function createJenisSampahController(req: Request) {
   try {
     const body = await req.json();
-    const { id_kategori, nama_jenis, densitas_kg_per_m3, harga_per_kg } = body;
+    const { id_kategori, nama_jenis, densitas_kg_per_m3, harga_per_kg, satuan } = body;
 
     if (!id_kategori || !nama_jenis || densitas_kg_per_m3 === undefined || harga_per_kg === undefined) {
       return errorResponse('Field id_kategori, nama_jenis, densitas_kg_per_m3, dan harga_per_kg wajib diisi', 400);
@@ -41,6 +41,7 @@ export async function createJenisSampahController(req: Request) {
       nama_jenis,
       densitas_kg_per_m3: Number(densitas_kg_per_m3),
       harga_per_kg: Number(harga_per_kg),
+      satuan: satuan || 'kg',
     });
 
     return successResponse(result.data, 'Jenis sampah berhasil ditambahkan', 201);
@@ -52,7 +53,7 @@ export async function createJenisSampahController(req: Request) {
 export async function updateJenisSampahController(req: Request, id: string) {
   try {
     const body = await req.json();
-    const { id_kategori, nama_jenis, densitas_kg_per_m3, harga_per_kg, is_active } = body;
+    const { id_kategori, nama_jenis, densitas_kg_per_m3, harga_per_kg, is_active, satuan } = body;
 
     if (!id_kategori || !nama_jenis || densitas_kg_per_m3 === undefined || harga_per_kg === undefined || is_active === undefined) {
       return errorResponse('Semua field termasuk id_kategori dan is_active wajib diisi', 400);
@@ -63,6 +64,7 @@ export async function updateJenisSampahController(req: Request, id: string) {
       nama_jenis,
       densitas_kg_per_m3: Number(densitas_kg_per_m3),
       harga_per_kg: Number(harga_per_kg),
+      satuan: satuan || 'kg',
       is_active: Boolean(is_active),
     });
 

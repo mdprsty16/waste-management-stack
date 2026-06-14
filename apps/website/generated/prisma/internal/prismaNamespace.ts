@@ -888,6 +888,7 @@ export const JenisSampahScalarFieldEnum = {
   nama_jenis: 'nama_jenis',
   densitas_kg_per_m3: 'densitas_kg_per_m3',
   harga_per_kg: 'harga_per_kg',
+  satuan: 'satuan',
   is_active: 'is_active',
   created_at: 'created_at'
 } as const
@@ -971,7 +972,8 @@ export type KategoriSampahOrderByRelevanceFieldEnum = (typeof KategoriSampahOrde
 export const JenisSampahOrderByRelevanceFieldEnum = {
   id_jenis_sampah: 'id_jenis_sampah',
   id_kategori: 'id_kategori',
-  nama_jenis: 'nama_jenis'
+  nama_jenis: 'nama_jenis',
+  satuan: 'satuan'
 } as const
 
 export type JenisSampahOrderByRelevanceFieldEnum = (typeof JenisSampahOrderByRelevanceFieldEnum)[keyof typeof JenisSampahOrderByRelevanceFieldEnum]

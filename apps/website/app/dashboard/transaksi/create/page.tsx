@@ -39,7 +39,7 @@ function TransaksiItemRow({
 
   const jenisOptions = jenisList.map(j => ({
     value: j.id_jenis_sampah,
-    label: `${j.nama_jenis} (Rp ${j.harga_per_kg.toLocaleString("id-ID")}/Kg)`,
+    label: `${j.nama_jenis} (Rp ${j.harga_per_kg.toLocaleString("id-ID")}/${j.satuan === 'pcs' ? 'pcs' : 'Kg'})`,
   }));
 
   // Cari data jenis yang dipilih untuk preview kalkulasi
@@ -88,11 +88,13 @@ function TransaksiItemRow({
           disabled={!item.id_kategori}  // Disable jika kategori belum dipilih
         />
         <Input
-          label="Berat (Kg)"
+          label={selectedJenis?.satuan === 'pcs' ? 'Jumlah (pcs)' : 'Berat (Kg)'}
           type="number"
           value={item.berat_kg}
           onChange={(e) => onChange("berat_kg", e.target.value)}
-          placeholder="0.0"
+          placeholder={selectedJenis?.satuan === 'pcs' ? '0' : '0.0'}
+          min="0"
+          step={selectedJenis?.satuan === 'pcs' ? '1' : '0.01'}
           className="focus:border-green-500 focus:ring-green-500 rounded-xl"
         />
       </div>
@@ -100,7 +102,7 @@ function TransaksiItemRow({
       {selectedJenis && berat > 0 && (
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 p-4 rounded-xl text-sm font-semibold text-green-800 flex items-center justify-between">
           <span>
-            <span className="text-gray-500 font-normal">Harga/Kg:</span> Rp {selectedJenis.harga_per_kg.toLocaleString("id-ID")}
+            <span className="text-gray-500 font-normal">{selectedJenis.satuan === 'pcs' ? 'Harga/pcs:' : 'Harga/Kg:'}</span> Rp {selectedJenis.harga_per_kg.toLocaleString("id-ID")}
           </span>
           <span className="flex items-center gap-1.5">
             <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -165,6 +167,12 @@ export default function CreateTransaksiPage() {
     e.preventDefault();
     if (!idNasabah || items.some(i => !i.id_jenis_sampah || !i.berat_kg)) {
       alert("Lengkapi semua field!");
+      return;
+    }
+    // Validasi: tidak boleh negatif atau nol
+    const invalidItem = items.find(i => parseFloat(i.berat_kg) <= 0);
+    if (invalidItem) {
+      alert("Berat/jumlah harus lebih dari 0!");
       return;
     }
     setSaving(true);

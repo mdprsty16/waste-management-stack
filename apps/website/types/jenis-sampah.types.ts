@@ -8,6 +8,7 @@ export interface JenisSampah {
   nama_jenis: string;
   densitas_kg_per_m3: number;
   harga_per_kg: number;
+  satuan: 'kg' | 'pcs';  // kg = per kilogram, pcs = per buah/unit
   is_active: boolean;
   created_at: string;
   kategori?: KategoriSampah;  // Relasi (dari include di backend)
@@ -18,6 +19,7 @@ export interface CreateJenisSampahRequest {
   nama_jenis: string;
   densitas_kg_per_m3: number;
   harga_per_kg: number;
+  satuan?: 'kg' | 'pcs';  // Default: 'kg'
 }
 
 export interface UpdateJenisSampahRequest {
@@ -25,5 +27,6 @@ export interface UpdateJenisSampahRequest {
   nama_jenis: string;
   densitas_kg_per_m3: number;
   harga_per_kg: number;
+  satuan?: 'kg' | 'pcs';
   is_active: boolean;
 }

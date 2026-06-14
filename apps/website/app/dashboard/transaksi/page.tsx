@@ -54,7 +54,7 @@ export default function TransaksiPage() {
           <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
           </svg>
-          {row.total_berat_kg} Kg
+          {Number(row.total_berat_kg).toFixed(2)} Kg
         </span>
       )
     },
@@ -149,7 +149,7 @@ export default function TransaksiPage() {
           </div>
           <div>
             <span className="text-sm font-semibold text-gray-500 block">Berat Total</span>
-            <span className="text-2xl font-black text-amber-600">{totalBerat} Kg</span>
+            <span className="text-2xl font-black text-amber-600">{Number(totalBerat).toFixed(2)} Kg</span>
           </div>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default function TransaksiPage() {
 
       {/* Modal Detail Transaksi — Invoice style */}
       <Modal isOpen={showDetail} onClose={() => setShowDetail(false)}
-        title="🧾 Detail Transaksi" size="lg">
+        title="Detail Transaksi" size="lg">
         {detail && (
           <div className="space-y-5">
             {/* Header info */}

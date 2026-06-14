@@ -66,7 +66,7 @@ export default function Modal({
           relative w-full ${sizeStyles[size]}
           bg-white rounded-2xl shadow-2xl
           animate-scale-in
-          max-h-[90vh] flex flex-col
+          max-h-[90vh] flex flex-col overflow-hidden
         `}
         role="dialog"
         aria-modal="true"

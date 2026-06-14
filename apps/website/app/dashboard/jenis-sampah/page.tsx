@@ -24,6 +24,7 @@ export default function JenisSampahPage() {
   const [namaJenis, setNamaJenis] = useState("");
   const [hargaPerKg, setHargaPerKg] = useState("");
   const [densitas, setDensitas] = useState("");
+  const [satuan, setSatuan] = useState<'kg' | 'pcs'>('kg');
 
   // Ubah kategoriList jadi format SelectAutocomplete (hanya yang aktif)
   const kategoriOptions = kategoriList
@@ -40,6 +41,7 @@ export default function JenisSampahPage() {
     setNamaJenis("");
     setHargaPerKg("");
     setDensitas("");
+    setSatuan('kg');
     setShowModal(true);
   };
 
@@ -50,6 +52,7 @@ export default function JenisSampahPage() {
     setNamaJenis(row.nama_jenis);
     setHargaPerKg(String(row.harga_per_kg));
     setDensitas(String(row.densitas_kg_per_m3));
+    setSatuan((row.satuan as 'kg' | 'pcs') || 'kg');
     setShowModal(true);
   };
 
@@ -63,6 +66,7 @@ export default function JenisSampahPage() {
         nama_jenis: namaJenis,
         harga_per_kg: Number(hargaPerKg),
         densitas_kg_per_m3: Number(densitas),
+        satuan,
       };
 
       if (editing) {
@@ -213,7 +217,7 @@ export default function JenisSampahPage() {
   return (
     <div className="space-y-8 animate-fade-in-up">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-emerald-600 to-green-700 p-8 rounded-3xl shadow-xl shadow-green-100 text-white relative overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-green-600 to-emerald-700 p-8 rounded-3xl shadow-xl shadow-green-100 text-white relative overflow-hidden">
         <div className="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl transform translate-x-10 -translate-y-10" />
         <div className="relative z-10 space-y-1">
           <h1 className="text-3xl font-extrabold tracking-tight">Jenis Sampah</h1>
@@ -222,10 +226,10 @@ export default function JenisSampahPage() {
         <Button 
           onClick={handleAdd} 
           variant="secondary" 
-          className="relative z-10 bg-white text-emerald-700 border-none hover:bg-green-50 hover:scale-[1.03] transition-all duration-200 shadow-lg"
+          className="relative z-10 bg-white text-green-700 border-none hover:bg-green-50 hover:scale-[1.03] transition-all duration-200 shadow-lg"
           size="lg"
           icon={
-            <svg className="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+            <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
           }
@@ -283,7 +287,7 @@ export default function JenisSampahPage() {
 
       {/* Modal Form Tambah/Edit */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}
-        title={editing ? "✏️ Edit Jenis Sampah" : "✨ Tambah Jenis Sampah Baru"}>
+        title={editing ? "Edit Jenis Sampah" : "Tambah Jenis Sampah Baru"}>
         <form onSubmit={handleSubmit} className="space-y-4">
           <SelectAutocomplete
             label="Kategori Sampah"
@@ -297,16 +301,41 @@ export default function JenisSampahPage() {
             placeholder="Contoh: Botol PET, Kardus, Besi" 
             className="focus:border-green-500 focus:ring-green-500 rounded-xl"
           />
-          <Input label="Harga per Kg (Rp)" value={hargaPerKg} type="number" required
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-2">Satuan Perhitungan</label>
+            <div className="flex gap-3">
+              <button type="button" onClick={() => setSatuan('kg')}
+                className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm border-2 transition-all duration-200 ${
+                  satuan === 'kg' 
+                    ? 'bg-green-50 border-green-500 text-green-700' 
+                    : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
+                }`}>
+                Per Kilogram (Kg)
+              </button>
+              <button type="button" onClick={() => setSatuan('pcs')}
+                className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm border-2 transition-all duration-200 ${
+                  satuan === 'pcs' 
+                    ? 'bg-green-50 border-green-500 text-green-700' 
+                    : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
+                }`}>
+                Per Buah (pcs)
+              </button>
+            </div>
+          </div>
+          <Input label={satuan === 'pcs' ? 'Harga per Buah (Rp)' : 'Harga per Kg (Rp)'} value={hargaPerKg} type="number" required
             onChange={(e) => setHargaPerKg(e.target.value)}
             placeholder="Contoh: 5000" 
             className="focus:border-green-500 focus:ring-green-500 rounded-xl"
+            min="0"
           />
-          <Input label="Densitas (Kg/m³)" value={densitas} type="number" required
-            onChange={(e) => setDensitas(e.target.value)}
-            placeholder="Contoh: 30" 
-            className="focus:border-green-500 focus:ring-green-500 rounded-xl"
-          />
+          {satuan === 'kg' && (
+            <Input label="Densitas (Kg/m³)" value={densitas} type="number" required
+              onChange={(e) => setDensitas(e.target.value)}
+              placeholder="Contoh: 30" 
+              className="focus:border-green-500 focus:ring-green-500 rounded-xl"
+              min="0"
+            />
+          )}
           <div className="flex gap-3 justify-end pt-4 border-t border-gray-100">
             <Button variant="secondary" type="button" onClick={() => setShowModal(false)} className="rounded-xl">Batal</Button>
             <Button type="submit" isLoading={saving} className="rounded-xl shadow-md">

@@ -42,6 +42,7 @@ export type JenisSampahMinAggregateOutputType = {
   nama_jenis: string | null
   densitas_kg_per_m3: number | null
   harga_per_kg: number | null
+  satuan: string | null
   is_active: boolean | null
   created_at: Date | null
 }
@@ -52,6 +53,7 @@ export type JenisSampahMaxAggregateOutputType = {
   nama_jenis: string | null
   densitas_kg_per_m3: number | null
   harga_per_kg: number | null
+  satuan: string | null
   is_active: boolean | null
   created_at: Date | null
 }
@@ -62,6 +64,7 @@ export type JenisSampahCountAggregateOutputType = {
   nama_jenis: number
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan: number
   is_active: number
   created_at: number
   _all: number
@@ -84,6 +87,7 @@ export type JenisSampahMinAggregateInputType = {
   nama_jenis?: true
   densitas_kg_per_m3?: true
   harga_per_kg?: true
+  satuan?: true
   is_active?: true
   created_at?: true
 }
@@ -94,6 +98,7 @@ export type JenisSampahMaxAggregateInputType = {
   nama_jenis?: true
   densitas_kg_per_m3?: true
   harga_per_kg?: true
+  satuan?: true
   is_active?: true
   created_at?: true
 }
@@ -104,6 +109,7 @@ export type JenisSampahCountAggregateInputType = {
   nama_jenis?: true
   densitas_kg_per_m3?: true
   harga_per_kg?: true
+  satuan?: true
   is_active?: true
   created_at?: true
   _all?: true
@@ -201,6 +207,7 @@ export type JenisSampahGroupByOutputType = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan: string
   is_active: boolean
   created_at: Date
   _count: JenisSampahCountAggregateOutputType | null
@@ -234,6 +241,7 @@ export type JenisSampahWhereInput = {
   nama_jenis?: Prisma.StringFilter<"JenisSampah"> | string
   densitas_kg_per_m3?: Prisma.FloatFilter<"JenisSampah"> | number
   harga_per_kg?: Prisma.FloatFilter<"JenisSampah"> | number
+  satuan?: Prisma.StringFilter<"JenisSampah"> | string
   is_active?: Prisma.BoolFilter<"JenisSampah"> | boolean
   created_at?: Prisma.DateTimeFilter<"JenisSampah"> | Date | string
   kategori?: Prisma.XOR<Prisma.KategoriSampahScalarRelationFilter, Prisma.KategoriSampahWhereInput>
@@ -246,6 +254,7 @@ export type JenisSampahOrderByWithRelationInput = {
   nama_jenis?: Prisma.SortOrder
   densitas_kg_per_m3?: Prisma.SortOrder
   harga_per_kg?: Prisma.SortOrder
+  satuan?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   kategori?: Prisma.KategoriSampahOrderByWithRelationInput
@@ -262,6 +271,7 @@ export type JenisSampahWhereUniqueInput = Prisma.AtLeast<{
   id_kategori?: Prisma.StringFilter<"JenisSampah"> | string
   densitas_kg_per_m3?: Prisma.FloatFilter<"JenisSampah"> | number
   harga_per_kg?: Prisma.FloatFilter<"JenisSampah"> | number
+  satuan?: Prisma.StringFilter<"JenisSampah"> | string
   is_active?: Prisma.BoolFilter<"JenisSampah"> | boolean
   created_at?: Prisma.DateTimeFilter<"JenisSampah"> | Date | string
   kategori?: Prisma.XOR<Prisma.KategoriSampahScalarRelationFilter, Prisma.KategoriSampahWhereInput>
@@ -274,6 +284,7 @@ export type JenisSampahOrderByWithAggregationInput = {
   nama_jenis?: Prisma.SortOrder
   densitas_kg_per_m3?: Prisma.SortOrder
   harga_per_kg?: Prisma.SortOrder
+  satuan?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   _count?: Prisma.JenisSampahCountOrderByAggregateInput
@@ -292,6 +303,7 @@ export type JenisSampahScalarWhereWithAggregatesInput = {
   nama_jenis?: Prisma.StringWithAggregatesFilter<"JenisSampah"> | string
   densitas_kg_per_m3?: Prisma.FloatWithAggregatesFilter<"JenisSampah"> | number
   harga_per_kg?: Prisma.FloatWithAggregatesFilter<"JenisSampah"> | number
+  satuan?: Prisma.StringWithAggregatesFilter<"JenisSampah"> | string
   is_active?: Prisma.BoolWithAggregatesFilter<"JenisSampah"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"JenisSampah"> | Date | string
 }
@@ -301,6 +313,7 @@ export type JenisSampahCreateInput = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan?: string
   is_active?: boolean
   created_at?: Date | string
   kategori: Prisma.KategoriSampahCreateNestedOneWithoutJenis_sampahInput
@@ -313,6 +326,7 @@ export type JenisSampahUncheckedCreateInput = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan?: string
   is_active?: boolean
   created_at?: Date | string
   detail_transaksi?: Prisma.DetailTransaksiUncheckedCreateNestedManyWithoutJenis_sampahInput
@@ -323,6 +337,7 @@ export type JenisSampahUpdateInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kategori?: Prisma.KategoriSampahUpdateOneRequiredWithoutJenis_sampahNestedInput
@@ -335,6 +350,7 @@ export type JenisSampahUncheckedUpdateInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   detail_transaksi?: Prisma.DetailTransaksiUncheckedUpdateManyWithoutJenis_sampahNestedInput
@@ -346,6 +362,7 @@ export type JenisSampahCreateManyInput = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan?: string
   is_active?: boolean
   created_at?: Date | string
 }
@@ -355,6 +372,7 @@ export type JenisSampahUpdateManyMutationInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -365,6 +383,7 @@ export type JenisSampahUncheckedUpdateManyInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -391,6 +410,7 @@ export type JenisSampahCountOrderByAggregateInput = {
   nama_jenis?: Prisma.SortOrder
   densitas_kg_per_m3?: Prisma.SortOrder
   harga_per_kg?: Prisma.SortOrder
+  satuan?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
@@ -406,6 +426,7 @@ export type JenisSampahMaxOrderByAggregateInput = {
   nama_jenis?: Prisma.SortOrder
   densitas_kg_per_m3?: Prisma.SortOrder
   harga_per_kg?: Prisma.SortOrder
+  satuan?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
@@ -416,6 +437,7 @@ export type JenisSampahMinOrderByAggregateInput = {
   nama_jenis?: Prisma.SortOrder
   densitas_kg_per_m3?: Prisma.SortOrder
   harga_per_kg?: Prisma.SortOrder
+  satuan?: Prisma.SortOrder
   is_active?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
@@ -491,6 +513,7 @@ export type JenisSampahCreateWithoutKategoriInput = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan?: string
   is_active?: boolean
   created_at?: Date | string
   detail_transaksi?: Prisma.DetailTransaksiCreateNestedManyWithoutJenis_sampahInput
@@ -501,6 +524,7 @@ export type JenisSampahUncheckedCreateWithoutKategoriInput = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan?: string
   is_active?: boolean
   created_at?: Date | string
   detail_transaksi?: Prisma.DetailTransaksiUncheckedCreateNestedManyWithoutJenis_sampahInput
@@ -541,6 +565,7 @@ export type JenisSampahScalarWhereInput = {
   nama_jenis?: Prisma.StringFilter<"JenisSampah"> | string
   densitas_kg_per_m3?: Prisma.FloatFilter<"JenisSampah"> | number
   harga_per_kg?: Prisma.FloatFilter<"JenisSampah"> | number
+  satuan?: Prisma.StringFilter<"JenisSampah"> | string
   is_active?: Prisma.BoolFilter<"JenisSampah"> | boolean
   created_at?: Prisma.DateTimeFilter<"JenisSampah"> | Date | string
 }
@@ -550,6 +575,7 @@ export type JenisSampahCreateWithoutDetail_transaksiInput = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan?: string
   is_active?: boolean
   created_at?: Date | string
   kategori: Prisma.KategoriSampahCreateNestedOneWithoutJenis_sampahInput
@@ -561,6 +587,7 @@ export type JenisSampahUncheckedCreateWithoutDetail_transaksiInput = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan?: string
   is_active?: boolean
   created_at?: Date | string
 }
@@ -586,6 +613,7 @@ export type JenisSampahUpdateWithoutDetail_transaksiInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kategori?: Prisma.KategoriSampahUpdateOneRequiredWithoutJenis_sampahNestedInput
@@ -597,6 +625,7 @@ export type JenisSampahUncheckedUpdateWithoutDetail_transaksiInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -606,6 +635,7 @@ export type JenisSampahCreateManyKategoriInput = {
   nama_jenis: string
   densitas_kg_per_m3: number
   harga_per_kg: number
+  satuan?: string
   is_active?: boolean
   created_at?: Date | string
 }
@@ -615,6 +645,7 @@ export type JenisSampahUpdateWithoutKategoriInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   detail_transaksi?: Prisma.DetailTransaksiUpdateManyWithoutJenis_sampahNestedInput
@@ -625,6 +656,7 @@ export type JenisSampahUncheckedUpdateWithoutKategoriInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   detail_transaksi?: Prisma.DetailTransaksiUncheckedUpdateManyWithoutJenis_sampahNestedInput
@@ -635,6 +667,7 @@ export type JenisSampahUncheckedUpdateManyWithoutKategoriInput = {
   nama_jenis?: Prisma.StringFieldUpdateOperationsInput | string
   densitas_kg_per_m3?: Prisma.FloatFieldUpdateOperationsInput | number
   harga_per_kg?: Prisma.FloatFieldUpdateOperationsInput | number
+  satuan?: Prisma.StringFieldUpdateOperationsInput | string
   is_active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -676,6 +709,7 @@ export type JenisSampahSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   nama_jenis?: boolean
   densitas_kg_per_m3?: boolean
   harga_per_kg?: boolean
+  satuan?: boolean
   is_active?: boolean
   created_at?: boolean
   kategori?: boolean | Prisma.KategoriSampahDefaultArgs<ExtArgs>
@@ -691,11 +725,12 @@ export type JenisSampahSelectScalar = {
   nama_jenis?: boolean
   densitas_kg_per_m3?: boolean
   harga_per_kg?: boolean
+  satuan?: boolean
   is_active?: boolean
   created_at?: boolean
 }
 
-export type JenisSampahOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id_jenis_sampah" | "id_kategori" | "nama_jenis" | "densitas_kg_per_m3" | "harga_per_kg" | "is_active" | "created_at", ExtArgs["result"]["jenisSampah"]>
+export type JenisSampahOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id_jenis_sampah" | "id_kategori" | "nama_jenis" | "densitas_kg_per_m3" | "harga_per_kg" | "satuan" | "is_active" | "created_at", ExtArgs["result"]["jenisSampah"]>
 export type JenisSampahInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kategori?: boolean | Prisma.KategoriSampahDefaultArgs<ExtArgs>
   detail_transaksi?: boolean | Prisma.JenisSampah$detail_transaksiArgs<ExtArgs>
@@ -714,6 +749,7 @@ export type $JenisSampahPayload<ExtArgs extends runtime.Types.Extensions.Interna
     nama_jenis: string
     densitas_kg_per_m3: number
     harga_per_kg: number
+    satuan: string
     is_active: boolean
     created_at: Date
   }, ExtArgs["result"]["jenisSampah"]>
@@ -1092,6 +1128,7 @@ export interface JenisSampahFieldRefs {
   readonly nama_jenis: Prisma.FieldRef<"JenisSampah", 'String'>
   readonly densitas_kg_per_m3: Prisma.FieldRef<"JenisSampah", 'Float'>
   readonly harga_per_kg: Prisma.FieldRef<"JenisSampah", 'Float'>
+  readonly satuan: Prisma.FieldRef<"JenisSampah", 'String'>
   readonly is_active: Prisma.FieldRef<"JenisSampah", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"JenisSampah", 'DateTime'>
 }

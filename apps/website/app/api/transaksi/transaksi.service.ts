@@ -41,6 +41,11 @@ export async function createTransaksiService(
 
   // 2. Iterasi items untuk menghitung volume dan subtotal secara dinamis dari DB
   for (const item of items) {
+    // Validasi: berat/jumlah tidak boleh negatif atau nol
+    if (!item.berat_kg || item.berat_kg <= 0) {
+      return { success: false, message: 'Berat/jumlah harus lebih dari 0', status: 400 };
+    }
+
     const jenis = await prisma.jenisSampah.findUnique({ where: { id_jenis_sampah: item.id_jenis_sampah } });
     if (!jenis) {
       return { success: false, message: `Jenis sampah dengan ID ${item.id_jenis_sampah} tidak ditemukan`, status: 404 };
@@ -49,11 +54,17 @@ export async function createTransaksiService(
       return { success: false, message: `Jenis sampah ${jenis.nama_jenis} sedang dinonaktifkan`, status: 400 };
     }
 
-    const subtotal_harga = item.berat_kg * jenis.harga_per_kg;
-    const volume_m3 = item.berat_kg / jenis.densitas_kg_per_m3;
+    const isPcs = jenis.satuan === 'pcs';
 
-    total_berat_kg += item.berat_kg;
-    total_volume_m3 += volume_m3;
+    // Untuk satuan 'pcs': berat_kg menyimpan jumlah unit, bukan berat
+    const subtotal_harga = item.berat_kg * jenis.harga_per_kg;
+    const volume_m3 = isPcs ? 0 : item.berat_kg / jenis.densitas_kg_per_m3;
+
+    // Hanya tambahkan ke total berat jika satuan = 'kg'
+    if (!isPcs) {
+      total_berat_kg += item.berat_kg;
+      total_volume_m3 += volume_m3;
+    }
     total_harga += subtotal_harga;
 
     detailsPayload.push({

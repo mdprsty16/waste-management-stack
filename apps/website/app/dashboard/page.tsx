@@ -65,7 +65,7 @@ export default function DashboardOverviewPage() {
       id: "TRX-" + (trx.id_transaksi || "XXXXX").substring(0, 5).toUpperCase(),
       name: trx.nasabah?.nama || "Unknown",
       type: categoryName,
-      weight: `${trx.total_berat_kg || 0} Kg`,
+      weight: `${Number(trx.total_berat_kg || 0).toFixed(2)} Kg`,
       amount: `Rp ${(trx.total_harga || 0).toLocaleString("id-ID")}`,
       date: new Date(trx.created_at || new Date()).toLocaleDateString("id-ID", {
         day: "numeric",
@@ -189,7 +189,7 @@ export default function DashboardOverviewPage() {
                 </svg>
               }
             >
-              Unduh Laporan + Prediksi
+              Unduh Laporan
             </Button>
             <Button 
               variant="secondary" 
@@ -223,7 +223,7 @@ export default function DashboardOverviewPage() {
             </svg>
           }
           label="Sampah Terkumpul"
-          value={`${sampahTerkumpul} Kg`}
+          value={`${Number(sampahTerkumpul).toFixed(2)} Kg`}
           iconBg="bg-green-100"
           iconColor="text-green-700"
         />
@@ -256,14 +256,14 @@ export default function DashboardOverviewPage() {
         {/* Kiri: Distribusi Kategori (Dinamis dari API) */}
         <BarChart
           data={barChartData}
-          title="📊 Distribusi Sampah per Kategori (Kg)"
+          title="Distribusi Sampah per Kategori (Kg)"
           isLoading={loadingKategori}
         />
 
         {/* Kanan: Tren Mingguan + Prediksi ML */}
         <WeeklyTrendChart
           data={dailyData.grafik_mingguan}
-          title="📈 Tren Sampah Mingguan + Prediksi ML"
+          title="Tren Sampah Mingguan + Prediksi ML"
         />
       </div>
 

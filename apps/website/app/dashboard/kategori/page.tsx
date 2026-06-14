@@ -221,7 +221,7 @@ export default function KategoriSampahPage() {
 
       {/* Modal Form Tambah/Edit */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}
-        title={editing ? "✏️ Edit Kategori" : "✨ Tambah Kategori Baru"}>
+        title={editing ? "Edit Kategori" : "Tambah Kategori Baru"}>
         <form onSubmit={handleSubmit} className="space-y-5">
           <Input label="Nama Kategori" value={namaKategori} required
             onChange={(e) => setNamaKategori(e.target.value)}
