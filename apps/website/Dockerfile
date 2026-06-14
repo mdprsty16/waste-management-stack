@@ -19,6 +19,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# 💡 TAMBAHKAN BARIS INI: Dummy URL agar Prisma & Next.js lolos validasi saat build
+ENV DATABASE_URL="mysql://mockuser:mockpass@localhost:3306/mockdb"
+
 # Generate Prisma Client ke folder kustom sebelum melakukan build Next.js
 RUN bunx prisma generate
 
