@@ -199,37 +199,18 @@ export default function Footer() {
               <li className="flex items-center gap-3">
                 <span className="text-green-400 shrink-0"><ClockIcon /></span>
                 <div>
-                  <p className="text-green-100 text-sm font-semibold">Senin — Jumat</p>
-                  <p className="text-green-300/70 text-xs">08:00 — 16:00 WIB</p>
+                  <p className="text-green-100 text-sm font-semibold">Senin — Sabtu</p>
+                  <p className="text-green-300/70 text-xs">07:00 — 10:00 WIB</p>
                 </div>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-green-400 shrink-0"><ClockIcon /></span>
                 <div>
-                  <p className="text-green-100 text-sm font-semibold">Sabtu</p>
-                  <p className="text-green-300/70 text-xs">08:00 — 12:00 WIB</p>
-                </div>
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="text-green-700 shrink-0"><ClockIcon /></span>
-                <div>
-                  <p className="text-green-300/60 text-sm font-semibold">Minggu & Libur</p>
-                  <p className="text-green-300/50 text-xs">Tutup</p>
+                  <p className="text-green-100 text-sm font-semibold">Minggu & Tanggal Merah</p>
+                  <p className="text-green-300/70 text-xs">Tutup</p>
                 </div>
               </li>
             </ul>
-
-            {/* Quick CTA */}
-            <a
-              href="/dashboard"
-              className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-400 text-green-950 text-sm font-bold rounded-lg shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Masuk Dashboard
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14"/>
-                <path d="m12 5 7 7-7 7"/>
-              </svg>
-            </a>
           </div>
         </div>
       </div>
