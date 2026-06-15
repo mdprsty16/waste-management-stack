@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNasabah } from "@/hooks/useNasabah";
 import { useTransaksi } from "@/hooks/useTransaksi";
 import { useDailyTrend } from "@/hooks/useDailyTrend";
@@ -43,6 +43,16 @@ export default function DashboardOverviewPage() {
   const [alertDismissed, setAlertDismissed] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isPengangkutanOpen, setIsPengangkutanOpen] = useState(false);
+  const [loginTime, setLoginTime] = useState<string>("");
+
+  useEffect(() => {
+    setLoginTime(
+      new Date().toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    );
+  }, []);
 
   const isLoading = loadingNasabah || loadingTransaksi;
   const totalNasabah = nasabahData.length;
@@ -179,8 +189,13 @@ export default function DashboardOverviewPage() {
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
               Ringkasan Hari Ini
             </h2>
-            <p className="text-green-100 text-lg font-medium">
-              Data realtime dari database + prediksi machine learning
+            <p className="text-green-100 text-lg font-medium flex items-center gap-2">
+              Data per Hari Ini
+              {loginTime && (
+                <span className="text-sm bg-green-800/50 px-2 py-0.5 rounded-full border border-green-400/30">
+                  Waktu Login: {loginTime}
+                </span>
+              )}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
