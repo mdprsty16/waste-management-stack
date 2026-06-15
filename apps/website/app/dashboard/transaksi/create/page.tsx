@@ -10,6 +10,7 @@ import SelectAutocomplete from "@/components/ui/SelectAutocomplete";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 // === State untuk satu item ===
 interface ItemState {
@@ -131,6 +132,32 @@ export default function CreateTransaksiPage() {
   const [saving, setSaving] = useState(false);
   const [nextId, setNextId] = useState(2);
 
+  // State for ConfirmModal
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    variant: "danger" | "warning" | "success" | "info";
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    variant: "info",
+  });
+
+  const showAlert = (title: string, message: string, variant: "danger" | "warning" | "success" | "info" = "info") => {
+    setConfirmModal({
+      isOpen: true,
+      title,
+      message,
+      variant,
+    });
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModal((prev) => ({ ...prev, isOpen: false }));
+  };
+
   const nasabahOptions = nasabahList.map(n => ({
     value: n.id_nasabah,
     label: `${n.nama}${n.kode_nasabah ? ` (${n.kode_nasabah})` : ""}`,
@@ -166,13 +193,13 @@ export default function CreateTransaksiPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!idNasabah || items.some(i => !i.id_jenis_sampah || !i.berat_kg)) {
-      alert("Lengkapi semua field!");
+      showAlert("Lengkapi Form", "Mohon lengkapi semua field yang tersedia sebelum menyimpan transaksi.", "warning");
       return;
     }
     // Validasi: tidak boleh negatif atau nol
     const invalidItem = items.find(i => parseFloat(i.berat_kg) <= 0);
     if (invalidItem) {
-      alert("Berat/jumlah harus lebih dari 0!");
+      showAlert("Validasi Jumlah", "Berat atau jumlah item sampah harus lebih besar dari 0!", "warning");
       return;
     }
     setSaving(true);
@@ -187,7 +214,7 @@ export default function CreateTransaksiPage() {
       });
       router.push("/dashboard/transaksi");
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Gagal menyimpan transaksi");
+      showAlert("Gagal Menyimpan", err instanceof Error ? err.message : "Gagal menyimpan transaksi", "danger");
     } finally {
       setSaving(false);
     }
@@ -282,6 +309,13 @@ export default function CreateTransaksiPage() {
           Simpan Transaksi
         </Button>
       </div>
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        variant={confirmModal.variant}
+      />
     </form>
   );
 }

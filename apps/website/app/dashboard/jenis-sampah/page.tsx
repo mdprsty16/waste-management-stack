@@ -10,6 +10,7 @@ import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
 import SelectAutocomplete from "@/components/ui/SelectAutocomplete";
 import type { JenisSampah } from "@/types/jenis-sampah.types";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 export default function JenisSampahPage() {
   const { data: jenisList, isLoading, create, update, remove } = useJenisSampah();
@@ -18,6 +19,65 @@ export default function JenisSampahPage() {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<JenisSampah | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // State for ConfirmModal
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    variant: "danger" | "warning" | "success" | "info";
+    onConfirm?: () => void | Promise<void>;
+    confirmText?: string;
+    isLoading?: boolean;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    variant: "info",
+    isLoading: false,
+  });
+
+  const showAlert = (title: string, message: string, variant: "danger" | "warning" | "success" | "info" = "info") => {
+    setConfirmModal({
+      isOpen: true,
+      title,
+      message,
+      variant,
+      onConfirm: undefined,
+    });
+  };
+
+  const showConfirm = (
+    title: string,
+    message: string,
+    onConfirm: () => void | Promise<void>,
+    variant: "danger" | "warning" | "success" | "info" = "danger",
+    confirmText?: string
+  ) => {
+    setConfirmModal({
+      isOpen: true,
+      title,
+      message,
+      variant,
+      onConfirm,
+      confirmText,
+      isLoading: false,
+    });
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModal((prev) => ({ ...prev, isOpen: false }));
+  };
+
+  const handleConfirmAction = async () => {
+    if (!confirmModal.onConfirm) return;
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
+    try {
+      await confirmModal.onConfirm();
+    } finally {
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
 
   // State form
   const [selectedKategori, setSelectedKategori] = useState("");
@@ -83,20 +143,31 @@ export default function JenisSampahPage() {
       }
       setShowModal(false);
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Gagal menyimpan");
+      showAlert("Gagal Menyimpan", err instanceof Error ? err.message : "Gagal menyimpan jenis sampah", "danger");
     } finally {
       setSaving(false);
     }
   };
 
   // Hapus
-  const handleDelete = async (id: string) => {
-    if (!confirm("Yakin ingin menghapus jenis sampah ini?")) return;
-    try {
-      await remove(id);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Gagal menghapus");
-    }
+  const handleDelete = (id: string) => {
+    showConfirm(
+      "Hapus Jenis Sampah",
+      "Apakah Anda yakin ingin menghapus jenis sampah ini?",
+      async () => {
+        try {
+          await remove(id);
+          closeConfirmModal();
+        } catch (err) {
+          closeConfirmModal();
+          setTimeout(() => {
+            showAlert("Gagal Menghapus", err instanceof Error ? err.message : "Gagal menghapus jenis sampah", "danger");
+          }, 300);
+        }
+      },
+      "danger",
+      "Ya, Hapus"
+    );
   };
 
   // Stats calculation
@@ -394,6 +465,17 @@ export default function JenisSampahPage() {
           </div>
         </form>
       </Modal>
+
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm ? handleConfirmAction : undefined}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        variant={confirmModal.variant}
+        confirmText={confirmModal.confirmText}
+        isLoading={confirmModal.isLoading}
+      />
     </div>
   );
 }

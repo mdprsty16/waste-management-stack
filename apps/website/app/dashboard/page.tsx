@@ -15,6 +15,7 @@ import { useKapasitas } from "@/hooks/useKapasitas";
 import KapasitasCard from "@/components/features/dashboard/KapasitasCard";
 import KapasitasModal from "@/components/features/dashboard/KapasitasModal";
 import PengangkutanModal from "@/components/features/dashboard/PengangkutanModal";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 // ============================================================
 // Dashboard Overview — Ringkasan utama dashboard
@@ -44,6 +45,32 @@ export default function DashboardOverviewPage() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isPengangkutanOpen, setIsPengangkutanOpen] = useState(false);
   const [loginTime, setLoginTime] = useState<string>("");
+
+  // State for ConfirmModal
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    variant: "danger" | "warning" | "success" | "info";
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    variant: "info",
+  });
+
+  const showAlert = (title: string, message: string, variant: "danger" | "warning" | "success" | "info" = "info") => {
+    setConfirmModal({
+      isOpen: true,
+      title,
+      message,
+      variant,
+    });
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModal((prev) => ({ ...prev, isOpen: false }));
+  };
 
   useEffect(() => {
     setLoginTime(
@@ -97,10 +124,10 @@ export default function DashboardOverviewPage() {
   // Handler: Kirim notifikasi penjemputan ke mitra
   const handleSendPickupNotification = () => {
     // TODO: Implementasi kirim notifikasi ke mitra logistik
-    alert(
-      "📧 Notifikasi penjemputan telah dikirim ke mitra logistik!\n\n" +
-      `Prediksi volume: ${dailyData.grafik_mingguan.prediksi_minggu_depan.total_kg} Kg\n` +
-      "Status: Menunggu konfirmasi mitra..."
+    showAlert(
+      "Notifikasi Terkirim",
+      `Notifikasi penjemputan telah dikirim ke mitra logistik!\n\nPrediksi volume: ${dailyData.grafik_mingguan.prediksi_minggu_depan.total_kg} Kg\nStatus: Menunggu konfirmasi mitra...`,
+      "success"
     );
   };
 
@@ -383,6 +410,14 @@ export default function DashboardOverviewPage() {
         isOpen={isPengangkutanOpen} 
         onClose={() => setIsPengangkutanOpen(false)} 
         onSuccess={refetchKapasitas} 
+      />
+
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        variant={confirmModal.variant}
       />
     </>
   );

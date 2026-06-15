@@ -8,12 +8,72 @@ import Modal from "@/components/ui/Modal";
 import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
 import type { KategoriSampah } from "@/types/kategori-sampah.types";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 export default function KategoriSampahPage() {
   const { data, isLoading, create, update, remove } = useKategoriSampah();
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<KategoriSampah | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // State for ConfirmModal
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    variant: "danger" | "warning" | "success" | "info";
+    onConfirm?: () => void | Promise<void>;
+    confirmText?: string;
+    isLoading?: boolean;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    variant: "info",
+    isLoading: false,
+  });
+
+  const showAlert = (title: string, message: string, variant: "danger" | "warning" | "success" | "info" = "info") => {
+    setConfirmModal({
+      isOpen: true,
+      title,
+      message,
+      variant,
+      onConfirm: undefined,
+    });
+  };
+
+  const showConfirm = (
+    title: string,
+    message: string,
+    onConfirm: () => void | Promise<void>,
+    variant: "danger" | "warning" | "success" | "info" = "danger",
+    confirmText?: string
+  ) => {
+    setConfirmModal({
+      isOpen: true,
+      title,
+      message,
+      variant,
+      onConfirm,
+      confirmText,
+      isLoading: false,
+    });
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModal((prev) => ({ ...prev, isOpen: false }));
+  };
+
+  const handleConfirmAction = async () => {
+    if (!confirmModal.onConfirm) return;
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
+    try {
+      await confirmModal.onConfirm();
+    } finally {
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
 
   // State form
   const [namaKategori, setNamaKategori] = useState("");
@@ -51,20 +111,31 @@ export default function KategoriSampahPage() {
       }
       setShowModal(false);
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Gagal menyimpan");
+      showAlert("Gagal Menyimpan", err instanceof Error ? err.message : "Gagal menyimpan kategori", "danger");
     } finally {
       setSaving(false);
     }
   };
 
   // Hapus
-  const handleDelete = async (id: string) => {
-    if (!confirm("Yakin ingin menghapus kategori ini?")) return;
-    try {
-      await remove(id);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Gagal menghapus");
-    }
+  const handleDelete = (id: string) => {
+    showConfirm(
+      "Hapus Kategori Sampah",
+      "Apakah Anda yakin ingin menghapus kategori sampah ini? Kategori yang dihapus mungkin memengaruhi klasifikasi timbangan jenis sampah terkait.",
+      async () => {
+        try {
+          await remove(id);
+          closeConfirmModal();
+        } catch (err) {
+          closeConfirmModal();
+          setTimeout(() => {
+            showAlert("Gagal Menghapus", err instanceof Error ? err.message : "Gagal menghapus kategori", "danger");
+          }, 300);
+        }
+      },
+      "danger",
+      "Ya, Hapus"
+    );
   };
 
   // Stats calculation
@@ -259,6 +330,17 @@ export default function KategoriSampahPage() {
           </div>
         </form>
       </Modal>
+
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm ? handleConfirmAction : undefined}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        variant={confirmModal.variant}
+        confirmText={confirmModal.confirmText}
+        isLoading={confirmModal.isLoading}
+      />
     </div>
   );
 }
