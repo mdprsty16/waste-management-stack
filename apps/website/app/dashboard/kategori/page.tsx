@@ -72,22 +72,40 @@ export default function KategoriSampahPage() {
   const aktifKategori = data.filter((k) => k.is_active).length;
   const nonaktifKategori = totalKategori - aktifKategori;
 
+  // Helper to get category-based styles for logo/badge
+  const getCategoryStyles = (name: string) => {
+    const lowerName = name.toLowerCase();
+    if (lowerName.includes("b3")) {
+      return "bg-red-50 border-red-100 text-red-600";
+    }
+    if (lowerName.includes("anorganik") || lowerName.includes("anorganic") || lowerName.includes("non-organik") || lowerName.includes("non organik")) {
+      return "bg-amber-50 border-amber-100 text-amber-600";
+    }
+    if (lowerName.includes("organik") || lowerName.includes("organic")) {
+      return "bg-green-50 border-green-100 text-green-600";
+    }
+    return "bg-gray-50 border-gray-100 text-gray-600";
+  };
+
   // Definisi kolom tabel
   const columns: TableColumn<KategoriSampah>[] = [
     { 
       key: "nama_kategori", 
       header: "Nama Kategori",
-      render: (row) => (
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center border border-green-100 text-green-600 font-extrabold shadow-sm">
-            {row.nama_kategori.substring(0, 2).toUpperCase()}
+      render: (row) => {
+        const logoStyles = getCategoryStyles(row.nama_kategori);
+        return (
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-extrabold shadow-sm border ${logoStyles}`}>
+              {row.nama_kategori.substring(0, 2).toUpperCase()}
+            </div>
+            <div>
+              <span className="font-bold text-gray-900 block">{row.nama_kategori}</span>
+              <span className="text-xs text-gray-400">ID: {row.id_kategori.substring(0, 8)}...</span>
+            </div>
           </div>
-          <div>
-            <span className="font-bold text-gray-900 block">{row.nama_kategori}</span>
-            <span className="text-xs text-gray-400">ID: {row.id_kategori.substring(0, 8)}...</span>
-          </div>
-        </div>
-      )
+        );
+      }
     },
     { 
       key: "deskripsi", 
