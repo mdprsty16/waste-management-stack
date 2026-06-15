@@ -128,7 +128,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <p className="text-green-200/60 text-sm leading-relaxed mb-6 max-w-xs">
+            <p className="text-green-200/90 text-sm leading-relaxed mb-6 max-w-xs">
               Bank Sampah Sampul Berkasih — wadah pengelolaan sampah yang bertanggung jawab untuk membangun lingkungan bersih dan ekonomi masyarakat.
             </p>
 
@@ -152,7 +152,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="group flex items-center gap-2 text-green-200/60 hover:text-green-300 transition-colors duration-200 text-sm font-medium"
+                    className="group flex items-center gap-2 text-green-100/80 hover:text-white transition-colors duration-200 text-sm font-medium"
                   >
                     <span className="text-green-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
                       <ChevronRightIcon />
@@ -173,18 +173,18 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <span className="mt-0.5 text-green-400 shrink-0"><MapPinIcon /></span>
-                <span className="text-green-200/60 text-sm leading-relaxed">
+                <span className="text-green-100/80 text-sm leading-relaxed">
                   Kuningan, Jawa Barat<br />
                   Indonesia
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-green-400 shrink-0"><PhoneIcon /></span>
-                <span className="text-green-200/60 text-sm">+62 812-XXXX-XXXX</span>
+                <span className="text-green-100/80 text-sm">+62 812-XXXX-XXXX</span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-green-400 shrink-0"><MailIcon /></span>
-                <span className="text-green-200/60 text-sm">bssb.ikmp@gmail.com</span>
+                <span className="text-green-100/80 text-sm">bssb.ikmp@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -200,21 +200,21 @@ export default function Footer() {
                 <span className="text-green-400 shrink-0"><ClockIcon /></span>
                 <div>
                   <p className="text-green-100 text-sm font-semibold">Senin — Jumat</p>
-                  <p className="text-green-200/40 text-xs">08:00 — 16:00 WIB</p>
+                  <p className="text-green-300/70 text-xs">08:00 — 16:00 WIB</p>
                 </div>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-green-400 shrink-0"><ClockIcon /></span>
                 <div>
                   <p className="text-green-100 text-sm font-semibold">Sabtu</p>
-                  <p className="text-green-200/40 text-xs">08:00 — 12:00 WIB</p>
+                  <p className="text-green-300/70 text-xs">08:00 — 12:00 WIB</p>
                 </div>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-green-700 shrink-0"><ClockIcon /></span>
                 <div>
-                  <p className="text-green-200/40 text-sm font-semibold">Minggu & Libur</p>
-                  <p className="text-green-200/25 text-xs">Tutup</p>
+                  <p className="text-green-300/60 text-sm font-semibold">Minggu & Libur</p>
+                  <p className="text-green-300/50 text-xs">Tutup</p>
                 </div>
               </li>
             </ul>
@@ -238,13 +238,13 @@ export default function Footer() {
       <div className="relative z-10 border-t border-green-800/50">
         <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-green-200/40 font-medium flex items-center gap-1.5">
+            <p className="text-sm text-green-200/70 font-medium flex items-center gap-1.5">
               &copy; {YEAR} BSSB IKMP — Dibuat dengan
               <span className="text-red-400"><HeartIcon /></span>
               di Kuningan
             </p>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-xs text-green-200/40 hover:text-green-300 transition-colors font-medium">
+              <a href="#" className="text-xs text-green-200/60 hover:text-green-300 transition-colors font-medium">
                 Kebijakan Privasi
               </a>
               <span className="text-green-800">|</span>
