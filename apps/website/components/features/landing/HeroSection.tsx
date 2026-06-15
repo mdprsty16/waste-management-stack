@@ -79,10 +79,6 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 w-full px-6 sm:px-8 lg:px-12 py-32">
         <div className="flex flex-col items-center text-center max-w-6xl mx-auto">
-          <div className="animate-fade-in-down inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/15 text-green-100 font-bold px-5 py-2.5 rounded-full mb-8 text-sm shadow-lg">
-            <span className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse" />
-            PORTAL ADMIN — SISTEM AKTIF
-          </div>
 
           <h1 className="animate-fade-in-up text-4xl sm:text-6xl lg:text-8xl font-black text-white tracking-tight leading-[1.05] mb-6 drop-shadow-lg">
             Kelola Bank Sampah
