@@ -55,7 +55,7 @@ export default function JenisSampahPage() {
     setHargaPerKg(String(row.harga_per_kg));
     setDensitas(String(row.densitas_kg_per_m3));
     setSatuan((row.satuan as 'kg' | 'pcs') || 'kg');
-    setBeratPerPcs(row.berat_per_pcs != null ? String(row.berat_per_pcs * 1000) : "");  // Konversi kg → gram untuk input
+    setBeratPerPcs(row.berat_per_pcs != null ? String(Math.round(row.berat_per_pcs * 1000)) : "");  // Konversi kg → gram (dibulatkan)
     setShowModal(true);
   };
 
@@ -68,7 +68,7 @@ export default function JenisSampahPage() {
         id_kategori: selectedKategori,
         nama_jenis: namaJenis,
         harga_per_kg: Number(hargaPerKg),
-        densitas_kg_per_m3: Number(densitas),
+        densitas_kg_per_m3: satuan === 'pcs' ? 0 : Number(densitas),  // PCS tidak butuh densitas manual
         satuan,
         berat_per_pcs: satuan === 'pcs' && beratPerPcs ? Number(beratPerPcs) / 1000 : null,  // Konversi gram → kg
       };
@@ -371,25 +371,17 @@ export default function JenisSampahPage() {
           )}
           {satuan === 'pcs' && (
             <>
-              <Input label="Densitas Generalisasi (Kg/m³)" value={densitas} type="number" required
-                onChange={(e) => setDensitas(e.target.value)}
-                placeholder="Contoh: 125 (rata-rata densitas bahan)" 
-                className="focus:border-green-500 focus:ring-green-500 rounded-xl"
-                min="0"
-              />
               <Input label="Berat per 1 Buah (gram)" value={beratPerPcs} type="number" required
                 onChange={(e) => setBeratPerPcs(e.target.value)}
-                placeholder="Contoh: 50 (untuk botol aqua)" 
+                placeholder="Contoh: 50 (untuk botol aqua), 200 (untuk beling)" 
                 className="focus:border-green-500 focus:ring-green-500 rounded-xl"
-                min="0"
+                min="1"
                 step="1"
               />
               {beratPerPcs && Number(beratPerPcs) > 0 && (
                 <div className="bg-violet-50 border border-violet-200 p-3 rounded-xl text-sm text-violet-700">
-                  <span className="font-bold">Preview:</span> 1 pcs = {beratPerPcs}g = {(Number(beratPerPcs) / 1000).toFixed(4)} Kg
-                  {Number(beratPerPcs) > 0 && (
-                    <span className="ml-2 text-violet-500">| 10 pcs = {(Number(beratPerPcs) * 10 / 1000).toFixed(2)} Kg</span>
-                  )}
+                  <span className="font-bold">Preview:</span> 1 pcs = {Math.round(Number(beratPerPcs))}g = {(Math.round(Number(beratPerPcs)) / 1000).toFixed(4)} Kg
+                  <span className="ml-2 text-violet-500">| 10 pcs = {(Math.round(Number(beratPerPcs)) * 10 / 1000).toFixed(2)} Kg</span>
                 </div>
               )}
             </>
