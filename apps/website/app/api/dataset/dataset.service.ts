@@ -27,6 +27,11 @@ function convertToCSV(data: any[]): string {
 export async function getDatasetService(format?: string) {
   const rawData = await datasetRepository.getDatasetForModeling();
 
+  const round2 = (val: any) => {
+    const num = Number(val);
+    return isNaN(num) ? 0 : Number(num.toFixed(2));
+  };
+
   // Proses flattening data agar siap dipakai untuk Modelling ML (Pandas/Python friendly)
   const flattenedData = rawData.map(item => ({
     id_detail: item.id_detail,
@@ -40,15 +45,14 @@ export async function getDatasetService(format?: string) {
     nama_jenis: item.jenis_sampah?.nama_jenis || '',
     id_kategori: item.jenis_sampah?.id_kategori || '',
     nama_kategori: item.jenis_sampah?.kategori?.nama_kategori || '',
-    // DI SINI PERBAIKANNYA: Tambahkan 'S' di ujung properti prisma-nya
-    densitas_kg_per_m3: item.jenis_sampah?.densitas_kg_per_m3 || 0, 
-    harga_per_kg: item.jenis_sampah?.harga_per_kg || 0,
-    berat_kg: item.berat_kg,
-    volume_m3: item.volume_m3,
-    subtotal_harga: item.subtotal_harga,
-    total_berat_transaksi: item.transaksi?.total_berat_kg || 0,
-    total_volume_transaksi: item.transaksi?.total_volume_m3 || 0,
-    total_harga_transaksi: item.transaksi?.total_harga || 0,
+    densitas_kg_per_m3: round2(item.jenis_sampah?.densitas_kg_per_m3), 
+    harga_per_kg: round2(item.jenis_sampah?.harga_per_kg),
+    berat_kg: round2(item.berat_kg),
+    volume_m3: round2(item.volume_m3),
+    subtotal_harga: round2(item.subtotal_harga),
+    total_berat_transaksi: round2(item.transaksi?.total_berat_kg),
+    total_volume_transaksi: round2(item.transaksi?.total_volume_m3),
+    total_harga_transaksi: round2(item.transaksi?.total_harga),
   }));
 
   if (format === 'csv') {
