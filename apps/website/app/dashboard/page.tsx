@@ -319,12 +319,10 @@ export default function DashboardOverviewPage() {
           <table className="w-full text-left">
             <thead className="bg-gray-50/80 border-b-2 border-gray-100">
               <tr>
-                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Kode</th>
                 <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Nama Nasabah</th>
-                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Kategori</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Waktu</th>
                 <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Berat</th>
                 <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Total Harga</th>
-                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Waktu</th>
                 <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Status</th>
               </tr>
             </thead>
