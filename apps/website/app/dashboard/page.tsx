@@ -320,9 +320,9 @@ export default function DashboardOverviewPage() {
             <thead className="bg-gray-50/80 border-b-2 border-gray-100">
               <tr>
                 <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Nama Nasabah</th>
-                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Waktu</th>
                 <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Berat</th>
                 <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Total Harga</th>
+                <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Waktu</th>
                 <th className="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Status</th>
               </tr>
             </thead>
@@ -342,17 +342,7 @@ export default function DashboardOverviewPage() {
               {recentTransactions.map((trx) => (
                 <tr key={trx.id} className="hover:bg-green-50/50 transition-colors duration-150">
                   <td className="px-6 py-4">
-                    <code className="text-xs font-mono font-bold bg-gray-100 text-gray-800 px-2.5 py-1 rounded-md border border-gray-200">
-                      {trx.id}
-                    </code>
-                  </td>
-                  <td className="px-6 py-4">
                     <span className="font-bold text-gray-900">{trx.name}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                      {trx.type}
-                    </span>
                   </td>
                   <td className="px-6 py-4">
                     <span className="inline-flex items-center gap-1 font-semibold text-gray-800 text-sm bg-gray-50 border border-gray-200 px-2.5 py-1 rounded-lg">
