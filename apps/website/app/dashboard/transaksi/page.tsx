@@ -136,7 +136,7 @@ export default function TransaksiPage() {
             </svg>
           </div>
           <div>
-            <span className="text-sm font-semibold text-gray-500 block">Total Penjualan</span>
+            <span className="text-sm font-semibold text-gray-500 block">Total Saldo Warga</span>
             <span className="text-2xl font-black text-emerald-600">Rp {totalPenjualan.toLocaleString("id-ID")}</span>
           </div>
         </div>
