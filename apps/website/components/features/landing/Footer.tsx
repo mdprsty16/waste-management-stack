@@ -103,116 +103,151 @@ export default function Footer() {
 
       {/* ═══════════════ MAIN FOOTER CONTENT ═══════════════ */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
 
-          {/* ── Column 1: Brand ── */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+
+          {/* ================= BRAND ================= */}
+          <div className="text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start gap-3 mb-5">
+
               <div className="relative">
                 <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-green-400/20 to-green-600/10 blur-sm" />
+
                 <Image
                   src="/logo2.png"
                   alt="Logo BSSB"
-                  width={52}
-                  height={52}
+                  width={56}
+                  height={56}
                   className="relative rounded-xl shadow-lg shadow-black/20"
                 />
               </div>
+
               <div>
-                <span className="font-black text-xl text-white block leading-tight">
+                <h3 className="font-black text-2xl text-white leading-none">
                   BSSB
-                </span>
-                <span className="text-xs font-bold text-green-400 tracking-wide uppercase">
+                </h3>
+
+                <p className="text-green-400 text-sm font-bold uppercase tracking-wide">
                   IKMP Kuningan
-                </span>
+                </p>
               </div>
             </div>
 
-            <p className="text-green-200/90 text-sm leading-relaxed mb-6 max-w-xs">
-              Bank Sampah Sampul Berkasih — wadah pengelolaan sampah yang bertanggung jawab untuk membangun lingkungan bersih dan ekonomi masyarakat.
+            <p className="text-green-200/90 text-sm leading-relaxed max-w-sm mx-auto md:mx-0 mb-6">
+              Bank Sampah Sampul Berkasih merupakan wadah pengelolaan sampah yang
+              bertanggung jawab untuk membangun lingkungan yang bersih,
+              sehat, dan meningkatkan ekonomi masyarakat melalui pengelolaan
+              sampah yang berkelanjutan.
             </p>
 
-            {/* Motto badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-green-700/50 bg-green-900/40">
-              <span className="text-green-400"><RecycleIcon /></span>
+              <span className="text-green-400">
+                <RecycleIcon />
+              </span>
+
               <span className="text-xs font-semibold text-green-300">
                 Kelola Sampah, Bangun Harapan
               </span>
             </div>
           </div>
 
-          {/* ── Column 2: Navigation ── */}
-          {/* <div>
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
-              <span className="w-8 h-0.5 bg-green-500 rounded-full" />
-              Navigasi
-            </h3>
-            <ul className="space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="group flex items-center gap-2 text-green-100/80 hover:text-white transition-colors duration-200 text-sm font-medium"
-                  >
-                    <span className="text-green-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
-                      <ChevronRightIcon />
-                    </span>
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div> */}
-
-          {/* ── Column 3: Contact ── */}
-          <div>
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
+          {/* ================= KONTAK ================= */}
+          <div className="text-center md:text-left">
+            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-6 flex items-center justify-center md:justify-start gap-2">
               <span className="w-8 h-0.5 bg-green-500 rounded-full" />
               Kontak
             </h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <span className="mt-0.5 text-green-400 shrink-0"><MapPinIcon /></span>
+
+            <ul className="space-y-5">
+
+              <li className="flex items-start justify-center md:justify-start gap-3">
+                <span className="mt-0.5 text-green-400 shrink-0">
+                  <MapPinIcon />
+                </span>
+
                 <span className="text-green-100/80 text-sm leading-relaxed">
-                  Kuningan, Jawa Barat<br />
+                  Kuningan, Jawa Barat
+                  <br />
                   Indonesia
                 </span>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="text-green-400 shrink-0"><PhoneIcon /></span>
-                <span className="text-green-100/80 text-sm">+62 812-XXXX-XXXX</span>
+
+              <li className="flex items-center justify-center md:justify-start gap-3">
+                <span className="text-green-400 shrink-0">
+                  <PhoneIcon />
+                </span>
+
+                <span className="text-green-100/80 text-sm">
+                  +62 812-XXXX-XXXX
+                </span>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="text-green-400 shrink-0"><MailIcon /></span>
-                <span className="text-green-100/80 text-sm">bssb.ikmp@gmail.com</span>
+
+              <li className="flex items-center justify-center md:justify-start gap-3">
+                <span className="text-green-400 shrink-0">
+                  <MailIcon />
+                </span>
+
+                <span className="text-green-100/80 text-sm">
+                  bssb.ikmp@gmail.com
+                </span>
               </li>
+
             </ul>
           </div>
 
-          {/* ── Column 4: Operating Hours ── */}
-          <div>
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
+          {/* ================= JAM OPERASIONAL ================= */}
+          <div className="text-center md:text-left">
+            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-6 flex items-center justify-center md:justify-start gap-2">
               <span className="w-8 h-0.5 bg-green-500 rounded-full" />
               Jam Operasional
             </h3>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-3">
-                <span className="text-green-400 shrink-0"><ClockIcon /></span>
+
+            <ul className="space-y-5">
+
+              <li className="flex items-start justify-center md:justify-start gap-3">
+                <span className="text-green-400 shrink-0">
+                  <ClockIcon />
+                </span>
+
                 <div>
-                  <p className="text-green-100 text-sm font-semibold">Senin — Sabtu</p>
-                  <p className="text-green-300/70 text-xs">07:00 — 10:00 WIB</p>
+                  <p className="text-green-100 font-semibold text-sm">
+                    Senin — Sabtu
+                  </p>
+
+                  <p className="text-green-300/70 text-xs">
+                    07:00 — 10:00 WIB
+                  </p>
                 </div>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="text-green-400 shrink-0"><ClockIcon /></span>
+
+              <li className="flex items-start justify-center md:justify-start gap-3">
+                <span className="text-green-400 shrink-0">
+                  <ClockIcon />
+                </span>
+
                 <div>
-                  <p className="text-green-100 text-sm font-semibold">Minggu & Tanggal Merah</p>
-                  <p className="text-green-300/70 text-xs">Tutup</p>
+                  <p className="text-green-100 font-semibold text-sm">
+                    Minggu & Tanggal Merah
+                  </p>
+
+                  <p className="text-green-300/70 text-xs">
+                    Tutup
+                  </p>
                 </div>
               </li>
+
             </ul>
           </div>
+
         </div>
+
+        {/* Divider */}
+        <div className="mt-12 pt-6 border-t border-green-800/40">
+          <p className="text-center text-xs text-green-300/60">
+            © {new Date().getFullYear()} BSSB IKMP Kuningan. All Rights Reserved.
+          </p>
+        </div>
+
       </div>
 
       {/* ═══════════════ BOTTOM BAR ═══════════════ */}
