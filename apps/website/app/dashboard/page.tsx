@@ -133,9 +133,9 @@ export default function DashboardOverviewPage() {
     csv += "=== TREN SAMPAH MINGGUAN ===\n";
     csv += "Minggu,Total (Kg),Sumber\n";
     dailyData.grafik_mingguan.aktual.forEach((a) => {
-      csv += `${a.label},${a.total_kg},Data Aktual DB\n`;
+      csv += `${a.label},${a.total_kg},Aktual\n`;
     });
-    csv += `${dailyData.grafik_mingguan.prediksi_minggu_depan.label},${dailyData.grafik_mingguan.prediksi_minggu_depan.total_kg},Prediksi ML\n\n`;
+    csv += `${dailyData.grafik_mingguan.prediksi_minggu_depan.label},${dailyData.grafik_mingguan.prediksi_minggu_depan.total_kg},Prediksi\n\n`;
 
     // Rekomendasi operasional
     csv += "=== REKOMENDASI OPERASIONAL MINGGU DEPAN (ANALISA ML) ===\n";
