@@ -269,7 +269,7 @@ export default function NasabahPage() {
             </svg>
           </div>
           <div>
-            <span className="text-sm font-semibold text-gray-500 block">Total Saldo Terkumpul</span>
+            <span className="text-sm font-semibold text-gray-500 block">Total Saldo Warga</span>
             <span className="text-2xl font-black text-emerald-600">Rp {totalSaldo.toLocaleString("id-ID")}</span>
           </div>
         </div>
