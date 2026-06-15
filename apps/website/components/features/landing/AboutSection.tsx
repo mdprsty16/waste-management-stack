@@ -108,7 +108,7 @@ export default function AboutSection() {
           <div className="space-y-6">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-gray-300/50 aspect-[4/3] group">
               <Image
-                src="/hero1.png"
+                src="/hero5.png"
                 alt="Kegiatan Bank Sampah"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
