@@ -2,6 +2,7 @@ import { prisma } from '../../../lib/prisma';
 import { successResponse } from '../../../lib/response';
 import { handleControllerError } from '../../../lib/errorHandler';
 
+export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     // Hitung total nasabah aktif

@@ -3,6 +3,7 @@ import { prisma } from '../../../lib/prisma'; // Sesuaikan dengan path prisma.ts
 import { successResponse } from '../../../lib/response';
 import { handleControllerError } from '../../../lib/errorHandler';
 
+export const dynamic = 'force-dynamic';
 export async function GET() {
     try {
         // 1. Tarik data kategori beserta semua anak relasinya sampai ke detail transaksi
