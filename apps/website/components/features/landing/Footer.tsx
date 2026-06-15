@@ -241,13 +241,6 @@ export default function Footer() {
 
         </div>
 
-        {/* Divider */}
-        <div className="mt-12 pt-6 border-t border-green-800/40">
-          <p className="text-center text-xs text-green-300/60">
-            © {new Date().getFullYear()} BSSB IKMP Kuningan. All Rights Reserved.
-          </p>
-        </div>
-
       </div>
 
       {/* ═══════════════ BOTTOM BAR ═══════════════ */}
