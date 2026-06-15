@@ -71,25 +71,33 @@ const navLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-white border-t border-gray-100">
-      {/* ── Decorative top gradient line ── */}
+    <footer className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #052e16 0%, #0a3d1e 50%, #052e16 100%)" }}>
+      {/* ── Decorative top accent ── */}
       <div
         className="absolute top-0 left-0 right-0 h-1"
         style={{
-          background: "linear-gradient(90deg, #22c55e 0%, #16a34a 35%, #15803d 65%, #14532d 100%)",
+          background: "linear-gradient(90deg, #22c55e 0%, #4ade80 35%, #22c55e 65%, #16a34a 100%)",
         }}
       />
 
       {/* ── Decorative background leaves ── */}
-      <LeafIcon className="absolute top-12 right-12 text-green-100 opacity-40 rotate-45 w-32 h-32 hidden lg:block" />
-      <LeafIcon className="absolute bottom-24 left-8 text-green-100 opacity-30 -rotate-12 w-20 h-20 hidden lg:block" />
+      <LeafIcon className="absolute top-12 right-12 text-green-800/20 rotate-45 w-32 h-32 hidden lg:block" />
+      <LeafIcon className="absolute bottom-24 left-8 text-green-800/15 -rotate-12 w-20 h-20 hidden lg:block" />
 
       {/* ── Subtle dot pattern ── */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{
-          backgroundImage: "radial-gradient(circle, #16a34a 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, #4ade80 1px, transparent 1px)",
           backgroundSize: "32px 32px",
+        }}
+      />
+
+      {/* ── Ambient glow ── */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse, rgba(34,197,94,0.06) 0%, transparent 70%)",
         }}
       />
 
@@ -101,33 +109,33 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
               <div className="relative">
-                <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-green-400/20 to-green-600/20 blur-sm" />
+                <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-green-400/20 to-green-600/10 blur-sm" />
                 <Image
                   src="/logo2.png"
                   alt="Logo BSSB"
                   width={52}
                   height={52}
-                  className="relative rounded-xl shadow-md"
+                  className="relative rounded-xl shadow-lg shadow-black/20"
                 />
               </div>
               <div>
-                <span className="font-black text-xl text-gray-900 block leading-tight">
+                <span className="font-black text-xl text-white block leading-tight">
                   BSSB
                 </span>
-                <span className="text-xs font-bold text-green-600 tracking-wide uppercase">
+                <span className="text-xs font-bold text-green-400 tracking-wide uppercase">
                   IKMP Kuningan
                 </span>
               </div>
             </div>
 
-            <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-xs">
+            <p className="text-green-200/60 text-sm leading-relaxed mb-6 max-w-xs">
               Bank Sampah Sampul Berkasih — wadah pengelolaan sampah yang bertanggung jawab untuk membangun lingkungan bersih dan ekonomi masyarakat.
             </p>
 
             {/* Motto badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100">
-              <RecycleIcon />
-              <span className="text-xs font-semibold text-green-700">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-green-700/50 bg-green-900/40">
+              <span className="text-green-400"><RecycleIcon /></span>
+              <span className="text-xs font-semibold text-green-300">
                 Kelola Sampah, Bangun Harapan
               </span>
             </div>
@@ -135,7 +143,7 @@ export default function Footer() {
 
           {/* ── Column 2: Navigation ── */}
           <div>
-            <h3 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
+            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-green-500 rounded-full" />
               Navigasi
             </h3>
@@ -144,9 +152,9 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="group flex items-center gap-2 text-gray-500 hover:text-green-700 transition-colors duration-200 text-sm font-medium"
+                    className="group flex items-center gap-2 text-green-200/60 hover:text-green-300 transition-colors duration-200 text-sm font-medium"
                   >
-                    <span className="text-green-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
+                    <span className="text-green-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
                       <ChevronRightIcon />
                     </span>
                     {link.label}
@@ -158,55 +166,55 @@ export default function Footer() {
 
           {/* ── Column 3: Contact ── */}
           <div>
-            <h3 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
+            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-green-500 rounded-full" />
               Kontak
             </h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <span className="mt-0.5 text-green-500 shrink-0"><MapPinIcon /></span>
-                <span className="text-gray-500 text-sm leading-relaxed">
+                <span className="mt-0.5 text-green-400 shrink-0"><MapPinIcon /></span>
+                <span className="text-green-200/60 text-sm leading-relaxed">
                   Kuningan, Jawa Barat<br />
                   Indonesia
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <span className="text-green-500 shrink-0"><PhoneIcon /></span>
-                <span className="text-gray-500 text-sm">+62 812-XXXX-XXXX</span>
+                <span className="text-green-400 shrink-0"><PhoneIcon /></span>
+                <span className="text-green-200/60 text-sm">+62 812-XXXX-XXXX</span>
               </li>
               <li className="flex items-center gap-3">
-                <span className="text-green-500 shrink-0"><MailIcon /></span>
-                <span className="text-gray-500 text-sm">bssb.ikmp@gmail.com</span>
+                <span className="text-green-400 shrink-0"><MailIcon /></span>
+                <span className="text-green-200/60 text-sm">bssb.ikmp@gmail.com</span>
               </li>
             </ul>
           </div>
 
           {/* ── Column 4: Operating Hours ── */}
           <div>
-            <h3 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
+            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-green-500 rounded-full" />
               Jam Operasional
             </h3>
             <ul className="space-y-3">
               <li className="flex items-center gap-3">
-                <span className="text-green-500 shrink-0"><ClockIcon /></span>
+                <span className="text-green-400 shrink-0"><ClockIcon /></span>
                 <div>
-                  <p className="text-gray-700 text-sm font-semibold">Senin — Jumat</p>
-                  <p className="text-gray-400 text-xs">08:00 — 16:00 WIB</p>
+                  <p className="text-green-100 text-sm font-semibold">Senin — Jumat</p>
+                  <p className="text-green-200/40 text-xs">08:00 — 16:00 WIB</p>
                 </div>
               </li>
               <li className="flex items-center gap-3">
-                <span className="text-green-500 shrink-0"><ClockIcon /></span>
+                <span className="text-green-400 shrink-0"><ClockIcon /></span>
                 <div>
-                  <p className="text-gray-700 text-sm font-semibold">Sabtu</p>
-                  <p className="text-gray-400 text-xs">08:00 — 12:00 WIB</p>
+                  <p className="text-green-100 text-sm font-semibold">Sabtu</p>
+                  <p className="text-green-200/40 text-xs">08:00 — 12:00 WIB</p>
                 </div>
               </li>
               <li className="flex items-center gap-3">
-                <span className="text-gray-300 shrink-0"><ClockIcon /></span>
+                <span className="text-green-700 shrink-0"><ClockIcon /></span>
                 <div>
-                  <p className="text-gray-400 text-sm font-semibold">Minggu & Libur</p>
-                  <p className="text-gray-300 text-xs">Tutup</p>
+                  <p className="text-green-200/40 text-sm font-semibold">Minggu & Libur</p>
+                  <p className="text-green-200/25 text-xs">Tutup</p>
                 </div>
               </li>
             </ul>
@@ -214,7 +222,7 @@ export default function Footer() {
             {/* Quick CTA */}
             <a
               href="/dashboard"
-              className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg shadow-md shadow-green-600/20 hover:shadow-lg hover:shadow-green-600/30 transition-all duration-300 hover:-translate-y-0.5"
+              className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-400 text-green-950 text-sm font-bold rounded-lg shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 transition-all duration-300 hover:-translate-y-0.5"
             >
               Masuk Dashboard
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -227,24 +235,24 @@ export default function Footer() {
       </div>
 
       {/* ═══════════════ BOTTOM BAR ═══════════════ */}
-      <div className="relative z-10 border-t border-gray-100">
+      <div className="relative z-10 border-t border-green-800/50">
         <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-gray-400 font-medium flex items-center gap-1.5">
+            <p className="text-sm text-green-200/40 font-medium flex items-center gap-1.5">
               &copy; {YEAR} BSSB IKMP — Dibuat dengan
               <span className="text-red-400"><HeartIcon /></span>
               di Kuningan
             </p>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-xs text-gray-400 hover:text-green-600 transition-colors font-medium">
+              <a href="#" className="text-xs text-green-200/40 hover:text-green-300 transition-colors font-medium">
                 Kebijakan Privasi
               </a>
-              <span className="text-gray-200">|</span>
-              <a href="#" className="text-xs text-gray-400 hover:text-green-600 transition-colors font-medium">
+              <span className="text-green-800">|</span>
+              <a href="#" className="text-xs text-green-200/40 hover:text-green-300 transition-colors font-medium">
                 Syarat & Ketentuan
               </a>
-              <span className="text-gray-200">|</span>
-              <a href="#" className="text-xs text-gray-400 hover:text-green-600 transition-colors font-medium">
+              <span className="text-green-800">|</span>
+              <a href="#" className="text-xs text-green-200/40 hover:text-green-300 transition-colors font-medium">
                 Bantuan
               </a>
             </div>
