@@ -104,3 +104,22 @@ model DetailTransaksi {
   @@index([id_jenis_sampah])
   @@map("detail_transaksi")
 }
+
+model Pengaturan {
+  id_pengaturan         String   @id @default(uuid())
+  kapasitas_maksimal_m3 Float    @default(0) @db.Float
+  threshold_persen      Float    @default(80) @db.Float
+  updated_at            DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("pengaturan")
+}
+
+model Pengangkutan {
+  id_pengangkutan    String   @id @default(uuid())
+  tanggal            DateTime @default(now()) @db.Timestamp(0)
+  volume_m3_diangkut Float    @db.Float
+  keterangan         String?  @db.VarChar(255)
+  created_at         DateTime @default(now()) @db.Timestamp(0)
+
+  @@map("pengangkutan")
+}

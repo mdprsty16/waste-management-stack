@@ -56,7 +56,9 @@ export const ModelName = {
   KategoriSampah: 'KategoriSampah',
   JenisSampah: 'JenisSampah',
   Transaksi: 'Transaksi',
-  DetailTransaksi: 'DetailTransaksi'
+  DetailTransaksi: 'DetailTransaksi',
+  Pengaturan: 'Pengaturan',
+  Pengangkutan: 'Pengangkutan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -153,6 +155,27 @@ export const DetailTransaksiScalarFieldEnum = {
 export type DetailTransaksiScalarFieldEnum = (typeof DetailTransaksiScalarFieldEnum)[keyof typeof DetailTransaksiScalarFieldEnum]
 
 
+export const PengaturanScalarFieldEnum = {
+  id_pengaturan: 'id_pengaturan',
+  kapasitas_maksimal_m3: 'kapasitas_maksimal_m3',
+  threshold_persen: 'threshold_persen',
+  updated_at: 'updated_at'
+} as const
+
+export type PengaturanScalarFieldEnum = (typeof PengaturanScalarFieldEnum)[keyof typeof PengaturanScalarFieldEnum]
+
+
+export const PengangkutanScalarFieldEnum = {
+  id_pengangkutan: 'id_pengangkutan',
+  tanggal: 'tanggal',
+  volume_m3_diangkut: 'volume_m3_diangkut',
+  keterangan: 'keterangan',
+  created_at: 'created_at'
+} as const
+
+export type PengangkutanScalarFieldEnum = (typeof PengangkutanScalarFieldEnum)[keyof typeof PengangkutanScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -226,4 +249,19 @@ export const DetailTransaksiOrderByRelevanceFieldEnum = {
 } as const
 
 export type DetailTransaksiOrderByRelevanceFieldEnum = (typeof DetailTransaksiOrderByRelevanceFieldEnum)[keyof typeof DetailTransaksiOrderByRelevanceFieldEnum]
+
+
+export const PengaturanOrderByRelevanceFieldEnum = {
+  id_pengaturan: 'id_pengaturan'
+} as const
+
+export type PengaturanOrderByRelevanceFieldEnum = (typeof PengaturanOrderByRelevanceFieldEnum)[keyof typeof PengaturanOrderByRelevanceFieldEnum]
+
+
+export const PengangkutanOrderByRelevanceFieldEnum = {
+  id_pengangkutan: 'id_pengangkutan',
+  keterangan: 'keterangan'
+} as const
+
+export type PengangkutanOrderByRelevanceFieldEnum = (typeof PengangkutanOrderByRelevanceFieldEnum)[keyof typeof PengangkutanOrderByRelevanceFieldEnum]
 

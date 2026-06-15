@@ -11,6 +11,10 @@ import BarChart, { getColorForIndex } from "@/components/features/dashboard/BarC
 import WeeklyTrendChart from "@/components/features/dashboard/WeeklyTrendChart";
 import AlertBanner from "@/components/features/dashboard/AlertBanner";
 import Button from "@/components/ui/Button";
+import { useKapasitas } from "@/hooks/useKapasitas";
+import KapasitasCard from "@/components/features/dashboard/KapasitasCard";
+import KapasitasModal from "@/components/features/dashboard/KapasitasModal";
+import PengangkutanModal from "@/components/features/dashboard/PengangkutanModal";
 
 // ============================================================
 // Dashboard Overview — Ringkasan utama dashboard
@@ -34,8 +38,11 @@ export default function DashboardOverviewPage() {
   const { transaksiData, isLoading: loadingTransaksi } = useTransaksi();
   const { data: dailyData, isLoading: loadingDaily } = useDailyTrend();
   const { data: kategoriData, isLoading: loadingKategori } = useKategoriStats();
+  const { data: kapasitasData, isLoading: loadingKapasitas, refetch: refetchKapasitas } = useKapasitas();
 
   const [alertDismissed, setAlertDismissed] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isPengangkutanOpen, setIsPengangkutanOpen] = useState(false);
 
   const isLoading = loadingNasabah || loadingTransaksi;
   const totalNasabah = nasabahData.length;
@@ -202,6 +209,14 @@ export default function DashboardOverviewPage() {
         </div>
       </div>
 
+      {/* ═══ KAPASITAS GUDANG ═══ */}
+      <KapasitasCard 
+        data={kapasitasData} 
+        isLoading={loadingKapasitas} 
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenPengangkutan={() => setIsPengangkutanOpen(true)}
+      />
+
       {/* ═══ STAT CARDS ═══ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-6">
         <StatCard
@@ -351,6 +366,19 @@ export default function DashboardOverviewPage() {
           </table>
         </div>
       </Card>
+
+      {/* ═══ MODALS ═══ */}
+      <KapasitasModal 
+        isOpen={isSettingsOpen} 
+        onClose={() => setIsSettingsOpen(false)} 
+        onSuccess={refetchKapasitas} 
+      />
+      
+      <PengangkutanModal 
+        isOpen={isPengangkutanOpen} 
+        onClose={() => setIsPengangkutanOpen(false)} 
+        onSuccess={refetchKapasitas} 
+      />
     </div>
   );
 }

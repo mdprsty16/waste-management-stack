@@ -71,3 +71,13 @@ export type Transaksi = Prisma.TransaksiModel
  * 
  */
 export type DetailTransaksi = Prisma.DetailTransaksiModel
+/**
+ * Model Pengaturan
+ * 
+ */
+export type Pengaturan = Prisma.PengaturanModel
+/**
+ * Model Pengangkutan
+ * 
+ */
+export type Pengangkutan = Prisma.PengangkutanModel

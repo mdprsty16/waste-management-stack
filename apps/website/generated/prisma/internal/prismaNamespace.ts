@@ -389,7 +389,9 @@ export const ModelName = {
   KategoriSampah: 'KategoriSampah',
   JenisSampah: 'JenisSampah',
   Transaksi: 'Transaksi',
-  DetailTransaksi: 'DetailTransaksi'
+  DetailTransaksi: 'DetailTransaksi',
+  Pengaturan: 'Pengaturan',
+  Pengangkutan: 'Pengangkutan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -405,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "nasabah" | "kategoriSampah" | "jenisSampah" | "transaksi" | "detailTransaksi"
+    modelProps: "admin" | "nasabah" | "kategoriSampah" | "jenisSampah" | "transaksi" | "detailTransaksi" | "pengaturan" | "pengangkutan"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -805,6 +807,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Pengaturan: {
+      payload: Prisma.$PengaturanPayload<ExtArgs>
+      fields: Prisma.PengaturanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PengaturanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PengaturanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload>
+        }
+        findFirst: {
+          args: Prisma.PengaturanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PengaturanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload>
+        }
+        findMany: {
+          args: Prisma.PengaturanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload>[]
+        }
+        create: {
+          args: Prisma.PengaturanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload>
+        }
+        createMany: {
+          args: Prisma.PengaturanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PengaturanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload>
+        }
+        update: {
+          args: Prisma.PengaturanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload>
+        }
+        deleteMany: {
+          args: Prisma.PengaturanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PengaturanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PengaturanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengaturanPayload>
+        }
+        aggregate: {
+          args: Prisma.PengaturanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePengaturan>
+        }
+        groupBy: {
+          args: Prisma.PengaturanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PengaturanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PengaturanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PengaturanCountAggregateOutputType> | number
+        }
+      }
+    }
+    Pengangkutan: {
+      payload: Prisma.$PengangkutanPayload<ExtArgs>
+      fields: Prisma.PengangkutanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PengangkutanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PengangkutanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload>
+        }
+        findFirst: {
+          args: Prisma.PengangkutanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PengangkutanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload>
+        }
+        findMany: {
+          args: Prisma.PengangkutanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload>[]
+        }
+        create: {
+          args: Prisma.PengangkutanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload>
+        }
+        createMany: {
+          args: Prisma.PengangkutanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PengangkutanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload>
+        }
+        update: {
+          args: Prisma.PengangkutanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload>
+        }
+        deleteMany: {
+          args: Prisma.PengangkutanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PengangkutanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PengangkutanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PengangkutanPayload>
+        }
+        aggregate: {
+          args: Prisma.PengangkutanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePengangkutan>
+        }
+        groupBy: {
+          args: Prisma.PengangkutanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PengangkutanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PengangkutanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PengangkutanCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -922,6 +1056,27 @@ export const DetailTransaksiScalarFieldEnum = {
 export type DetailTransaksiScalarFieldEnum = (typeof DetailTransaksiScalarFieldEnum)[keyof typeof DetailTransaksiScalarFieldEnum]
 
 
+export const PengaturanScalarFieldEnum = {
+  id_pengaturan: 'id_pengaturan',
+  kapasitas_maksimal_m3: 'kapasitas_maksimal_m3',
+  threshold_persen: 'threshold_persen',
+  updated_at: 'updated_at'
+} as const
+
+export type PengaturanScalarFieldEnum = (typeof PengaturanScalarFieldEnum)[keyof typeof PengaturanScalarFieldEnum]
+
+
+export const PengangkutanScalarFieldEnum = {
+  id_pengangkutan: 'id_pengangkutan',
+  tanggal: 'tanggal',
+  volume_m3_diangkut: 'volume_m3_diangkut',
+  keterangan: 'keterangan',
+  created_at: 'created_at'
+} as const
+
+export type PengangkutanScalarFieldEnum = (typeof PengangkutanScalarFieldEnum)[keyof typeof PengangkutanScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -995,6 +1150,21 @@ export const DetailTransaksiOrderByRelevanceFieldEnum = {
 } as const
 
 export type DetailTransaksiOrderByRelevanceFieldEnum = (typeof DetailTransaksiOrderByRelevanceFieldEnum)[keyof typeof DetailTransaksiOrderByRelevanceFieldEnum]
+
+
+export const PengaturanOrderByRelevanceFieldEnum = {
+  id_pengaturan: 'id_pengaturan'
+} as const
+
+export type PengaturanOrderByRelevanceFieldEnum = (typeof PengaturanOrderByRelevanceFieldEnum)[keyof typeof PengaturanOrderByRelevanceFieldEnum]
+
+
+export const PengangkutanOrderByRelevanceFieldEnum = {
+  id_pengangkutan: 'id_pengangkutan',
+  keterangan: 'keterangan'
+} as const
+
+export type PengangkutanOrderByRelevanceFieldEnum = (typeof PengangkutanOrderByRelevanceFieldEnum)[keyof typeof PengangkutanOrderByRelevanceFieldEnum]
 
 
 
@@ -1153,6 +1323,8 @@ export type GlobalOmitConfig = {
   jenisSampah?: Prisma.JenisSampahOmit
   transaksi?: Prisma.TransaksiOmit
   detailTransaksi?: Prisma.DetailTransaksiOmit
+  pengaturan?: Prisma.PengaturanOmit
+  pengangkutan?: Prisma.PengangkutanOmit
 }
 
 /* Types for Logging */
