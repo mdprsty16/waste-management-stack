@@ -14,7 +14,12 @@ const DownIcon = ({ c = "w-6 h-6" }: { c?: string }) => (
   </svg>
 );
 
-const HERO_IMAGES = ["/hero1.avif", "/hero2.avif", "/hero3.avif", "/hero4.avif"];
+const HERO_IMAGES = [
+  "/hero1.avif",
+  "/hero2.avif",
+  "/hero3.avif",
+  "/hero4.avif",
+];
 
 export default function HeroSection() {
   const [currentImg, setCurrentImg] = useState(0);
