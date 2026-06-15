@@ -1,6 +1,9 @@
 "use client";
 import Image from "next/image";
 
+const GOOGLE_MAPS_LINK =
+  "https://www.google.com/maps/search/Jl.+Mawar+2+No.135b,+Ciporang,+Kec.+Kuningan,+Kabupaten+Kuningan,+Jawa+Barat+45514";
+
 const YEAR = new Date().getFullYear();
 
 /* ── SVG Icons ── */
@@ -17,10 +20,17 @@ const PhoneIcon = () => (
   </svg>
 );
 
-const MailIcon = () => (
+const InstagramIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="16" x="2" y="4" rx="2"/>
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+  </svg>
+);
+
+const TiktokIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
   </svg>
 );
 
@@ -104,7 +114,7 @@ export default function Footer() {
       {/* ═══════════════ MAIN FOOTER CONTENT ═══════════════ */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-16 pb-10">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
           {/* ================= BRAND ================= */}
           <div className="text-center md:text-left">
@@ -160,38 +170,83 @@ export default function Footer() {
 
             <ul className="space-y-5">
 
-              <li className="flex items-start justify-center md:justify-start gap-3">
-                <span className="mt-0.5 text-green-400 shrink-0">
-                  <MapPinIcon />
-                </span>
-
-                <span className="text-green-100/80 text-sm leading-relaxed">
-                  Kuningan, Jawa Barat
-                  <br />
-                  Indonesia
-                </span>
-              </li>
 
               <li className="flex items-center justify-center md:justify-start gap-3">
                 <span className="text-green-400 shrink-0">
                   <PhoneIcon />
                 </span>
-
-                <span className="text-green-100/80 text-sm">
+                <a
+                  href="https://wa.me/6287713733301"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-100/80 text-sm hover:text-green-300 transition-colors"
+                >
                   +62 877-1373-3301
-                </span>
+                </a>
               </li>
 
               <li className="flex items-center justify-center md:justify-start gap-3">
                 <span className="text-green-400 shrink-0">
-                  <MailIcon />
+                  <InstagramIcon />
                 </span>
-
-                <span className="text-green-100/80 text-sm">
-                  bssb.ikmp@gmail.com
-                </span>
+                <a
+                  href="https://www.instagram.com/bssb.ciporang?igsh=ZWMydmJmd2ExbmY2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-100/80 text-sm hover:text-green-300 transition-colors"
+                >
+                  BSSB.ciporang
+                </a>
               </li>
 
+              <li className="flex items-center justify-center md:justify-start gap-3">
+                <span className="text-green-400 shrink-0">
+                  <TiktokIcon />
+                </span>
+                <a
+                  href="https://www.tiktok.com/@bssb.ciporang?_r=1&_t=ZS-97EaDjC8nHJ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-100/80 text-sm hover:text-green-300 transition-colors"
+                >
+                  BSSB.ciporang
+                </a>
+              </li>
+
+            </ul>
+          </div>
+
+          {/* ================= LOKASI ================= */}
+          <div className="text-center md:text-left">
+            <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-6 flex items-center justify-center md:justify-start gap-2">
+              <span className="w-8 h-0.5 bg-green-500 rounded-full" />
+              Lokasi
+            </h3>
+
+            <ul className="space-y-5">
+              <li className="flex items-start justify-center md:justify-start gap-3">
+                <span className="text-green-400 shrink-0 mt-0.5">
+                  <MapPinIcon />
+                </span>
+                <div>
+                  <p className="text-green-100/80 text-sm leading-relaxed">
+                    Jl. Mawar 2 Utara, Perumnas Ciporang,<br />
+                    Kec. Kuningan, Kabupaten Kuningan,<br />
+                    Jawa Barat 45514
+                  </p>
+                  <a
+                    href={GOOGLE_MAPS_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-green-400 hover:text-green-300 transition-colors"
+                  >
+                    Buka di Google Maps
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+                    </svg>
+                  </a>
+                </div>
+              </li>
             </ul>
           </div>
 

@@ -19,6 +19,7 @@ const HERO_IMAGES = [
   "/hero2.avif",
   "/hero3.avif",
   "/hero4.avif",
+  "/hero5.avif",
 ];
 
 export default function HeroSection() {
