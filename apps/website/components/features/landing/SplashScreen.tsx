@@ -38,15 +38,15 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
         phase === "exiting" ? "opacity-0" : "opacity-100"
       }`}
       style={{
-        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f172a 100%)",
+        background: "#ffffff",
       }}
     >
       {/* Subtle grid pattern */}
       <div
-        className="absolute inset-0 opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.06]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            "linear-gradient(rgba(22,163,74,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(22,163,74,0.15) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -54,37 +54,47 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
       {/* Ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20"
         style={{
-          background: "radial-gradient(circle, rgba(148,163,184,0.3) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(22,163,74,0.15) 0%, transparent 70%)",
         }}
       />
 
       {/* Main content */}
       <div className="relative z-10 text-center">
         {/* Small label */}
-        <p className="animate-fade-in text-slate-500 text-sm font-medium tracking-[0.3em] uppercase mb-6">
+        <p className="animate-fade-in text-sm font-medium tracking-[0.3em] uppercase mb-6"
+          style={{ color: "#16a34a" }}
+        >
           Bank Sampah Sampul Berkasih
         </p>
 
         {/* Typed text */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight"
+          style={{ color: "#166534" }}
+        >
           {displayed}
-          <span className="typing-cursor" />
+          <span className="typing-cursor typing-cursor--light" />
         </h1>
 
         {/* Subtitle */}
         <p
-          className={`mt-6 text-slate-400 text-lg font-medium transition-all duration-500 ${
+          className={`mt-6 text-lg font-medium transition-all duration-500 ${
             phase === "entering" ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
           }`}
+          style={{ color: "#4b5563" }}
         >
           IKMP • Kuningan, Jawa Barat
         </p>
 
         {/* Loading bar */}
-        <div className="mt-10 mx-auto w-48 h-0.5 bg-slate-800 rounded-full overflow-hidden">
+        <div className="mt-10 mx-auto w-48 h-0.5 rounded-full overflow-hidden"
+          style={{ backgroundColor: "#e5e7eb" }}
+        >
           <div
-            className="h-full bg-gradient-to-r from-slate-500 to-slate-300 rounded-full"
-            style={{ animation: "width-expand 2s ease-out forwards" }}
+            className="h-full rounded-full"
+            style={{
+              background: "linear-gradient(to right, #22c55e, #16a34a)",
+              animation: "width-expand 2s ease-out forwards",
+            }}
           />
         </div>
       </div>
