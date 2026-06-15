@@ -57,10 +57,10 @@ const Icons = {
 
 const MENU_ITEMS = [
   { name: "Overview", href: "/dashboard", icon: Icons.Overview },
-  { name: "Kategori Sampah", href: "/dashboard/kategori", icon: Icons.Kategori },
-  { name: "Jenis Sampah", href: "/dashboard/jenis-sampah", icon: Icons.JenisSampah },
-  { name: "Data Nasabah", href: "/dashboard/nasabah", icon: Icons.Users },
   { name: "Transaksi", href: "/dashboard/transaksi", icon: Icons.Transaction },
+  { name: "Data Nasabah", href: "/dashboard/nasabah", icon: Icons.Users },
+  { name: "Jenis Sampah", href: "/dashboard/jenis-sampah", icon: Icons.JenisSampah },
+  { name: "Kategori Sampah", href: "/dashboard/kategori", icon: Icons.Kategori },
 ];
 
 export interface SidebarProps {

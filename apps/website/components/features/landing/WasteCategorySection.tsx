@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -112,12 +112,7 @@ const CATEGORIES: WasteCategory[] = [
 ];
 
 export default function WasteCategorySection() {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const revealRef = useReveal();
-
-  const toggle = (id: string) => {
-    setExpandedId((prev) => (prev === id ? null : id));
-  };
 
   return (
     <section id="kategori" className="py-20 sm:py-28 relative overflow-hidden">
@@ -138,103 +133,80 @@ export default function WasteCategorySection() {
             Kategori Sampah
           </h2>
           <p className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto font-medium">
-            Klik kategori untuk melihat penjelasan lengkap & contoh sampah
+            Penjelasan lengkap & contoh sampah berdasarkan kategorinya
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1400px] mx-auto">
-          {CATEGORIES.map((cat) => {
-            const isOpen = expandedId === cat.id;
-            return (
-              <div
-                key={cat.id}
-                className={`category-card bg-gradient-to-br ${cat.bgGradient} border-2 ${cat.borderColor} rounded-3xl overflow-hidden transition-all duration-500 ${
-                  isOpen ? "md:col-span-3 shadow-2xl" : "shadow-lg"
-                }`}
-              >
-                {/* Card header — always visible */}
-                <button
-                  onClick={() => toggle(cat.id)}
-                  className="w-full p-8 flex items-center gap-6 text-left group"
-                >
-                  <div
-                    className={`w-20 h-20 ${cat.iconBg} ${cat.iconColor} rounded-3xl flex items-center justify-center shadow-lg flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    {cat.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-2xl font-black text-gray-900 mb-1">{cat.nama}</h3>
-                    <p className="text-base text-gray-600 font-medium">{cat.ringkasan}</p>
-                  </div>
-                  <div
-                    className={`w-10 h-10 rounded-full bg-white/80 flex items-center justify-center flex-shrink-0 shadow transition-transform duration-300 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  >
-                    <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="6,9 12,15 18,9" />
-                    </svg>
-                  </div>
-                </button>
-
-                {/* Expanded detail */}
+        <div className="flex flex-col gap-8 max-w-[1400px] mx-auto">
+          {CATEGORIES.map((cat) => (
+            <div
+              key={cat.id}
+              className={`category-card bg-gradient-to-br ${cat.bgGradient} border-2 ${cat.borderColor} rounded-3xl shadow-xl overflow-hidden`}
+            >
+              {/* Card header — always visible */}
+              <div className="w-full p-8 pb-4 flex items-center gap-6">
                 <div
-                  className={`overflow-hidden transition-all duration-500 ${
-                    isOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
-                  }`}
+                  className={`w-20 h-20 ${cat.iconBg} ${cat.iconColor} rounded-3xl flex items-center justify-center shadow-lg flex-shrink-0`}
                 >
-                  <div className="px-8 pb-8 border-t-2 border-white/50">
-                    <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {/* Penjelasan */}
-                      <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-white/50">
-                        <h4 className="font-black text-gray-900 text-lg mb-3 flex items-center gap-2">
-                          <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" />
-                          </svg>
-                          Penjelasan
-                        </h4>
-                        <p className="text-base text-gray-700 font-medium leading-relaxed">
-                          {cat.penjelasan}
-                        </p>
-                      </div>
+                  {cat.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-2xl font-black text-gray-900 mb-1">{cat.nama}</h3>
+                  <p className="text-base text-gray-600 font-medium">{cat.ringkasan}</p>
+                </div>
+              </div>
 
-                      {/* Contoh */}
-                      <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-white/50">
-                        <h4 className="font-black text-gray-900 text-lg mb-3 flex items-center gap-2">
-                          <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
-                            <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
-                          </svg>
-                          Contoh Sampah
-                        </h4>
-                        <ul className="space-y-2">
-                          {cat.contoh.map((c, i) => (
-                            <li key={i} className="flex items-center gap-2 text-base text-gray-700 font-medium">
-                              <span className="w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0" />
-                              {c}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+              {/* Detail (Static) */}
+              <div className="px-8 pb-8">
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Penjelasan */}
+                  <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-white/50 shadow-sm">
+                    <h4 className="font-black text-gray-900 text-lg mb-3 flex items-center gap-2">
+                      <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" />
+                      </svg>
+                      Penjelasan
+                    </h4>
+                    <p className="text-base text-gray-700 font-medium leading-relaxed">
+                      {cat.penjelasan}
+                    </p>
+                  </div>
 
-                      {/* Tips */}
-                      <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-white/50">
-                        <h4 className="font-black text-gray-900 text-lg mb-3 flex items-center gap-2">
-                          <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z" />
-                          </svg>
-                          Tips
-                        </h4>
-                        <p className="text-base text-gray-700 font-medium leading-relaxed">
-                          {cat.tips}
-                        </p>
-                      </div>
-                    </div>
+                  {/* Contoh */}
+                  <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-white/50 shadow-sm">
+                    <h4 className="font-black text-gray-900 text-lg mb-3 flex items-center gap-2">
+                      <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
+                        <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
+                      </svg>
+                      Contoh Sampah
+                    </h4>
+                    <ul className="space-y-2">
+                      {cat.contoh.map((c, i) => (
+                        <li key={i} className="flex items-center gap-2 text-base text-gray-700 font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0" />
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Tips */}
+                  <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-white/50 shadow-sm">
+                    <h4 className="font-black text-gray-900 text-lg mb-3 flex items-center gap-2">
+                      <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z" />
+                      </svg>
+                      Tips
+                    </h4>
+                    <p className="text-base text-gray-700 font-medium leading-relaxed">
+                      {cat.tips}
+                    </p>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>
