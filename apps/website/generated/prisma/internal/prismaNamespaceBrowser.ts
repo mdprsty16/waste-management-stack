@@ -122,6 +122,7 @@ export const JenisSampahScalarFieldEnum = {
   densitas_kg_per_m3: 'densitas_kg_per_m3',
   harga_per_kg: 'harga_per_kg',
   satuan: 'satuan',
+  berat_per_pcs: 'berat_per_pcs',
   is_active: 'is_active',
   created_at: 'created_at'
 } as const

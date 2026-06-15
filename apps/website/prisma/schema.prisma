@@ -59,6 +59,7 @@ model JenisSampah {
   densitas_kg_per_m3 Float           @db.Float
   harga_per_kg       Float           @db.Float
   satuan             String          @default("kg") @db.VarChar(10) // 'kg' atau 'pcs'
+  berat_per_pcs      Float?          @db.Float  // Berat per 1 unit (kg). Hanya relevan jika satuan = 'pcs'. Contoh: botol aqua = 0.05 kg
   is_active          Boolean         @default(true) 
   created_at         DateTime        @default(now()) @db.Timestamp(0)
   

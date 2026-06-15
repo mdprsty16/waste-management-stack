@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useTransaksi } from "@/hooks/useTransaksi";
 import Table, { type TableColumn } from "@/components/ui/Table";
@@ -15,6 +15,16 @@ export default function TransaksiPage() {
   const { data, isLoading } = useTransaksi();
   const [detail, setDetail] = useState<Transaksi | null>(null);
   const [showDetail, setShowDetail] = useState(false);
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc'); // default: terbaru dulu
+
+  // Sort data berdasarkan tanggal
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => {
+      const dateA = new Date(a.tanggal).getTime();
+      const dateB = new Date(b.tanggal).getTime();
+      return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
+    });
+  }, [data, sortOrder]);
 
   const handleViewDetail = async (id: string) => {
     const res = await transaksiService.getTransaksiById(id);
@@ -154,12 +164,31 @@ export default function TransaksiPage() {
         </div>
       </div>
 
-      {/* Main Table Card */}
+      {/* Sort Control + Table */}
       <Card
         padding={false}
         className="overflow-hidden border-none shadow-xl shadow-gray-100/50"
       >
-        <Table columns={columns} data={data} isLoading={isLoading} rowKey="id_transaksi" />
+        {/* Sort Bar */}
+        <div className="flex items-center justify-between px-6 py-3 bg-white border-b-2 border-gray-100">
+          <p className="text-sm font-semibold text-gray-500">
+            {data.length} transaksi ditemukan
+          </p>
+          <button
+            onClick={() => setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc')}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold border-2 border-gray-200 bg-white text-gray-700 hover:bg-green-50 hover:border-green-300 hover:text-green-700 transition-all duration-200 shadow-sm"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              {sortOrder === 'desc' ? (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+              )}
+            </svg>
+            Tanggal: {sortOrder === 'desc' ? 'Terbaru' : 'Terlama'}
+          </button>
+        </div>
+        <Table columns={columns} data={sortedData} isLoading={isLoading} rowKey="id_transaksi" />
       </Card>
 
       {/* Modal Detail Transaksi — Invoice style */}
@@ -203,7 +232,7 @@ export default function TransaksiPage() {
                     <tr key={d.id_detail} className="hover:bg-green-50/30 transition-colors">
                       <td className="p-4 font-semibold text-gray-800">{d.jenis_sampah?.nama_jenis || d.id_jenis_sampah}</td>
                       <td className="p-4 text-right font-semibold text-gray-700">
-                        {Number(d.berat_kg).toFixed(2)} {d.jenis_sampah?.satuan === 'pcs' ? 'pcs' : 'Kg'}
+                        {Number(d.berat_kg).toFixed(2)} Kg
                       </td>
                       <td className="p-4 text-right font-bold text-emerald-600">Rp {d.subtotal_harga.toLocaleString("id-ID")}</td>
                     </tr>

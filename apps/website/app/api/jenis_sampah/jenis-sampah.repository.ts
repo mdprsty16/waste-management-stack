@@ -27,6 +27,7 @@ export async function createJenisSampah(data: {
   densitas_kg_per_m3: number;
   harga_per_kg: number;
   satuan?: string;
+  berat_per_pcs?: number | null;
 }) {
   return await prisma.jenisSampah.create({
     data,
@@ -41,6 +42,7 @@ export async function updateJenisSampah(
     densitas_kg_per_m3?: number;
     harga_per_kg?: number;
     satuan?: string;
+    berat_per_pcs?: number | null;
     is_active?: boolean;
   }
 ) {

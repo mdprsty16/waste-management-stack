@@ -3,15 +3,18 @@ import { prisma } from '../../lib/prisma';
 
 export async function getDatasetForModeling() {
   return await prisma.detailTransaksi.findMany({
-    include: {
+    select: {
+      berat_kg: true,
       transaksi: {
-        include: {
-          nasabah: true,
+        select: {
+          tanggal: true,
         },
       },
       jenis_sampah: {
-        include: {
-          kategori: true,
+        select: {
+          densitas_kg_per_m3: true,
+          satuan: true,
+          berat_per_pcs: true,
         },
       },
     },
@@ -21,4 +24,4 @@ export async function getDatasetForModeling() {
       },
     },
   });
-}
+}

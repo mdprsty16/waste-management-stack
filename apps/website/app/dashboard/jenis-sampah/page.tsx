@@ -25,6 +25,7 @@ export default function JenisSampahPage() {
   const [hargaPerKg, setHargaPerKg] = useState("");
   const [densitas, setDensitas] = useState("");
   const [satuan, setSatuan] = useState<'kg' | 'pcs'>('kg');
+  const [beratPerPcs, setBeratPerPcs] = useState("");
 
   // Ubah kategoriList jadi format SelectAutocomplete (hanya yang aktif)
   const kategoriOptions = kategoriList
@@ -42,6 +43,7 @@ export default function JenisSampahPage() {
     setHargaPerKg("");
     setDensitas("");
     setSatuan('kg');
+    setBeratPerPcs("");
     setShowModal(true);
   };
 
@@ -53,6 +55,7 @@ export default function JenisSampahPage() {
     setHargaPerKg(String(row.harga_per_kg));
     setDensitas(String(row.densitas_kg_per_m3));
     setSatuan((row.satuan as 'kg' | 'pcs') || 'kg');
+    setBeratPerPcs(row.berat_per_pcs != null ? String(Math.round(row.berat_per_pcs * 1000)) : "");  // Konversi kg → gram (dibulatkan)
     setShowModal(true);
   };
 
@@ -65,8 +68,9 @@ export default function JenisSampahPage() {
         id_kategori: selectedKategori,
         nama_jenis: namaJenis,
         harga_per_kg: Number(hargaPerKg),
-        densitas_kg_per_m3: Number(densitas),
+        densitas_kg_per_m3: satuan === 'pcs' ? 0 : Number(densitas),  // PCS tidak butuh densitas manual
         satuan,
+        berat_per_pcs: satuan === 'pcs' && beratPerPcs ? Number(beratPerPcs) / 1000 : null,  // Konversi gram → kg
       };
 
       if (editing) {
@@ -171,6 +175,26 @@ export default function JenisSampahPage() {
         <span className="text-gray-700 font-semibold text-sm">
           {row.densitas_kg_per_m3.toLocaleString("id-ID")} <span className="text-gray-400 font-normal">Kg/m³</span>
         </span>
+      )
+    },
+    {
+      key: "satuan",
+      header: "Satuan",
+      render: (row) => (
+        <div className="space-y-1">
+          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border ${
+            row.satuan === 'pcs' 
+              ? 'bg-violet-50 text-violet-700 border-violet-200' 
+              : 'bg-sky-50 text-sky-700 border-sky-200'
+          }`}>
+            {row.satuan === 'pcs' ? 'Per Buah (pcs)' : 'Per Kilogram (Kg)'}
+          </span>
+          {row.satuan === 'pcs' && row.berat_per_pcs != null && (
+            <p className="text-xs text-gray-500">
+              <span className="font-semibold">{(row.berat_per_pcs * 1000).toFixed(0)}g</span> / pcs
+            </p>
+          )}
+        </div>
       )
     },
     { 
@@ -344,6 +368,23 @@ export default function JenisSampahPage() {
               className="focus:border-green-500 focus:ring-green-500 rounded-xl"
               min="0"
             />
+          )}
+          {satuan === 'pcs' && (
+            <>
+              <Input label="Berat per 1 Buah (gram)" value={beratPerPcs} type="number" required
+                onChange={(e) => setBeratPerPcs(e.target.value)}
+                placeholder="Contoh: 50 (untuk botol aqua), 200 (untuk beling)" 
+                className="focus:border-green-500 focus:ring-green-500 rounded-xl"
+                min="1"
+                step="1"
+              />
+              {beratPerPcs && Number(beratPerPcs) > 0 && (
+                <div className="bg-violet-50 border border-violet-200 p-3 rounded-xl text-sm text-violet-700">
+                  <span className="font-bold">Preview:</span> 1 pcs = {Math.round(Number(beratPerPcs))}g = {(Math.round(Number(beratPerPcs)) / 1000).toFixed(4)} Kg
+                  <span className="ml-2 text-violet-500">| 10 pcs = {(Math.round(Number(beratPerPcs)) * 10 / 1000).toFixed(2)} Kg</span>
+                </div>
+              )}
+            </>
           )}
           <div className="flex gap-3 justify-end pt-4 border-t border-gray-100">
             <Button variant="secondary" type="button" onClick={() => setShowModal(false)} className="rounded-xl">Batal</Button>

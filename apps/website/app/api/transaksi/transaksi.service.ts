@@ -56,20 +56,32 @@ export async function createTransaksiService(
 
     const isPcs = jenis.satuan === 'pcs';
 
-    // Untuk satuan 'pcs': berat_kg menyimpan jumlah unit, bukan berat
-    const subtotal_harga = item.berat_kg * jenis.harga_per_kg;
-    const volume_m3 = isPcs ? 0 : item.berat_kg / jenis.densitas_kg_per_m3;
+    // Untuk satuan 'pcs': item.berat_kg menyimpan jumlah unit, bukan berat
+    const jumlah = item.berat_kg;
 
-    // Hanya tambahkan ke total berat jika satuan = 'kg'
-    if (!isPcs) {
-      total_berat_kg += item.berat_kg;
-      total_volume_m3 += volume_m3;
-    }
+    // Hitung subtotal harga (jumlah × harga per satuan)
+    const subtotal_harga = jumlah * jenis.harga_per_kg;
+
+    // Konversi ke berat riil (kg)
+    // Untuk PCS: berat_real = jumlah_pcs × berat_per_pcs (kg per unit)
+    // Untuk KG: berat_real = jumlah (sudah dalam kg)
+    const berat_real_kg = isPcs
+      ? jumlah * (jenis.berat_per_pcs || 0)
+      : jumlah;
+
+    // Hitung volume dari berat riil
+    const volume_m3 = jenis.densitas_kg_per_m3 > 0
+      ? berat_real_kg / jenis.densitas_kg_per_m3
+      : 0;
+
+    // Semua item (termasuk PCS) berkontribusi ke total berat & volume
+    total_berat_kg += berat_real_kg;
+    total_volume_m3 += volume_m3;
     total_harga += subtotal_harga;
 
     detailsPayload.push({
       id_jenis_sampah: item.id_jenis_sampah,
-      berat_kg: item.berat_kg,
+      berat_kg: berat_real_kg,  // Simpan berat riil (kg), bukan jumlah PCS
       volume_m3: volume_m3,
       subtotal_harga: subtotal_harga,
     });
