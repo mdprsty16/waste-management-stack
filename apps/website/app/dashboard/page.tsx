@@ -159,6 +159,7 @@ export default function DashboardOverviewPage() {
   }
 
   return (
+    <>
     <div className="space-y-8 animate-fade-in-up">
       {/* ═══ ALERT BANNER — Conditional rendering dari ML ═══ */}
       {!alertDismissed && (
@@ -366,6 +367,7 @@ export default function DashboardOverviewPage() {
           </table>
         </div>
       </Card>
+      </div>
 
       {/* ═══ MODALS ═══ */}
       <KapasitasModal 
@@ -379,6 +381,6 @@ export default function DashboardOverviewPage() {
         onClose={() => setIsPengangkutanOpen(false)} 
         onSuccess={refetchKapasitas} 
       />
-    </div>
+    </>
   );
 }
