@@ -10,6 +10,7 @@ import FeaturesSection from "@/components/features/landing/FeaturesSection";
 import WasteCategorySection from "@/components/features/landing/WasteCategorySection";
 
 import Footer from "@/components/features/landing/Footer";
+import LocationSection from "@/components/features/landing/LocationSection";
 
 export default function Home() {
   const [splash, setSplash] = useState(true);
@@ -44,6 +45,10 @@ export default function Home() {
       <WasteCategorySection />
 
 
+
+      {/* ═══ LOKASI ═══ */}
+      <div className="section-divider" />
+      <LocationSection />
 
       {/* ═══ FOOTER ═══ */}
       <Footer />
