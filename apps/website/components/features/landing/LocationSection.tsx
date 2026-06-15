@@ -127,7 +127,7 @@ export default function LocationSection() {
             </div>
 
             {/* Operating hours mini card */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-7 rounded-3xl border-2 border-green-200 hover:-translate-y-1 transition-transform duration-500">
+            {/* <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-7 rounded-3xl border-2 border-green-200 hover:-translate-y-1 transition-transform duration-500">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-11 h-11 bg-green-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-green-600/30">
                   <ClockIcon />
@@ -148,7 +148,7 @@ export default function LocationSection() {
                   <span className="text-sm font-bold text-gray-400 bg-gray-100 px-3 py-1 rounded-full">Tutup</span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Contact mini card */}
             <div className="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 flex items-center gap-4 hover:shadow-xl transition-shadow duration-300">
