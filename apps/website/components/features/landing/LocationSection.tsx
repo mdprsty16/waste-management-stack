@@ -111,7 +111,7 @@ export default function LocationSection() {
                 <h3 className="text-lg font-black text-gray-900">Alamat</h3>
               </div>
               <p className="text-gray-600 font-medium leading-relaxed text-[15px]">
-                Jl. Mawar 2 No.135b, Ciporang,<br />
+                Jl. Mawar 2 Utara, Perumnas Ciporang,<br />
                 Kec. Kuningan, Kabupaten Kuningan,<br />
                 Jawa Barat 45514
               </p>

@@ -178,7 +178,7 @@ export default function Footer() {
                 </span>
 
                 <span className="text-green-100/80 text-sm">
-                  +62 812-XXXX-XXXX
+                  +62 877-1373-3301
                 </span>
               </li>
 
