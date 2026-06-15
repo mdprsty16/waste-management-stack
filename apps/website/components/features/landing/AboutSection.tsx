@@ -108,7 +108,7 @@ export default function AboutSection() {
           <div className="space-y-6">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-gray-300/50 aspect-[4/3] group">
               <Image
-                src="/hero5.png"
+                src="/hero5.avif"
                 alt="Kegiatan Bank Sampah"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -123,7 +123,7 @@ export default function AboutSection() {
             {/* Mini stat cards */}
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="text-3xl font-black text-green-700 mb-1">2024</div>
+                <div className="text-3xl font-black text-green-700 mb-1">2026</div>
                 <div className="text-sm font-bold text-gray-500">Tahun Berdiri</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
