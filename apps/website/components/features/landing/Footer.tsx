@@ -142,7 +142,7 @@ export default function Footer() {
           </div>
 
           {/* ── Column 2: Navigation ── */}
-          <div>
+          {/* <div>
             <h3 className="font-bold text-white text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-green-500 rounded-full" />
               Navigasi
@@ -162,7 +162,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* ── Column 3: Contact ── */}
           <div>
