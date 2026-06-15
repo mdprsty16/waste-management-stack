@@ -23,6 +23,7 @@ export async function createJenisSampahService(body: {
   densitas_kg_per_m3: number;
   harga_per_kg: number;
   satuan?: string;
+  berat_per_pcs?: number | null;
 }) {
   const data = await jenisSampahRepo.createJenisSampah(body);
   return { success: true, data, status: 201 };
@@ -36,6 +37,7 @@ export async function updateJenisSampahService(
     densitas_kg_per_m3: number;
     harga_per_kg: number;
     satuan?: string;
+    berat_per_pcs?: number | null;
     is_active: boolean;
   }
 ) {

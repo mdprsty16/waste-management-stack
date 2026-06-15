@@ -32,28 +32,20 @@ export async function getDatasetService(format?: string) {
     return isNaN(num) ? 0 : Number(num.toFixed(2));
   };
 
-  // Proses flattening data agar siap dipakai untuk Modelling ML (Pandas/Python friendly)
-  const flattenedData = rawData.map(item => ({
-    id_detail: item.id_detail,
-    id_transaksi: item.id_transaksi,
-    tanggal: item.transaksi.tanggal ? new Date(item.transaksi.tanggal).toISOString().split('T')[0] : '',
-    id_nasabah: item.transaksi.id_nasabah,
-    nama_nasabah: item.transaksi.nasabah?.nama || '',
-    rt: item.transaksi.nasabah?.rt || '',
-    rw: item.transaksi.nasabah?.rw || '',
-    id_jenis_sampah: item.id_jenis_sampah,
-    nama_jenis: item.jenis_sampah?.nama_jenis || '',
-    id_kategori: item.jenis_sampah?.id_kategori || '',
-    nama_kategori: item.jenis_sampah?.kategori?.nama_kategori || '',
-    densitas_kg_per_m3: round2(item.jenis_sampah?.densitas_kg_per_m3), 
-    harga_per_kg: round2(item.jenis_sampah?.harga_per_kg),
-    berat_kg: round2(item.berat_kg),
-    volume_m3: round2(item.volume_m3),
-    subtotal_harga: round2(item.subtotal_harga),
-    total_berat_transaksi: round2(item.transaksi?.total_berat_kg),
-    total_volume_transaksi: round2(item.transaksi?.total_volume_m3),
-    total_harga_transaksi: round2(item.transaksi?.total_harga),
-  }));
+  // Proses flattening data — HANYA 3 KOLOM untuk publik (tanpa data identitas nasabah)
+  const flattenedData = rawData.map(item => {
+    // Konversi PCS ke berat riil (kg) jika satuan = 'pcs'
+    const isPcs = item.jenis_sampah?.satuan === 'pcs';
+    const beratKg = isPcs
+      ? item.berat_kg * (item.jenis_sampah?.berat_per_pcs || 0)
+      : item.berat_kg;
+
+    return {
+      tanggal: item.transaksi.tanggal ? new Date(item.transaksi.tanggal).toISOString().split('T')[0] : '',
+      densitas: round2(item.jenis_sampah?.densitas_kg_per_m3),
+      berat: round2(beratKg),
+    };
+  });
 
   if (format === 'csv') {
     const csvString = convertToCSV(flattenedData);
@@ -61,4 +53,4 @@ export async function getDatasetService(format?: string) {
   }
 
   return { success: true, type: 'json', data: flattenedData };
-}
+}

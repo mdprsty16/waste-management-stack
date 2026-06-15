@@ -30,7 +30,7 @@ export async function getJenisSampahByIdController(req: Request, id: string) {
 export async function createJenisSampahController(req: Request) {
   try {
     const body = await req.json();
-    const { id_kategori, nama_jenis, densitas_kg_per_m3, harga_per_kg, satuan } = body;
+    const { id_kategori, nama_jenis, densitas_kg_per_m3, harga_per_kg, satuan, berat_per_pcs } = body;
 
     if (!id_kategori || !nama_jenis || densitas_kg_per_m3 === undefined || harga_per_kg === undefined) {
       return errorResponse('Field id_kategori, nama_jenis, densitas_kg_per_m3, dan harga_per_kg wajib diisi', 400);
@@ -42,6 +42,7 @@ export async function createJenisSampahController(req: Request) {
       densitas_kg_per_m3: Number(densitas_kg_per_m3),
       harga_per_kg: Number(harga_per_kg),
       satuan: satuan || 'kg',
+      berat_per_pcs: satuan === 'pcs' && berat_per_pcs != null ? Number(berat_per_pcs) : null,
     });
 
     return successResponse(result.data, 'Jenis sampah berhasil ditambahkan', 201);
@@ -53,7 +54,7 @@ export async function createJenisSampahController(req: Request) {
 export async function updateJenisSampahController(req: Request, id: string) {
   try {
     const body = await req.json();
-    const { id_kategori, nama_jenis, densitas_kg_per_m3, harga_per_kg, is_active, satuan } = body;
+    const { id_kategori, nama_jenis, densitas_kg_per_m3, harga_per_kg, is_active, satuan, berat_per_pcs } = body;
 
     if (!id_kategori || !nama_jenis || densitas_kg_per_m3 === undefined || harga_per_kg === undefined || is_active === undefined) {
       return errorResponse('Semua field termasuk id_kategori dan is_active wajib diisi', 400);
@@ -65,6 +66,7 @@ export async function updateJenisSampahController(req: Request, id: string) {
       densitas_kg_per_m3: Number(densitas_kg_per_m3),
       harga_per_kg: Number(harga_per_kg),
       satuan: satuan || 'kg',
+      berat_per_pcs: (satuan || 'kg') === 'pcs' && berat_per_pcs != null ? Number(berat_per_pcs) : null,
       is_active: Boolean(is_active),
     });
 

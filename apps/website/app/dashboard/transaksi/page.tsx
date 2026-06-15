@@ -203,7 +203,7 @@ export default function TransaksiPage() {
                     <tr key={d.id_detail} className="hover:bg-green-50/30 transition-colors">
                       <td className="p-4 font-semibold text-gray-800">{d.jenis_sampah?.nama_jenis || d.id_jenis_sampah}</td>
                       <td className="p-4 text-right font-semibold text-gray-700">
-                        {Number(d.berat_kg).toFixed(2)} {d.jenis_sampah?.satuan === 'pcs' ? 'pcs' : 'Kg'}
+                        {Number(d.berat_kg).toFixed(2)} Kg
                       </td>
                       <td className="p-4 text-right font-bold text-emerald-600">Rp {d.subtotal_harga.toLocaleString("id-ID")}</td>
                     </tr>
