@@ -5,6 +5,15 @@ export async function findManyTransaksi() {
     include: {
       nasabah: {
         select: { nama: true, kode_nasabah: true }
+      },
+      detail_transaksi: {
+        include: {
+          jenis_sampah: {
+            include: {
+              kategori: true
+            }
+          }
+        }
       }
     },
     orderBy: {
