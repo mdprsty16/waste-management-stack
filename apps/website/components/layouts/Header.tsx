@@ -21,6 +21,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/dashboard/kategori": "Kategori Sampah",
   "/dashboard/jenis-sampah": "Jenis Sampah",
   "/dashboard/nasabah": "Data Nasabah",
+  "/dashboard/pengangkutan": "Pengangkutan",
   "/dashboard/transaksi": "Transaksi",
 };
 
