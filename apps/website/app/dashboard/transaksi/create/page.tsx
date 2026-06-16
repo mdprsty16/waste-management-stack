@@ -138,11 +138,15 @@ export default function CreateTransaksiPage() {
     title: string;
     message: string;
     variant: "danger" | "warning" | "success" | "info";
+    onConfirm?: () => void | Promise<void>;
+    confirmText?: string;
+    isLoading?: boolean;
   }>({
     isOpen: false,
     title: "",
     message: "",
     variant: "info",
+    isLoading: false,
   });
 
   const showAlert = (title: string, message: string, variant: "danger" | "warning" | "success" | "info" = "info") => {
@@ -151,7 +155,36 @@ export default function CreateTransaksiPage() {
       title,
       message,
       variant,
+      onConfirm: undefined,
     });
+  };
+
+  const showConfirm = (
+    title: string,
+    message: string,
+    onConfirm: () => void | Promise<void>,
+    variant: "danger" | "warning" | "success" | "info" = "danger",
+    confirmText?: string
+  ) => {
+    setConfirmModal({
+      isOpen: true,
+      title,
+      message,
+      variant,
+      onConfirm,
+      confirmText,
+      isLoading: false,
+    });
+  };
+
+  const handleConfirmAction = async () => {
+    if (!confirmModal.onConfirm) return;
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
+    try {
+      await confirmModal.onConfirm();
+    } finally {
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
   };
 
   const closeConfirmModal = () => {
@@ -190,18 +223,7 @@ export default function CreateTransaksiPage() {
   };
 
   // Submit
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!idNasabah || items.some(i => !i.id_jenis_sampah || !i.berat_kg)) {
-      showAlert("Lengkapi Form", "Mohon lengkapi semua field yang tersedia sebelum menyimpan transaksi.", "warning");
-      return;
-    }
-    // Validasi: tidak boleh negatif atau nol
-    const invalidItem = items.find(i => parseFloat(i.berat_kg) <= 0);
-    if (invalidItem) {
-      showAlert("Validasi Jumlah", "Berat atau jumlah item sampah harus lebih besar dari 0!", "warning");
-      return;
-    }
+  const processSubmit = async () => {
     setSaving(true);
     try {
       await create({
@@ -220,8 +242,54 @@ export default function CreateTransaksiPage() {
     }
   };
 
+  const handlePreviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!idNasabah || items.some(i => !i.id_jenis_sampah || !i.berat_kg)) {
+      showAlert("Lengkapi Form", "Mohon lengkapi semua field yang tersedia sebelum menyimpan transaksi.", "warning");
+      return;
+    }
+    // Validasi: tidak boleh negatif atau nol
+    const invalidItem = items.find(i => parseFloat(i.berat_kg) <= 0);
+    if (invalidItem) {
+      showAlert("Validasi Jumlah", "Berat atau jumlah item sampah harus lebih besar dari 0!", "warning");
+      return;
+    }
+
+    const nasabahName = nasabahOptions.find(n => n.value === idNasabah)?.label || "-";
+    const dataPreview = `Nasabah: ${nasabahName}\nTanggal: ${tanggal}\nTotal Item: ${items.length} jenis sampah`;
+    
+    showConfirm(
+      "Konfirmasi Data Transaksi",
+      `Apakah Anda yakin ingin menyimpan transaksi berikut?\n\n${dataPreview}`,
+      async () => {
+        await processSubmit();
+        closeConfirmModal();
+      },
+      "success",
+      "Ya, Simpan"
+    );
+  };
+
+  const handleCancel = () => {
+    const hasData = idNasabah || items.some(i => i.id_kategori || i.id_jenis_sampah || i.berat_kg);
+    if (hasData) {
+      showConfirm(
+        "Batal Transaksi",
+        "Persetujuan: data yang sudah Anda tuliskan tidak akan disimpan. Yakin ingin membatalkan?",
+        () => {
+          closeConfirmModal();
+          router.back();
+        },
+        "warning",
+        "Ya, Batalkan"
+      );
+    } else {
+      router.back();
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl animate-fade-in-up">
+    <form onSubmit={handlePreviewSubmit} className="space-y-8 max-w-4xl animate-fade-in-up">
       {/* Header Section */}
       <div className="bg-gradient-to-r from-teal-600 to-emerald-700 p-8 rounded-3xl shadow-xl shadow-green-100 text-white relative overflow-hidden">
         <div className="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl transform translate-x-10 -translate-y-10" />
@@ -290,7 +358,7 @@ export default function CreateTransaksiPage() {
         <Button 
           type="button" 
           variant="secondary" 
-          onClick={() => router.back()}
+          onClick={handleCancel}
           className="rounded-xl"
         >
           Batal
@@ -312,9 +380,12 @@ export default function CreateTransaksiPage() {
       <ConfirmModal
         isOpen={confirmModal.isOpen}
         onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm ? handleConfirmAction : undefined}
         title={confirmModal.title}
         message={confirmModal.message}
         variant={confirmModal.variant}
+        confirmText={confirmModal.confirmText}
+        isLoading={confirmModal.isLoading}
       />
     </form>
   );

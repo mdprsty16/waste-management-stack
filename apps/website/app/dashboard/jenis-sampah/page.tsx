@@ -120,8 +120,7 @@ export default function JenisSampahPage() {
   };
 
   // Submit form (tambah atau edit)
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const processSubmit = async () => {
     setSaving(true);
     try {
       const payload = {
@@ -146,6 +145,42 @@ export default function JenisSampahPage() {
       showAlert("Gagal Menyimpan", err instanceof Error ? err.message : "Gagal menyimpan jenis sampah", "danger");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handlePreviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const actionText = editing ? "mengubah" : "menambahkan";
+    const katName = kategoriOptions.find(k => k.value === selectedKategori)?.label || '-';
+    const dataPreview = `Nama: ${namaJenis}\nKategori: ${katName}\nHarga: Rp ${hargaPerKg}/${satuan === 'pcs' ? 'pcs' : 'Kg'}`;
+    
+    showConfirm(
+      "Konfirmasi Data",
+      `Apakah Anda yakin ingin ${actionText} jenis sampah berikut?\n\n${dataPreview}`,
+      async () => {
+        await processSubmit();
+        closeConfirmModal();
+      },
+      "success",
+      "Ya, Simpan"
+    );
+  };
+
+  const handleCancel = () => {
+    // Cek apakah ada isian
+    if (namaJenis || hargaPerKg || densitas || beratPerPcs || selectedKategori) {
+      showConfirm(
+        "Batal Mengisi",
+        "Persetujuan: data yang sudah Anda tuliskan tidak akan disimpan. Yakin ingin membatalkan?",
+        () => {
+          setShowModal(false);
+          closeConfirmModal();
+        },
+        "warning",
+        "Ya, Batal"
+      );
+    } else {
+      setShowModal(false);
     }
   };
 
@@ -390,9 +425,9 @@ export default function JenisSampahPage() {
       </Card>
 
       {/* Modal Form Tambah/Edit */}
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}
+      <Modal isOpen={showModal} onClose={handleCancel}
         title={editing ? "Edit Jenis Sampah" : "Tambah Jenis Sampah Baru"}>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handlePreviewSubmit} className="space-y-4">
           <SelectAutocomplete
             label="Kategori Sampah"
             options={kategoriOptions}
@@ -456,7 +491,7 @@ export default function JenisSampahPage() {
             </>
           )}
           <div className="flex gap-3 justify-end pt-4 border-t border-gray-100">
-            <Button variant="secondary" type="button" onClick={() => setShowModal(false)} className="rounded-xl">Batal</Button>
+            <Button variant="secondary" type="button" onClick={handleCancel} className="rounded-xl">Batal</Button>
             <Button type="submit" isLoading={saving} className="rounded-xl shadow-md">
               {editing ? "Simpan Perubahan" : "Tambah Jenis"}
             </Button>

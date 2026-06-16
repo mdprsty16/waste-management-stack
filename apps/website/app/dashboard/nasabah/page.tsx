@@ -108,8 +108,7 @@ export default function NasabahPage() {
   };
 
   // Submit form (tambah atau edit)
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const processSubmit = async () => {
     setSaving(true);
     try {
       if (editing) {
@@ -134,6 +133,41 @@ export default function NasabahPage() {
       showAlert("Gagal Menyimpan", err instanceof Error ? err.message : "Gagal menyimpan data nasabah", "danger");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handlePreviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const actionText = editing ? "mengubah" : "menambahkan";
+    const dataPreview = `Nama: ${nama}\nNo. HP: ${nomorHp || '-'}\nRT/RW: ${rt || '-'}/${rw || '-'}`;
+    
+    showConfirm(
+      "Konfirmasi Data",
+      `Apakah Anda yakin ingin ${actionText} data nasabah berikut?\n\n${dataPreview}`,
+      async () => {
+        await processSubmit();
+        closeConfirmModal();
+      },
+      "success",
+      "Ya, Simpan"
+    );
+  };
+
+  const handleCancel = () => {
+    // Cek apakah ada isian
+    if (nama || nomorHp || rt || rw || kodeNasabah) {
+      showConfirm(
+        "Batal Mengisi",
+        "Persetujuan: data yang sudah Anda tuliskan tidak akan disimpan. Yakin ingin membatalkan?",
+        () => {
+          setShowModal(false);
+          closeConfirmModal();
+        },
+        "warning",
+        "Ya, Batal"
+      );
+    } else {
+      setShowModal(false);
     }
   };
 
@@ -367,9 +401,9 @@ export default function NasabahPage() {
       </Card>
 
       {/* Modal Form Tambah/Edit */}
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}
+      <Modal isOpen={showModal} onClose={handleCancel}
         title={editing ? "Edit Profil Nasabah" : "Tambah Nasabah Baru"}>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handlePreviewSubmit} className="space-y-4">
           {editing ? (
             <Input
               label="Kode Nasabah"
@@ -435,7 +469,7 @@ export default function NasabahPage() {
             </div>
           )}
           <div className="flex gap-3 justify-end pt-4 border-t border-gray-100">
-            <Button variant="secondary" type="button" onClick={() => setShowModal(false)} className="rounded-xl">Batal</Button>
+            <Button variant="secondary" type="button" onClick={handleCancel} className="rounded-xl">Batal</Button>
             <Button type="submit" isLoading={saving} className="rounded-xl shadow-md">
               {editing ? "Simpan Perubahan" : "Tambah Nasabah"}
             </Button>
