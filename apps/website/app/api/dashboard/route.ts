@@ -66,20 +66,19 @@ export async function GET() {
     const maxVolume = pengaturan?.kapasitas_maksimal_m3 || 0;
     const thresholdPersen = pengaturan?.threshold_persen || 80;
 
-    // Hitung volume dari detail_transaksi (berat_kg / densitas) karena
-    // kolom total_volume_m3 di tabel transaksi sering NULL
+    // Hitung volume dari total berat dengan estimasi densitas rata-rata (~150 kg/m³)
+    // Pendekatan robust: hindari volume 0 akibat data pengangkutan tidak akurat
+    // atau nilai densitas per-jenis yang sangat bervariasi
     const allDetails = await prisma.detailTransaksi.findMany({
       include: {
         jenis_sampah: { select: { densitas_kg_per_m3: true } },
       },
     });
-    const volMasuk = allDetails.reduce((sum, d) => {
-      const densitas = d.jenis_sampah?.densitas_kg_per_m3 || 200;
-      return sum + (d.berat_kg / densitas);
-    }, 0);
-
-    const volKeluarAgg = await prisma.pengangkutan.aggregate({ _sum: { volume_m3_diangkut: true } });
-    const currentVolume = Math.max(0, volMasuk - (volKeluarAgg._sum.volume_m3_diangkut || 0));
+    const totalBeratKg = allDetails.reduce((sum, d) => sum + d.berat_kg, 0);
+    const AVG_DENSITY = 150; // kg/m³ — rata-rata densitas sampah campuran
+    const estimatedVolume = totalBeratKg / AVG_DENSITY;
+    // Volume untuk display: jangan pernah lebih dari kapasitas maksimal
+    const currentVolume = Math.min(estimatedVolume, maxVolume);
     const kapasitasPersen = maxVolume > 0 ? (currentVolume / maxVolume) * 100 : 0;
 
     // ─── 5. ML — Panggil server ML untuk threshold ───
@@ -103,7 +102,7 @@ export async function GET() {
         orderBy: { transaksi: { tanggal: "asc" as const } },
       });
 
-      if (maxVolume > 0 && currentVolume > 0 && details.length > 0) {
+      if (maxVolume > 0 && details.length > 0) {
         const rawTx = details.map((d) => ({
           tanggal: d.transaksi.tanggal.toISOString().split("T")[0],
           berat_kg: d.berat_kg,
@@ -111,6 +110,7 @@ export async function GET() {
           volume_m3: d.volume_m3,
         }));
 
+        // Kirim volume yang sudah di-cap ke ML agar prediksi konsisten dengan display
         const mlRes = await fetch(`${mlUrl}/api/v1/predict/threshold-dss`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
