@@ -85,7 +85,9 @@ export async function GET() {
     // Cegah pengangkutan melebihi total volume yang pernah masuk
     const reasonablePickup = Math.min(totalPickup, estimatedVolume);
     const currentVolume = Math.min(Math.max(0, estimatedVolume - reasonablePickup), maxVolume);
-    const kapasitasPersen = maxVolume > 0 ? (currentVolume / maxVolume) * 100 : 0;
+    // Bulatkan ke 2 desimal — hindari float artifact MySQL
+    const currentVolumeRounded = Math.round(currentVolume * 100) / 100;
+    const kapasitasPersen = maxVolume > 0 ? (currentVolumeRounded / maxVolume) * 100 : 0;
 
     // ─── 5. ML — Panggil server ML untuk threshold ───
     const mlUrl = process.env.ML_SERVER_URL || "http://127.0.0.1:8000";
@@ -234,9 +236,9 @@ export async function GET() {
         tanggal: trx.created_at.toISOString(),
       })),
       kapasitas: {
-        current_volume_m3: Number(currentVolume.toFixed(2)),
+        current_volume_m3: currentVolumeRounded,
         max_volume_m3: Number(maxVolume.toFixed(2)),
-        persentase: Number(kapasitasPersen.toFixed(2)),
+        persentase: kapasitasPersen,
         threshold_persen: thresholdPersen,
         ...kapasitasMl,
       },
