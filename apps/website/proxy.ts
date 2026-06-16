@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyToken } from './app/lib/jwt';
 
-const publicPaths = ['/api/auth/login', '/api/dataset']; // Tambahkan jalur publik lainnya jika diperlukan
+const publicPaths = ['/api/auth/login', '/api/dataset', '/api/dashboard/summary']; // Tambahkan jalur publik lainnya jika diperlukan
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
