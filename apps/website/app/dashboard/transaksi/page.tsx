@@ -16,15 +16,36 @@ export default function TransaksiPage() {
   const [detail, setDetail] = useState<Transaksi | null>(null);
   const [showDetail, setShowDetail] = useState(false);
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc'); // default: terbaru dulu
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Sort data berdasarkan tanggal
-  const sortedData = useMemo(() => {
-    return [...data].sort((a, b) => {
+  // Sort & Filter data
+  const filteredData = useMemo(() => {
+    const sorted = [...data].sort((a, b) => {
       const dateA = new Date(a.tanggal).getTime();
       const dateB = new Date(b.tanggal).getTime();
       return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
     });
-  }, [data, sortOrder]);
+
+    return sorted.filter((item) => {
+      const query = searchQuery.toLowerCase().trim();
+      if (!query) return true;
+
+      const trxCode = `trx-${item.id_transaksi.substring(0, 5).toLowerCase()}`;
+      const trxFullCode = `trx-${item.id_transaksi.toLowerCase()}`;
+      const nasabahNama = item.nasabah?.nama?.toLowerCase() || "";
+      const dateStr = new Date(item.tanggal).toLocaleDateString("id-ID", {
+        day: "numeric", month: "long", year: "numeric"
+      }).toLowerCase();
+      
+      return (
+        trxCode.includes(query) ||
+        trxFullCode.includes(query) ||
+        item.id_transaksi.toLowerCase().includes(query) ||
+        nasabahNama.includes(query) ||
+        dateStr.includes(query)
+      );
+    });
+  }, [data, sortOrder, searchQuery]);
 
   const handleViewDetail = async (id: string) => {
     const res = await transaksiService.getTransaksiById(id);
@@ -164,19 +185,41 @@ export default function TransaksiPage() {
         </div>
       </div>
 
-      {/* Sort Control + Table */}
-      <Card
-        padding={false}
-        className="overflow-hidden border-none shadow-xl shadow-gray-100/50"
-      >
-        {/* Sort Bar */}
-        <div className="flex items-center justify-between px-6 py-3 bg-white border-b-2 border-gray-100">
-          <p className="text-sm font-semibold text-gray-500">
-            {data.length} transaksi ditemukan
+      {/* Search & Sort Controls */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border-2 border-gray-100 shadow-sm">
+        <div className="relative w-full sm:max-w-md">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Cari kode transaksi, nama nasabah, atau tanggal..."
+            className="w-full pl-11 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        
+        <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+          <p className="text-xs font-bold text-gray-400">
+            {filteredData.length} dari {data.length} transaksi
           </p>
           <button
             onClick={() => setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc')}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold border-2 border-gray-200 bg-white text-gray-700 hover:bg-green-50 hover:border-green-300 hover:text-green-700 transition-all duration-200 shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold border border-gray-200 bg-white text-gray-700 hover:bg-green-50 hover:border-green-300 hover:text-green-700 transition-all duration-200 shadow-sm"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               {sortOrder === 'desc' ? (
@@ -188,7 +231,14 @@ export default function TransaksiPage() {
             Tanggal: {sortOrder === 'desc' ? 'Terbaru' : 'Terlama'}
           </button>
         </div>
-        <Table columns={columns} data={sortedData} isLoading={isLoading} rowKey="id_transaksi" />
+      </div>
+
+      {/* Main Table Card */}
+      <Card
+        padding={false}
+        className="overflow-hidden border-none shadow-xl shadow-gray-100/50"
+      >
+        <Table columns={columns} data={filteredData} isLoading={isLoading} rowKey="id_transaksi" />
       </Card>
 
       {/* Modal Detail Transaksi — Invoice style */}

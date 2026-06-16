@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNasabah } from "@/hooks/useNasabah";
 import Table, { type TableColumn } from "@/components/ui/Table";
 import Button from "@/components/ui/Button";
@@ -15,6 +15,24 @@ export default function NasabahPage() {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<Nasabah | null>(null);
   const [saving, setSaving] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter data berdasarkan kata kunci pencarian
+  const filteredData = useMemo(() => {
+    return data.filter((item) => {
+      const query = searchQuery.toLowerCase().trim();
+      if (!query) return true;
+      
+      const nameMatch = item.nama.toLowerCase().includes(query);
+      const codeMatch = item.kode_nasabah ? item.kode_nasabah.toLowerCase().includes(query) : false;
+      const phoneMatch = item.nomor_hp ? item.nomor_hp.toLowerCase().includes(query) : false;
+      const rtMatch = item.rt ? item.rt.toLowerCase().includes(query) : false;
+      const rwMatch = item.rw ? item.rw.toLowerCase().includes(query) : false;
+      const addressMatch = `${item.rt || ""}/${item.rw || ""}`.includes(query) || `rt ${item.rt || ""}`.includes(query) || `rw ${item.rw || ""}`.includes(query);
+      
+      return nameMatch || codeMatch || phoneMatch || rtMatch || rwMatch || addressMatch;
+    });
+  }, [data, searchQuery]);
 
   // State for ConfirmModal
   const [confirmModal, setConfirmModal] = useState<{
@@ -392,12 +410,44 @@ export default function NasabahPage() {
         </div>
       </div>
 
+      {/* Search Bar */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border-2 border-gray-100 shadow-sm">
+        <div className="relative w-full sm:max-w-md">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Cari nama, kode, RT/RW, atau nomor HP..."
+            className="w-full pl-11 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        <div className="text-xs font-bold text-gray-400">
+          Menampilkan {filteredData.length} dari {totalNasabah} nasabah
+        </div>
+      </div>
+
       {/* Main Table Card */}
       <Card
         padding={false}
         className="overflow-hidden border-none shadow-xl shadow-gray-100/50"
       >
-        <Table columns={columns} data={data} isLoading={isLoading} rowKey="id_nasabah" />
+        <Table columns={columns} data={filteredData} isLoading={isLoading} rowKey="id_nasabah" />
       </Card>
 
       {/* Modal Form Tambah/Edit */}
