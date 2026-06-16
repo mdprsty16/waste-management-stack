@@ -87,7 +87,7 @@ export async function GET() {
     const currentVolume = Math.min(Math.max(0, estimatedVolume - reasonablePickup), maxVolume);
     // Bulatkan ke 2 desimal — hindari float artifact MySQL
     const currentVolumeRounded = Math.round(currentVolume * 100) / 100;
-    const kapasitasPersen = maxVolume > 0 ? (currentVolumeRounded / maxVolume) * 100 : 0;
+    const kapasitasPersen = maxVolume > 0 ? Math.round((currentVolumeRounded / maxVolume) * 10000) / 100 : 0;
 
     // ─── 5. ML — Panggil server ML untuk threshold ───
     const mlUrl = process.env.ML_SERVER_URL || "http://127.0.0.1:8000";
@@ -124,7 +124,7 @@ export async function GET() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             threshold_m3: maxVolume,
-            current_fill_m3: currentVolume,
+            current_fill_m3: currentVolumeRounded,
             raw_transactions: rawTx,
           }),
           signal: AbortSignal.timeout(5000),
@@ -132,10 +132,17 @@ export async function GET() {
 
         if (mlRes.ok) {
           const mlData = await mlRes.json();
+          const steps = (mlData.forecast_simulation_steps || []).map(
+            (s: { hari: string; tanggal: string; akumulasi_total_m3: number; prediksi_masuk_m3: number }) => ({
+              ...s,
+              akumulasi_total_m3: Math.round(s.akumulasi_total_m3 * 100) / 100,
+              prediksi_masuk_m3: Math.round(s.prediksi_masuk_m3 * 100) / 100,
+            })
+          );
           kapasitasMl = {
             estimated_days_remaining: mlData.days_until_threshold,
             recommendation: mlData.recommendation,
-            forecast_simulation_steps: mlData.forecast_simulation_steps || [],
+            forecast_simulation_steps: steps,
           };
         }
       }

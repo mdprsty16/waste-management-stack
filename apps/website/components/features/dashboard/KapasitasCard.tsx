@@ -35,8 +35,8 @@ export default function KapasitasCard({ data, isLoading, onOpenSettings, onOpenP
 
       <div className="mb-6">
         <div className="flex justify-between items-end mb-2">
-          <span className="text-4xl font-black text-gray-900">{percentage}%</span>
-          <span className="text-base font-semibold text-gray-500">{current_volume_m3} / {max_volume_m3} m³</span>
+          <span className="text-4xl font-black text-gray-900">{Number(percentage.toFixed(2))}%</span>
+          <span className="text-base font-semibold text-gray-500">{Number(current_volume_m3.toFixed(2))} / {Number(max_volume_m3.toFixed(2))} m³</span>
         </div>
         <div className="w-full bg-gray-100 h-5 rounded-full overflow-hidden shadow-inner">
           <div className={`h-full ${barColor} transition-all duration-700 ease-out`} style={{ width: `${Math.min(percentage, 100)}%` }} />
@@ -59,8 +59,8 @@ export default function KapasitasCard({ data, isLoading, onOpenSettings, onOpenP
                 <div key={idx} className={`flex-shrink-0 border rounded-xl p-3 w-32 flex flex-col justify-center items-center shadow-sm transition-transform hover:scale-105 ${isPenuh ? 'bg-red-50 border-red-200' : 'bg-gradient-to-b from-blue-50 to-white border-blue-100'}`}>
                   <span className={`text-xs font-black ${isPenuh ? 'text-red-700' : 'text-blue-800'}`}>{step.hari}</span>
                   <span className="text-[10px] font-medium text-gray-500 mb-1.5">{step.tanggal.slice(5)}</span>
-                  <span className={`text-sm font-black ${isPenuh ? 'text-red-600' : 'text-gray-900'}`}>{step.akumulasi_total_m3} m³</span>
-                  <span className={`text-[10px] font-bold ${isPenuh ? 'text-red-500' : 'text-emerald-600'}`}>+{step.prediksi_masuk_m3} m³</span>
+                  <span className={`text-sm font-black ${isPenuh ? 'text-red-600' : 'text-gray-900'}`}>{Number(step.akumulasi_total_m3.toFixed(2))} m³</span>
+                  <span className={`text-[10px] font-bold ${isPenuh ? 'text-red-500' : 'text-emerald-600'}`}>+{Number(step.prediksi_masuk_m3.toFixed(2))} m³</span>
                 </div>
               );
             })}
