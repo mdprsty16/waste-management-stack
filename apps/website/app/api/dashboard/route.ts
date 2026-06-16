@@ -66,9 +66,20 @@ export async function GET() {
     const maxVolume = pengaturan?.kapasitas_maksimal_m3 || 0;
     const thresholdPersen = pengaturan?.threshold_persen || 80;
 
-    const volMasuk = await prisma.transaksi.aggregate({ _sum: { total_volume_m3: true } });
-    const volKeluar = await prisma.pengangkutan.aggregate({ _sum: { volume_m3_diangkut: true } });
-    const currentVolume = Math.max(0, (volMasuk._sum.total_volume_m3 || 0) - (volKeluar._sum.volume_m3_diangkut || 0));
+    // Hitung volume dari detail_transaksi (berat_kg / densitas) karena
+    // kolom total_volume_m3 di tabel transaksi sering NULL
+    const allDetails = await prisma.detailTransaksi.findMany({
+      include: {
+        jenis_sampah: { select: { densitas_kg_per_m3: true } },
+      },
+    });
+    const volMasuk = allDetails.reduce((sum, d) => {
+      const densitas = d.jenis_sampah?.densitas_kg_per_m3 || 200;
+      return sum + (d.berat_kg / densitas);
+    }, 0);
+
+    const volKeluarAgg = await prisma.pengangkutan.aggregate({ _sum: { volume_m3_diangkut: true } });
+    const currentVolume = Math.max(0, volMasuk - (volKeluarAgg._sum.volume_m3_diangkut || 0));
     const kapasitasPersen = maxVolume > 0 ? (currentVolume / maxVolume) * 100 : 0;
 
     // ─── 5. ML — Panggil server ML untuk threshold ───
