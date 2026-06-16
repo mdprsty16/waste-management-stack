@@ -15,7 +15,7 @@ const DownIcon = ({ c = "w-6 h-6" }: { c?: string }) => (
 );
 
 const HERO_IMAGES = [
-  "next/hero1.avif",
+  "/hero1.avif",
   "/hero2.avif",
   "/hero3.avif",
   "/hero4.avif",
