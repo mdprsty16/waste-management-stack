@@ -18,7 +18,7 @@ export async function getKapasitasDashboardService() {
     success: true,
     data: {
       current_volume_m3: Number(currentVolume.toFixed(2)),
-      max_volume_m3: maxVolume,
+      max_volume_m3: Number(maxVolume.toFixed(2)),
       threshold_persen: pengaturan.threshold_persen,
       percentage: Number(percentage.toFixed(2)),
       estimated_days_remaining
