@@ -1,0 +1,112 @@
+======================================================================
+DOCUMENTATION: API CONTRACT & RECURSIVE WORKFLOW FOR THRESHOLD (BSSB)
+======================================================================
+
+Deskripsi Alur Baru:
+Backend mengirimkan data transaksi historis (masa lalu) hingga hari ini, 
+beserta batas kapasitas maksimal (threshold) dan volume sampah saat ini. 
+Engine Python (.py) akan melakukan simulasi peramalan maju berulang kali 
+(Recursive Forecasting) hari demi hari di dalam memori untuk mendeteksi 
+tepat pada hari ke berapa penampungan sampah akan penuh (mencapai threshold).
+
+----------------------------------------------------------------------
+1. SPESIFIKASI ENDPOINT (API CONTRACT)
+----------------------------------------------------------------------
+Method       : POST
+Path         : /api/v1/predict/threshold-dss
+Content-Type : application/json
+
+Ketentuan Pengiriman Data dari Backend:
+- Backend mengirimkan data transaksi historis minimal 10-14 hari ke belakang 
+  (urut terlama ke terbaru) untuk membentuk landasan fitur lag harian.
+- Tidak perlu mengirimkan baris dummy untuk hari esok, karena hari esok dan 
+  seterusnya akan digenerate otomatis secara rekursif oleh Python.
+- Backend wajib menyertakan nilai 'threshold_m3' dan 'current_fill_m3'.
+
+----------------------------------------------------------------------
+2. STRUKTUR INPUT DATA (MURNI DARI BACKEND)
+----------------------------------------------------------------------
+CONTOH JSON REQUEST PAYLOAD (Siap Salin ke Notepad):
+
+{
+  "threshold_m3": 10.0,
+  "current_fill_m3": 7.20,
+  "raw_transactions": [
+    {"tanggal": "2026-06-01", "berat_kg": 450.0, "densitas_kg_m3": 375.0, "volume_m3": 0.0},
+    {"tanggal": "2026-06-02", "berat_kg": 380.0, "densitas_kg_m3": 400.0, "volume_m3": 0.0},
+    {"tanggal": "2026-06-03", "berat_kg": 410.0, "densitas_kg_m3": 372.0, "volume_m3": 0.0},
+    {"tanggal": "2026-06-04", "berat_kg": 390.0, "densitas_kg_m3": 371.0, "volume_m3": 0.0},
+    {"tanggal": "2026-06-05", "berat_kg": 350.0, "densitas_kg_m3": 411.0, "volume_m3": 0.0},
+    {"tanggal": "2026-06-06", "berat_kg": 520.0, "densitas_kg_m3": 325.0, "volume_m3": 0.0},
+    {"tanggal": "2026-06-07", "berat_kg": 100.0, "densitas_kg_m3": 200.0, "volume_m3": 0.0}, 
+    {"tanggal": "2026-06-08", "berat_kg": 480.0, "densitas_kg_m3": 355.0, "volume_m3": 0.0},
+    {"tanggal": "2026-06-09", "berat_kg": 370.0, "densitas_kg_m3": 411.0, "volume_m3": 0.0},
+    {"tanggal": "2026-06-10", "berat_kg": 420.0, "densitas_kg_m3": 365.0, "volume_m3": 0.0}
+  ]
+}
+
+----------------------------------------------------------------------
+3. STRUKTUR RESPONSE DATA (OUTPUT UNTUK NEXT.JS / FRONTEND)
+----------------------------------------------------------------------
+HTTP Status: 200 OK
+
+CONTOH JSON RESPONSE PAYLOAD:
+{
+  "status": "success",
+  "current_fill_m3": 7.20,
+  "threshold_m3": 10.0,
+  "days_until_threshold": 3,
+  "estimated_full_date": "2026-06-13",
+  "recommendation": "PERINGATAN: Kapasitas penyimpanan akan mencapai threshold dalam 3 hari operasional. Segera jadwalkan pengangkutan atau hubungi pengepul.",
+  "forecast_simulation_steps": [
+    {"hari": "T+1", "tanggal": "2026-06-11", "prediksi_masuk_m3": 0.95, "akumulasi_total_m3": 8.15},
+    {"hari": "T+2", "tanggal": "2026-06-12", "prediksi_masuk_m3": 0.88, "akumulasi_total_m3": 9.03},
+    {"hari": "T+3", "tanggal": "2026-06-13", "prediksi_masuk_m3": 1.12, "akumulasi_total_m3": 10.15}
+  ]
+}
+
+----------------------------------------------------------------------
+4. ALUR PIPELINE RECURSIVE DI DALAM FILE PYTHON (.py)
+----------------------------------------------------------------------
+Ketika API menerima request, script Python akan menjalankan algoritma ini:
+
+TAHAP A: ADOPSI LOGIKA PREPROCESS & AGREGASI AWAL
+1. Membaca 'threshold_m3' dan 'current_fill_m3' ke dalam variabel memory.
+2. Mengubah 'raw_transactions' menjadi Pandas DataFrame historis.
+3. Menghitung volume riil (berat / densitas), menghapus outlier (>10 m³).
+4. Melakukan agregasi harian dan penggabungan transaksi hari Minggu ke Senin.
+5. Membuat kolom dasar awal: 'is_monday' dan 'log_volume_m3'.
+
+TAHAP B: INISIALISASI LOOP FORECASTING REKURSIF
+6. Mencatat tanggal terakhir dari data historis (anggap sebagai Hari T).
+7. Membuat variabel tracker penampungan: `total_accum_m3 = current_fill_m3`.
+8. Membuat loop `while total_accum_m3 < threshold_m3` (maksimal limit 30 hari):
+
+   Di dalam Loop Jalankan Langkah ini setiap Hari Baru (T + i):
+   a. Buat baris baru dengan Tanggal maju 1 hari (T + 1, T + 2, dst).
+   b. Ekstraksi Fitur Kalender Otomatis pada tanggal baru tersebut:
+      - nama_hari = tanggal_baru.dt.day_name()
+      - is_monday = 1 jika Senin, else 0
+      - is_saturday = 1 jika Sabtu, else 0
+      - is_low_traffic = 1 jika Rabu atau Jumat, else 0
+   c. Hitung Fitur Lags & EWM secara dinamis dari data gabungan:
+      - 'lag_6d' & 'lag_9d' (mengambil nilai volume asli beberapa baris ke belakang).
+      - 'ewm_3d' (menghitung rata-rata eksponensial bergerak 3 hari terakhir).
+   d. Isolasi baris baru tersebut menjadi vektor fitur X:
+      👉 ["is_monday", "is_saturday", "is_low_traffic", "lag_6d", "lag_9d", "ewm_3d"]
+   e. Prediksi Volume menggunakan model Ridge:
+      - model.predict(X) -> menghasilkan nilai skala LOG.
+      - Inversi balik: prediksi_m3 = np.expm1(nilai_log)
+   f. Update Dataframe & Akumulasi:
+      - Isi kolom 'volume_m3' dan 'log_volume_m3' pada baris baru tersebut dengan 
+        hasil prediksi barusan (sehingga hari esoknya bisa membaca baris ini sebagai lag).
+      - Tambahkan hasil prediksi ke variabel penampung: 
+        `total_accum_m3 += prediksi_m3`
+   g. Catat langkah simulasi ke dalam array hasil.
+   h. Jika `total_accum_m3 >= threshold_m3`, loop BERHENTI.
+
+TAHAP C: PENYUSUNAN REKOMENDASI DSS
+9. Menghitung selisih hari dari Hari T sampai loop berhenti (`days_until_threshold`).
+10. Membuat teks string rekomendasi dinamis berdasarkan jumlah hari tersebut.
+11. Mengirimkan seluruh payload JSON Response kembali ke backend/Next.js.
+======================================================================
