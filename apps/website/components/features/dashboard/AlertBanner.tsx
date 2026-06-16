@@ -74,7 +74,7 @@ export default function AlertBanner({ alert, onDismiss, onAction }: AlertBannerP
         {/* Close button */}
         <button
           onClick={onDismiss}
-          className="text-amber-400 hover:text-amber-600 transition-colors flex-shrink-0 p-1"
+          className="text-amber-400 hover:text-amber-600 transition-colors flex-shrink-0 p-1 cursor-pointer"
           aria-label="Tutup alert"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
