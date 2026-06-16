@@ -128,7 +128,7 @@ export default function JenisSampahPage() {
         id_kategori: selectedKategori,
         nama_jenis: namaJenis,
         harga_per_kg: Number(hargaPerKg),
-        densitas_kg_per_m3: satuan === 'pcs' ? 0 : Number(densitas),  // PCS tidak butuh densitas manual
+        densitas_kg_per_m3: Number(densitas),
         satuan,
         berat_per_pcs: satuan === 'pcs' && beratPerPcs ? Number(beratPerPcs) / 1000 : null,  // Konversi gram → kg
       };
@@ -432,14 +432,12 @@ export default function JenisSampahPage() {
             className="focus:border-green-500 focus:ring-green-500 rounded-xl"
             min="0"
           />
-          {satuan === 'kg' && (
-            <Input label="Densitas (Kg/m³)" value={densitas} type="number" required
-              onChange={(e) => setDensitas(e.target.value)}
-              placeholder="Contoh: 30" 
-              className="focus:border-green-500 focus:ring-green-500 rounded-xl"
-              min="0"
-            />
-          )}
+          <Input label="Densitas (Kg/m³)" value={densitas} type="number" required
+            onChange={(e) => setDensitas(e.target.value)}
+            placeholder="Contoh: 30" 
+            className="focus:border-green-500 focus:ring-green-500 rounded-xl"
+            min="0"
+          />
           {satuan === 'pcs' && (
             <>
               <Input label="Berat per 1 Buah (gram)" value={beratPerPcs} type="number" required

@@ -32,7 +32,7 @@ export async function getDatasetService(format?: string) {
     return isNaN(num) ? 0 : Number(num.toFixed(2));
   };
 
-  // Proses flattening data — HANYA 3 KOLOM untuk publik (tanpa data identitas nasabah)
+  // Proses flattening data — untuk publik (tanpa data identitas nasabah)
   const flattenedData = rawData.map(item => {
     // Konversi PCS ke berat riil (kg) jika satuan = 'pcs'
     const isPcs = item.jenis_sampah?.satuan === 'pcs';
@@ -42,8 +42,9 @@ export async function getDatasetService(format?: string) {
 
     return {
       tanggal: item.transaksi.tanggal ? new Date(item.transaksi.tanggal).toISOString().split('T')[0] : '',
-      densitas: round2(item.jenis_sampah?.densitas_kg_per_m3),
-      berat: round2(beratKg),
+      jenis_sampah: item.jenis_sampah?.nama_jenis || '',
+      berat_kg: round2(beratKg),
+      densitas_kg_m3: round2(item.jenis_sampah?.densitas_kg_per_m3),
     };
   });
 

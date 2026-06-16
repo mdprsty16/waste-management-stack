@@ -12,6 +12,7 @@ export async function getDatasetForModeling() {
       },
       jenis_sampah: {
         select: {
+          nama_jenis: true,
           densitas_kg_per_m3: true,
           satuan: true,
           berat_per_pcs: true,
