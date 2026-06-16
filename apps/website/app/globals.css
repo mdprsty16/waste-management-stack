@@ -43,6 +43,27 @@ body {
   color: var(--foreground);
 }
 
+/* ─── Global cursor pointer for interactive elements ─── */
+/* Tailwind CSS v4 resets cursor on buttons to default; this restores pointer */
+button,
+a,
+[role="button"],
+select,
+summary,
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+label[for] {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
 /* ─── Core Animations ─── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }

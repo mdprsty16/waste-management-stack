@@ -75,8 +75,8 @@ export default function KapasitasModal({ isOpen, onClose, onSuccess }: Props) {
             />
           </div>
           <div className="flex justify-end gap-3 mt-8">
-            <button type="button" onClick={onClose} className="px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-bold transition-colors">Batal</button>
-            <button type="submit" disabled={isLoading} className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-lg shadow-green-200 transition-colors">
+            <button type="button" onClick={onClose} className="px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-bold transition-colors cursor-pointer">Batal</button>
+            <button type="submit" disabled={isLoading} className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-lg shadow-green-200 transition-colors cursor-pointer disabled:cursor-not-allowed">
               {isLoading ? 'Menyimpan...' : 'Simpan Pengaturan'}
             </button>
           </div>

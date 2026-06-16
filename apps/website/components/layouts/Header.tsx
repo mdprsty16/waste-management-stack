@@ -53,7 +53,7 @@ export default function Header({ adminName, onMenuToggle }: HeaderProps) {
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuToggle}
-          className="lg:hidden p-2.5 text-gray-700 hover:bg-gray-100 rounded-xl transition-colors"
+          className="lg:hidden p-2.5 text-gray-700 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer"
           aria-label="Toggle menu"
         >
           <MenuIcon />
