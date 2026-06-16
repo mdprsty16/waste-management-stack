@@ -1,17 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useDashboard } from "@/hooks/useDashboard";
 import Card from "@/components/ui/Card";
 import StatCard from "@/components/features/dashboard/StatCard";
-import BarChart, { getColorForIndex } from "@/components/features/dashboard/BarChart";
-import WeeklyTrendChart from "@/components/features/dashboard/WeeklyTrendChart";
-import AlertBanner from "@/components/features/dashboard/AlertBanner";
 import Button from "@/components/ui/Button";
 import KapasitasCard from "@/components/features/dashboard/KapasitasCard";
-import KapasitasModal from "@/components/features/dashboard/KapasitasModal";
-import PengangkutanModal from "@/components/features/dashboard/PengangkutanModal";
 import ConfirmModal from "@/components/ui/ConfirmModal";
+
+// Lazy load — komponen berat / di bawah fold / jarang dipake
+const BarChart = dynamic(() => import("@/components/features/dashboard/BarChart"), { ssr: false });
+const WeeklyTrendChart = dynamic(() => import("@/components/features/dashboard/WeeklyTrendChart"), { ssr: false });
+const AlertBanner = dynamic(() => import("@/components/features/dashboard/AlertBanner"), { ssr: false });
+const KapasitasModal = dynamic(() => import("@/components/features/dashboard/KapasitasModal"), { ssr: false });
+const PengangkutanModal = dynamic(() => import("@/components/features/dashboard/PengangkutanModal"), { ssr: false });
+
+// Duplikasi kecil agar tidak perlu import BarChart cuma buat getColorForIndex
+const DYNAMIC_COLORS = [
+  "#16a34a", "#2563eb", "#dc2626", "#7c3aed",
+  "#d97706", "#0891b2", "#e11d48", "#4f46e5",
+  "#059669", "#ca8a04", "#9333ea", "#64748b",
+];
+function getColorForIndex(index: number): string {
+  return DYNAMIC_COLORS[index % DYNAMIC_COLORS.length];
+}
 
 // ============================================================
 // Dashboard Overview — 1 API call via useDashboard()
