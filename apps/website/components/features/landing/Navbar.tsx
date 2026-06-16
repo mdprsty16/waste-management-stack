@@ -53,7 +53,7 @@ export default function Navbar() {
               src="/logo2.webp"
               alt="Logo"
               width={44}
-              height={44}
+              height={62}
               className="rounded-xl shadow-md group-hover:shadow-lg transition-shadow"
             />
             <div>
