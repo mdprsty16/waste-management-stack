@@ -112,33 +112,94 @@ export default function DashboardOverviewPage() {
   const handleDownloadReport = () => {
     const now = new Date();
     const monthName = now.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+    const tgl = now.toLocaleDateString("id-ID", {
+      day: "numeric", month: "long", year: "numeric",
+      hour: "2-digit", minute: "2-digit",
+    });
 
-    let csv = "LAPORAN BULANAN BANK SAMPAH SAMPUL BERKASIH\n";
-    csv += `Periode: ${monthName}\n`;
-    csv += `Tanggal Unduh: ${now.toLocaleDateString("id-ID")}\n\n`;
-    csv += "=== RINGKASAN STATISTIK ===\n";
-    csv += `Total Nasabah,${ringkasan.total_nasabah}\n`;
-    csv += `Total Sampah Terkumpul (Kg),${ringkasan.total_sampah_kg}\n`;
-    csv += `Total Uang Diberikan,Rp ${ringkasan.total_saldo_rupiah.toLocaleString("id-ID")}\n`;
-    csv += `Total Transaksi,${ringkasan.total_transaksi}\n\n`;
-    csv += "=== DISTRIBUSI SAMPAH PER KATEGORI ===\n";
-    csv += "Kategori,Total (Kg)\n";
-    grafik_kategori.forEach((k) => { csv += `${k.kategori},${k.total_kg}\n`; });
-    csv += "\n=== TREN SAMPAH MINGGUAN ===\n";
-    csv += "Minggu,Total (Kg),Sumber\n";
-    grafik_mingguan.aktual.forEach((a) => { csv += `${a.label},${a.total_kg},Aktual\n`; });
-    csv += `${grafik_mingguan.prediksi.label},${grafik_mingguan.prediksi.total_kg},Prediksi\n\n`;
-    csv += "=== REKOMENDASI OPERASIONAL ===\n";
-    csv += `Estimasi Volume,${grafik_mingguan.prediksi.total_kg} Kg\n`;
-    csv += `Estimasi Armada,${Math.ceil(grafik_mingguan.prediksi.total_kg / 500)} unit\n`;
-    csv += `Status Alert,${alert_sistem.is_alert ? "URGENT" : "AMAN"}\n`;
-    csv += `Catatan,${alert_sistem.pesan}\n`;
+    const baris = (...cols: unknown[]) => cols.map(String).join(",") + "\n";
+
+    let csv = "";
+    csv += "LAPORAN BULANAN BANK SAMPAH SAMPUL BERKASIH (BSSB)\n";
+    csv += "IKMP - Kuningan, Jawa Barat\n";
+    csv += "=".repeat(60) + "\n\n";
+
+    // ─── HEADER ───
+    csv += "PERIODE LAPORAN\n";
+    csv += baris("Bulan", monthName);
+    csv += baris("Tanggal Cetak", tgl);
+    csv += "\n";
+
+    // ─── RINGKASAN ───
+    csv += "A. RINGKASAN STATISTIK\n";
+    csv += "-".repeat(40) + "\n";
+    csv += baris("Indikator", "Nilai");
+    csv += baris("Total Nasabah Aktif", ringkasan.total_nasabah);
+    csv += baris("Total Sampah Terkumpul (Kg)", ringkasan.total_sampah_kg);
+    csv += baris("Total Saldo Warga (Rp)", ringkasan.total_saldo_rupiah);
+    csv += baris("Total Transaksi", ringkasan.total_transaksi);
+    csv += "\n";
+
+    // ─── KAPASITAS GUDANG ───
+    csv += "B. KAPASITAS GUDANG\n";
+    csv += "-".repeat(40) + "\n";
+    csv += baris("Indikator", "Nilai");
+    csv += baris("Volume Terpakai (m³)", kapasitas.current_volume_m3);
+    csv += baris("Kapasitas Maksimal (m³)", kapasitas.max_volume_m3);
+    csv += baris("Persentase Terpakai (%)", kapasitas.persentase);
+    csv += baris("Estimasi Hari Penuh", kapasitas.estimated_days_remaining);
+    csv += baris("Rekomendasi AI", kapasitas.recommendation);
+    csv += "\n";
+
+    // ─── DISTRIBUSI KATEGORI ───
+    csv += "C. DISTRIBUSI SAMPAH PER KATEGORI\n";
+    csv += "-".repeat(40) + "\n";
+    csv += baris("Kategori", "Total (Kg)", "Persentase (%)");
+    const totalKategori = grafik_kategori.reduce((s, k) => s + k.total_kg, 0);
+    grafik_kategori.forEach((k) => {
+      const pct = totalKategori > 0 ? ((k.total_kg / totalKategori) * 100).toFixed(1) : "0";
+      csv += baris(k.kategori, k.total_kg, pct);
+    });
+    csv += "\n";
+
+    // ─── TREN MINGGUAN ───
+    csv += "D. TREN SAMPAH MINGGUAN + PREDIKSI ML\n";
+    csv += "-".repeat(60) + "\n";
+    csv += baris("Minggu", "Total (Kg)", "Sumber");
+    grafik_mingguan.aktual.forEach((a) => { csv += baris(a.label, a.total_kg, "Aktual"); });
+    csv += baris(grafik_mingguan.prediksi.label, grafik_mingguan.prediksi.total_kg, "Prediksi ML");
+    csv += "\n";
+
+    // ─── FORECAST SIMULASI ───
+    if (kapasitas.forecast_simulation_steps && kapasitas.forecast_simulation_steps.length > 0) {
+      csv += "E. SIMULASI PREDIKSI KAPASITAS (7 Hari)\n";
+      csv += "-".repeat(60) + "\n";
+      csv += baris("Hari", "Tanggal", "Prediksi (m³)", "Akumulasi (m³)");
+      kapasitas.forecast_simulation_steps.slice(0, 7).forEach((s: Record<string, unknown>) => {
+        csv += baris(s.hari, s.tanggal, s.prediksi_masuk_m3, s.akumulasi_total_m3);
+      });
+      csv += "\n";
+    }
+
+    // ─── REKOMENDASI ───
+    csv += "F. REKOMENDASI OPERASIONAL\n";
+    csv += "-".repeat(40) + "\n";
+    csv += baris("Status", alert_sistem.is_alert ? "⚠️ URGENT" : "✅ AMAN");
+    csv += baris("Estimasi Volume Depan (Kg)", grafik_mingguan.prediksi.total_kg);
+    csv += baris("Estimasi Armada Dibutuhkan", `${Math.ceil(grafik_mingguan.prediksi.total_kg / 500)} unit`);
+    csv += baris("Catatan AI", alert_sistem.pesan);
+    csv += "\n";
+
+    // ─── FOOTER ───
+    csv += "=".repeat(60) + "\n";
+    csv += "Dicetak otomatis melalui Sistem BSSB\n";
+    csv += `Copyright © ${now.getFullYear()} BSSB IKMP Kuningan\n`;
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `Laporan_BSSB_${monthName.replace(" ", "_")}.csv`;
+    link.download = `Laporan_BSSB_${monthName.replace(/ /g, "_")}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -182,9 +243,6 @@ export default function DashboardOverviewPage() {
                 </svg>
               }
             >Unduh Laporan</Button>
-            <Button variant="secondary" size="lg"
-              className="bg-white text-green-700 border-none hover:bg-green-50 hover:scale-[1.02] transition-all duration-200 shadow-lg font-extrabold"
-            >+ Tambah Transaksi Baru</Button>
           </div>
         </div>
       </div>
