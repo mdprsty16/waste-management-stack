@@ -120,15 +120,19 @@ export default function Footer() {
           <div className="text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-3 mb-5">
 
-              <div className="relative">
+              <div className="relative flex-shrink-0">
                 <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-green-400/20 to-green-600/10 blur-sm" />
 
+                {/* ✅ LOGO FOOTER — OPTIMAL */}
                 <Image
-                  src="/logo2.png"
+                  src="/logo2.webp"
                   alt="Logo BSSB"
                   width={56}
                   height={56}
                   className="relative rounded-xl shadow-lg shadow-black/20"
+                  quality={75}           // ✅ Kompresi agresif
+                  loading="lazy"         // ✅ Di bawah fold, lazy load
+                  sizes="56px"           // ✅ Ukuran tepat
                 />
               </div>
 

@@ -45,17 +45,21 @@ export default function Navbar() {
           : "bg-transparent py-5"
       }`}
     >
-      {/* Full-width container — no max-width constraint */}
       <div className="w-full px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
           <a href="#beranda" className="flex items-center gap-3 group">
-            <Image
-              src="/logo2.png"
-              alt="Logo"
-              width={44}
-              height={62}
-              className="rounded-xl shadow-md group-hover:shadow-lg transition-shadow"
-            />
+            {/* ✅ LOGO OPTIMAL — menggunakan WEBP dengan ukuran tepat */}
+            <div className="relative flex-shrink-0 w-11 h-[62px]">
+              <Image
+                src="/logo2.webp"  // ✅ Pakai WEBP
+                alt="Logo BSSB"
+                fill
+                className="rounded-xl shadow-md group-hover:shadow-lg transition-shadow object-contain"
+                sizes="44px"  // ✅ Beri tahu ukuran tepat
+                quality={75}  // ✅ Kompresi agresif
+                priority     // ✅ Logo di atas fold, pakai priority
+              />
+            </div>
             <div>
               <span className={`font-black text-lg block leading-tight tracking-tight transition-colors duration-500 ${scrolled ? "text-green-900" : "text-green-600"}`}>
                 BSSB
