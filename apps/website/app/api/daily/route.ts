@@ -13,7 +13,7 @@ import { handleControllerError } from '../../lib/errorHandler';
 // Jika ML server belum tersedia, gunakan fallback prediksi sederhana.
 // ============================================================
 
-const ML_SERVER_URL = process.env.ML_SERVER_URL || 'http://localhost:5000';
+const ML_SERVER_URL = process.env.ML_SERVER_URL || 'http://127.0.0.1:8000';
 
 /**
  * Hitung rentang tanggal per minggu di bulan berjalan.
@@ -62,7 +62,7 @@ async function fetchMLPrediction(
   aktualData: { label: string; total_kg: number }[]
 ): Promise<{ predicted_kg: number; is_alert: boolean; pesan: string }> {
   try {
-    const response = await fetch(`${ML_SERVER_URL}/api/predict`, {
+    const response = await fetch(`${ML_SERVER_URL}/api/v1/predict/weekly`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

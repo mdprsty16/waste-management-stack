@@ -1,6 +1,7 @@
 import { successResponse, errorResponse } from '../../lib/response';
 import { handleControllerError } from '../../lib/errorHandler';
 import * as kategoriService from './kategori-sampah.service';
+import { validate, createKategoriSchema, updateKategoriSchema } from '../../lib/validation';
 
 export async function getKategoriController(req: Request) {
   try {
@@ -29,13 +30,11 @@ export async function getKategoriByIdController(req: Request, id: string) {
 export async function createKategoriController(req: Request) {
   try {
     const body = await req.json();
-    const { nama_kategori, deskripsi } = body;
 
-    if (!nama_kategori) {
-      return errorResponse('Field nama_kategori wajib diisi', 400);
-    }
+    const parsed = validate(createKategoriSchema, body);
+    if (!parsed.ok) return parsed.response;
 
-    const result = await kategoriService.createKategoriService({ nama_kategori, deskripsi });
+    const result = await kategoriService.createKategoriService(parsed.data);
     return successResponse(result.data, 'Kategori sampah berhasil ditambahkan', 201);
   } catch (error) {
     return handleControllerError(error, 'Terjadi kesalahan saat menambahkan kategori sampah');
@@ -45,22 +44,14 @@ export async function createKategoriController(req: Request) {
 export async function updateKategoriController(req: Request, id: string) {
   try {
     const body = await req.json();
-    const { nama_kategori, deskripsi, is_active } = body;
 
-    if (!nama_kategori || is_active === undefined) {
-      return errorResponse('Field nama_kategori dan is_active wajib diisi', 400);
-    }
+    const parsed = validate(updateKategoriSchema, body);
+    if (!parsed.ok) return parsed.response;
 
-    const result = await kategoriService.updateKategoriService(id, {
-      nama_kategori,
-      deskripsi,
-      is_active: Boolean(is_active),
-    });
-
+    const result = await kategoriService.updateKategoriService(id, parsed.data);
     if (!result.success) {
       return errorResponse(result.message || 'Error', result.status);
     }
-
     return successResponse(result.data, 'Kategori sampah berhasil diperbarui');
   } catch (error) {
     return handleControllerError(error, 'Terjadi kesalahan saat memperbarui kategori sampah');

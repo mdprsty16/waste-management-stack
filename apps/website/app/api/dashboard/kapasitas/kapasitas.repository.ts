@@ -26,3 +26,38 @@ export async function getKapasitasData() {
     currentVolume
   };
 }
+
+export async function getRecentTransactionsForML(days: number = 30) {
+  const dateThreshold = new Date();
+  dateThreshold.setDate(dateThreshold.getDate() - days);
+
+  const details = await prisma.detailTransaksi.findMany({
+    where: {
+      transaksi: {
+        tanggal: {
+          gte: dateThreshold
+        }
+      }
+    },
+    include: {
+      transaksi: {
+        select: { tanggal: true }
+      },
+      jenis_sampah: {
+        select: { densitas_kg_per_m3: true }
+      }
+    },
+    orderBy: {
+      transaksi: {
+        tanggal: 'asc'
+      }
+    }
+  });
+
+  return details.map(d => ({
+    tanggal: d.transaksi.tanggal.toISOString().split('T')[0],
+    berat_kg: d.berat_kg,
+    densitas_kg_m3: d.jenis_sampah.densitas_kg_per_m3,
+    volume_m3: d.volume_m3
+  }));
+}

@@ -1,6 +1,7 @@
 import { successResponse, errorResponse } from '../../lib/response';
 import { handleControllerError } from '../../lib/errorHandler';
 import * as pengaturanService from './pengaturan.service';
+import { validate, updatePengaturanSchema } from '../../lib/validation';
 
 export async function getPengaturanController(req: Request) {
   try {
@@ -14,17 +15,10 @@ export async function getPengaturanController(req: Request) {
 export async function updatePengaturanController(req: Request) {
   try {
     const body = await req.json();
-    const { kapasitas_maksimal_m3, threshold_persen } = body;
+    const parsed = validate(updatePengaturanSchema, body);
+    if (!parsed.ok) return parsed.response;
 
-    if (kapasitas_maksimal_m3 === undefined || threshold_persen === undefined) {
-      return errorResponse('Field kapasitas_maksimal_m3 dan threshold_persen wajib diisi', 400);
-    }
-
-    const result = await pengaturanService.updatePengaturanService({
-      kapasitas_maksimal_m3: Number(kapasitas_maksimal_m3),
-      threshold_persen: Number(threshold_persen),
-    });
-    
+    const result = await pengaturanService.updatePengaturanService(parsed.data);
     return successResponse(result.data, 'Pengaturan sistem berhasil diperbarui');
   } catch (error) {
     return handleControllerError(error, 'Terjadi kesalahan saat memperbarui pengaturan');

@@ -6,6 +6,13 @@ export interface KapasitasData {
   threshold_persen: number;
   percentage: number;
   estimated_days_remaining: number | string;
+  recommendation?: string;
+  forecast_simulation_steps?: Array<{
+    hari: string;
+    tanggal: string;
+    prediksi_masuk_m3: number;
+    akumulasi_total_m3: number;
+  }>;
 }
 
 export function useKapasitas() {

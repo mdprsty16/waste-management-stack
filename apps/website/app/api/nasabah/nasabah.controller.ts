@@ -1,6 +1,7 @@
 import { successResponse, errorResponse } from '../../lib/response';
 import { handleControllerError } from '../../lib/errorHandler';
 import * as nasabahService from './nasabah.service';
+import { validate, createNasabahSchema, updateNasabahSchema } from '../../lib/validation';
 
 export async function getNasabahController(req: Request) {
   try {
@@ -30,20 +31,11 @@ export async function getNasabahByIdController(req: Request, id: string) {
 export async function createNasabahController(req: Request) {
   try {
     const body = await req.json();
-    const { nama, nomor_hp, rt, rw } = body;
-
-    if (!nama) {
-      return errorResponse('Field nama wajib diisi', 400);
-    }
+    const parsed = validate(createNasabahSchema, body);
+    if (!parsed.ok) return parsed.response;
 
     // kode_nasabah di-generate otomatis oleh service (SLB-001, SLB-002, ...)
-    const result = await nasabahService.createNasabahService({
-      nama,
-      nomor_hp,
-      rt,
-      rw,
-    });
-
+    const result = await nasabahService.createNasabahService(parsed.data);
     return successResponse(result.data, 'Nasabah baru berhasil ditambahkan', 201);
   } catch (error) {
     return handleControllerError(error, 'Terjadi kesalahan saat menambahkan nasabah baru');
@@ -53,25 +45,13 @@ export async function createNasabahController(req: Request) {
 export async function updateNasabahController(req: Request, id: string) {
   try {
     const body = await req.json();
-    const { kode_nasabah, nama, nomor_hp, rt, rw, is_active } = body;
+    const parsed = validate(updateNasabahSchema, body);
+    if (!parsed.ok) return parsed.response;
 
-    if (!nama) {
-      return errorResponse('Field nama wajib diisi', 400);
-    }
-
-    const result = await nasabahService.updateNasabahService(id, {
-      kode_nasabah,
-      nama,
-      nomor_hp,
-      rt,
-      rw,
-      is_active: is_active !== undefined ? Boolean(is_active) : undefined,
-    });
-
+    const result = await nasabahService.updateNasabahService(id, parsed.data);
     if (!result.success) {
       return errorResponse(result.message || 'Error', result.status);
     }
-
     return successResponse(result.data, 'Data nasabah berhasil diperbarui');
   } catch (error) {
     return handleControllerError(error, 'Terjadi kesalahan saat memperbarui data nasabah');

@@ -1,6 +1,7 @@
 import { successResponse, errorResponse } from '../../lib/response';
 import { handleControllerError } from '../../lib/errorHandler';
 import * as transaksiService from './transaksi.service';
+import { validate, createTransaksiSchema } from '../../lib/validation';
 
 export async function getTransaksiController(req: Request) {
   try {
@@ -26,13 +27,12 @@ export async function getTransaksiByIdController(req: Request, id: string) {
 export async function createTransaksiController(req: Request) {
   try {
     const body = await req.json();
-    const { id_nasabah, tanggal, items } = body;
 
+    const parsed = validate(createTransaksiSchema, body);
+    if (!parsed.ok) return parsed.response;
+
+    const { id_nasabah, tanggal, items } = parsed.data;
     const id_admin = req.headers.get('x-admin-id') || null;
-
-    if (!id_nasabah || !items || !Array.isArray(items) || items.length === 0) {
-      return errorResponse('Field id_nasabah dan daftar items sampah wajib diisi', 400);
-    }
 
     const result = await transaksiService.createTransaksiService(id_nasabah, id_admin, tanggal, items);
     

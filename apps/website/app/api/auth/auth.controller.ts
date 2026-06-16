@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
 import { loginService, meService, logoutService } from './auth.service';
 import { successResponse, errorResponse } from '../../lib/response';
+import { validate, loginSchema } from '../../lib/validation';
 
 export async function loginController(req: Request) {
   try {
     const body = await req.json();
-    const { username, password } = body;
+    const parsed = validate(loginSchema, body);
+    if (!parsed.ok) return parsed.response;
 
-    if (!username || !password) {
-      return errorResponse('Username dan password wajib diisi', 400);
-    }
-
+    const { username, password } = parsed.data;
     const result = await loginService(username, password);
 
     if (!result.success) {
