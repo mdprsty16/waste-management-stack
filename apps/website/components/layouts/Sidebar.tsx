@@ -95,7 +95,7 @@ export default function Sidebar({ isOpen, onClose, onLogout }: SidebarProps) {
         {/* Logo */}
         <div className="h-20 flex items-center px-6 border-b border-gray-200 flex-shrink-0">
           <Image
-            src="/logo2.png"
+            src="/logo2.avif"
             alt="Logo BSSB"
             width={40}
             height={40}

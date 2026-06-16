@@ -157,7 +157,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-gray-400 text-xs font-semibold mt-8 text-center tracking-wide">
-          &copy; {new Date().getFullYear()} BANK SAMPAH SAMPUL BERKASIH &bull; IKMP KUNINGAN
+          &copy; {new Date().getFullYear()}  BANK SAMPAH SAMPUL BERKASIH &bull; IKMP KUNINGAN
         </p>
       </div>
     </div>
