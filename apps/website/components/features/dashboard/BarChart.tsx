@@ -22,14 +22,13 @@ export function getColorForIndex(index: number): string {
   return DYNAMIC_COLORS[index % DYNAMIC_COLORS.length];
 }
 
-function formatKilos(val: number): string {
-  if (val >= 1000) return `${(val / 1000).toFixed(1)}t`;
-  return val % 1 === 0 ? `${val}` : val.toFixed(1);
-}
+const CHART_HEIGHT = 256;
 
 export default function BarChart({ data, title, isLoading = false }: BarChartProps) {
   const maxVal = Math.max(...data.map((d) => d.value), 1);
   const totalVal = data.reduce((s, d) => s + d.value, 0);
+
+  const gridValues = [0, 0.25, 0.5, 0.75, 1].map((pct) => maxVal * pct);
 
   return (
     <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -58,78 +57,53 @@ export default function BarChart({ data, title, isLoading = false }: BarChartPro
           <span className="text-sm">Data akan muncul setelah transaksi pertama</span>
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative" style={{ height: CHART_HEIGHT }}>
           {/* Grid lines */}
-          <div className="absolute inset-0 flex flex-col-reverse mb-8">
-            {[0, 0.25, 0.5, 0.75, 1].map((pct) => (
-              <div
-                key={pct}
-                className="border-t border-gray-100"
-                style={{ height: "25%" }}
-              />
-            ))}
-          </div>
-
-          {/* Y-axis labels */}
-          <div className="absolute left-0 top-0 h-full flex flex-col-reverse mb-8 pointer-events-none">
-            {[0, 0.25, 0.5, 0.75, 1].map((pct) => (
-              <div
-                key={pct}
-                className="flex items-center text-[10px] font-semibold text-gray-400 pr-2"
-                style={{ height: "25%" }}
-              >
-                {formatKilos(maxVal * pct)}
+          {gridValues.map((val, i) => {
+            const y = (i / 4) * CHART_HEIGHT;
+            return (
+              <div key={i} className="absolute left-0 right-0 flex items-center pointer-events-none" style={{ top: y, height: 0 }}>
+                <div className="border-t border-gray-100 w-full" />
+                <span className="text-[10px] font-semibold text-gray-400 pl-2 -mt-3 w-10 text-right">
+                  {val >= 1000 ? `${(val / 1000).toFixed(1)}t` : val % 1 === 0 ? `${val}` : val.toFixed(1)}
+                </span>
               </div>
-            ))}
-          </div>
+            );
+          })}
+
+          {/* Y-axis unit */}
+          <span className="absolute text-[9px] font-semibold text-gray-400" style={{ top: 4, left: 0 }}>
+            Kg
+          </span>
 
           {/* Bars */}
-          <div className="flex items-end justify-around gap-2 sm:gap-4 h-64 pl-10">
+          <div className="absolute inset-0 flex items-end justify-around gap-2 sm:gap-4 px-10 pb-6">
             {data.map((d, i) => {
-              const pct = maxVal > 0 ? (d.value / maxVal) * 100 : 0;
+              const barH = maxVal > 0 ? (d.value / maxVal) * (CHART_HEIGHT - 24) : 2;
               const share = totalVal > 0 ? (d.value / totalVal) * 100 : 0;
               const dataKey = `${d.label}-${d.value}`;
 
               return (
-                <div key={dataKey} className="flex flex-col items-center flex-1 gap-2 group min-w-0">
+                <div key={dataKey} className="flex flex-col items-center flex-1 min-w-0 self-stretch justify-end">
                   {/* Value label */}
-                  <span className="text-xs font-bold text-gray-700 tabular-nums">
-                    {d.value > 0 ? `${formatKilos(d.value)}` : "—"}
+                  <span className="text-xs font-bold text-gray-700 tabular-nums mb-1">
+                    {d.value > 0 ? `${d.value >= 1000 ? `${(d.value / 1000).toFixed(1)}t` : d.value % 1 === 0 ? `${d.value}` : d.value.toFixed(1)}` : "—"}
                   </span>
 
-                  {/* Bar wrapper for tooltip */}
-                  <div className="w-full relative flex flex-col items-center">
-                    <div
-                      className="w-full rounded-t-lg transition-all duration-1000 ease-out min-h-[4px] hover:opacity-80 relative overflow-hidden"
-                      style={{
-                        height: `${Math.max(pct, 2)}%`,
-                        backgroundColor: d.color,
-                        opacity: d.value > 0 ? 1 : 0.2,
-                      }}
-                    >
-                      {/* Shine effect */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent pointer-events-none" />
-
-                      {/* Animate grow-up using keyframe */}
-                      <style>{`
-                        @keyframes barGrow-${i} {
-                          from { transform: scaleY(0); }
-                          to { transform: scaleY(1); }
-                        }
-                      `}</style>
-                      <div
-                        className="absolute inset-0 origin-bottom"
-                        style={{
-                          animation: `barGrow-${i} 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
-                          backgroundColor: d.color,
-                          opacity: 0.15,
-                        }}
-                      />
-                    </div>
+                  {/* Bar */}
+                  <div
+                    className="w-full rounded-t-lg transition-all duration-1000 ease-out relative overflow-hidden"
+                    style={{
+                      height: `${Math.max(barH, 2)}px`,
+                      backgroundColor: d.color,
+                      opacity: d.value > 0 ? 1 : 0.2,
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent pointer-events-none" />
                   </div>
 
-                  {/* Label and percentage */}
-                  <div className="text-center w-full">
+                  {/* Label + percentage */}
+                  <div className="text-center w-full mt-1.5">
                     <span className="text-[11px] font-bold text-gray-500 block leading-tight truncate px-1">
                       {d.label}
                     </span>
