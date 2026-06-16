@@ -33,17 +33,7 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(22,163,74,0.04)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
       {/* Navigasi kembali ke landing page — Kiri atas */}
-      <div className="absolute top-6 left-6 z-20">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm border border-gray-200/80 shadow-sm text-gray-600 hover:text-green-700 hover:border-green-300 hover:shadow-md font-bold text-sm px-5 py-2.5 rounded-xl transition-all duration-300 group"
-        >
-          <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
-          </svg>
-          Kembali ke Beranda
-        </Link>
-      </div>
+      
 
       <div className="w-full max-w-md relative z-10 flex flex-col items-center animate-fade-in-up">
         {/* Logo & Brand Identity */}
@@ -146,6 +136,18 @@ export default function LoginPage() {
               >
                 {isLoading ? "Memproses..." : "Masuk Aplikasi"}
               </Button>
+            </div>
+
+            <div className="absolute top-6 left-6 z-20">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm border border-gray-200/80 shadow-sm text-gray-600 hover:text-green-700 hover:border-green-300 hover:shadow-md font-bold text-sm px-5 py-2.5 rounded-xl transition-all duration-300 group"
+              >
+                <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+                </svg>
+                Kembali ke Beranda
+              </Link>
             </div>
           </form>
 

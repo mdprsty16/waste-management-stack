@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 // ============================================================
 // Sidebar — Navigasi kiri dashboard
@@ -71,6 +73,7 @@ export interface SidebarProps {
 
 export default function Sidebar({ isOpen, onClose, onLogout }: SidebarProps) {
   const pathname = usePathname();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   return (
     <>
@@ -142,7 +145,7 @@ export default function Sidebar({ isOpen, onClose, onLogout }: SidebarProps) {
         {/* Footer / Logout */}
         <div className="p-4 border-t border-gray-200 flex-shrink-0">
           <button
-            onClick={onLogout}
+            onClick={() => setShowLogoutConfirm(true)}
             className="
               w-full flex items-center gap-3 px-4 py-3 rounded-xl
               text-red-600 hover:bg-red-50 transition-colors
@@ -154,6 +157,21 @@ export default function Sidebar({ isOpen, onClose, onLogout }: SidebarProps) {
           </button>
         </div>
       </aside>
+
+      {/* Popup Konfirmasi Logout */}
+      <ConfirmModal
+        isOpen={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        onConfirm={() => {
+          setShowLogoutConfirm(false);
+          onLogout();
+        }}
+        title="Keluar dari Aplikasi?"
+        message="Anda akan keluar dari dashboard admin BSSB. Pastikan semua pekerjaan sudah tersimpan sebelum keluar."
+        variant="warning"
+        confirmText="Ya, Keluar"
+        cancelText="Batal"
+      />
     </>
   );
 }
