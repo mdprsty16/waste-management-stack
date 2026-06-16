@@ -50,7 +50,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <a href="#beranda" className="flex items-center gap-3 group">
             <Image
-              src="/logo2.webp"
+              src="/logo2.png"
               alt="Logo"
               width={44}
               height={62}
