@@ -51,7 +51,7 @@ export default function Navbar() {
             {/* ✅ LOGO OPTIMAL — menggunakan WEBP dengan ukuran tepat */}
             <div className="relative flex-shrink-0 w-11 h-[62px]">
               <Image
-                src="/logo2.webp"  // ✅ Pakai WEBP
+                src="/logo2.avif"  // ✅ Pakai WEBP
                 alt="Logo BSSB"
                 fill
                 className="rounded-xl shadow-md group-hover:shadow-lg transition-shadow object-contain"

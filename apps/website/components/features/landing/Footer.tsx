@@ -125,7 +125,7 @@ export default function Footer() {
 
                 {/* ✅ LOGO FOOTER — OPTIMAL */}
                 <Image
-                  src="/logo2.webp"
+                  src="/logo2.avif"
                   alt="Logo BSSB"
                   width={56}
                   height={56}
