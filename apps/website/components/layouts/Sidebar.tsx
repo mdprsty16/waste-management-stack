@@ -48,6 +48,14 @@ const Icons = {
       <line x1="2" y1="10" x2="22" y2="10" />
     </svg>
   ),
+  Pengangkutan: () => (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="1" y="3" width="15" height="13" rx="1" />
+      <polyline points="16 8 20 8 23 11 23 16 16 16 16 8" />
+      <circle cx="5.5" cy="18.5" r="2.5" />
+      <circle cx="18.5" cy="18.5" r="2.5" />
+    </svg>
+  ),
   Logout: () => (
     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -60,6 +68,7 @@ const Icons = {
 const MENU_ITEMS = [
   { name: "Overview", href: "/dashboard", icon: Icons.Overview },
   { name: "Transaksi", href: "/dashboard/transaksi", icon: Icons.Transaction },
+  { name: "Pengangkutan", href: "/dashboard/pengangkutan", icon: Icons.Pengangkutan },
   { name: "Data Nasabah", href: "/dashboard/nasabah", icon: Icons.Users },
   { name: "Jenis Sampah", href: "/dashboard/jenis-sampah", icon: Icons.JenisSampah },
   { name: "Kategori Sampah", href: "/dashboard/kategori", icon: Icons.Kategori },

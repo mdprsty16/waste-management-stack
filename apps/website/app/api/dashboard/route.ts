@@ -67,8 +67,7 @@ export async function GET() {
     const thresholdPersen = pengaturan?.threshold_persen || 80;
 
     // Hitung volume dari total berat dengan estimasi densitas rata-rata (~150 kg/m³)
-    // Pendekatan robust: hindari volume 0 akibat data pengangkutan tidak akurat
-    // atau nilai densitas per-jenis yang sangat bervariasi
+    // Pendekatan robust: hindari volume negatif akibat data pengangkutan tidak akurat
     const allDetails = await prisma.detailTransaksi.findMany({
       include: {
         jenis_sampah: { select: { densitas_kg_per_m3: true } },
@@ -77,8 +76,15 @@ export async function GET() {
     const totalBeratKg = allDetails.reduce((sum, d) => sum + d.berat_kg, 0);
     const AVG_DENSITY = 150; // kg/m³ — rata-rata densitas sampah campuran
     const estimatedVolume = totalBeratKg / AVG_DENSITY;
-    // Volume untuk display: jangan pernah lebih dari kapasitas maksimal
-    const currentVolume = Math.min(estimatedVolume, maxVolume);
+
+    // Kurangi volume yang sudah diangkut (pengangkutan) — dengan cap aman
+    const volKeluarAgg = await prisma.pengangkutan.aggregate({
+      _sum: { volume_m3_diangkut: true },
+    });
+    const totalPickup = volKeluarAgg._sum.volume_m3_diangkut || 0;
+    // Cegah pengangkutan melebihi total volume yang pernah masuk
+    const reasonablePickup = Math.min(totalPickup, estimatedVolume);
+    const currentVolume = Math.min(Math.max(0, estimatedVolume - reasonablePickup), maxVolume);
     const kapasitasPersen = maxVolume > 0 ? (currentVolume / maxVolume) * 100 : 0;
 
     // ─── 5. ML — Panggil server ML untuk threshold ───
