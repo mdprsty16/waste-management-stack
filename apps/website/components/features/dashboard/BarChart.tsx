@@ -6,8 +6,14 @@ export interface BarChartData {
   color: string;
 }
 
+export interface PrediksiBarData {
+  kategori: string;
+  prediksi_kg: number;
+}
+
 export interface BarChartProps {
   data: BarChartData[];
+  prediksiData?: PrediksiBarData[];
   title: string;
   isLoading?: boolean;
 }
@@ -24,7 +30,7 @@ export function getColorForIndex(index: number): string {
 
 const CHART_HEIGHT = 256;
 
-export default function BarChart({ data, title, isLoading = false }: BarChartProps) {
+export default function BarChart({ data, title, prediksiData, isLoading = false }: BarChartProps) {
   const maxVal = Math.max(...data.map((d) => d.value), 1);
   const totalVal = data.reduce((s, d) => s + d.value, 0);
 
@@ -100,6 +106,24 @@ export default function BarChart({ data, title, isLoading = false }: BarChartPro
                     }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent pointer-events-none" />
+                    {/* Prediksi overlay — dashed bar */}
+                    {prediksiData && (() => {
+                      const pred = prediksiData.find((p) => p.kategori === d.label);
+                      if (!pred || pred.prediksi_kg <= 0) return null;
+                      const predH = maxVal > 0
+                        ? (pred.prediksi_kg / maxVal) * (CHART_HEIGHT - 24)
+                        : 2;
+                      return (
+                        <div
+                          className="absolute bottom-0 w-full rounded-t-lg border-2 border-dashed pointer-events-none"
+                          style={{
+                            height: `${Math.max(predH, 2)}px`,
+                            borderColor: d.color,
+                            backgroundColor: `${d.color}15`,
+                          }}
+                        />
+                      );
+                    })()}
                   </div>
 
                   {/* Label + percentage */}

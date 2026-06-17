@@ -226,6 +226,73 @@ export async function GET() {
         : `Prediksi: ${prediksiKg} Kg. Kapasitas aman.`;
     }
 
+    // ─── 7. Alokasi proporsional prediksi per kategori ───
+    const totalKategoriAll = kategoriStats.reduce((s, k) => s + k.total_kg, 0);
+    const kategoriPrediksi = kategoriStats.map((k) => ({
+      kategori: k.kategori,
+      prediksi_kg: totalKategoriAll > 0
+        ? Number(((k.total_kg / totalKategoriAll) * prediksiKg).toFixed(1))
+        : 0,
+    }));
+
+    const rekMl = String(kapasitasMl.recommendation || "");
+    const sumberPrediksi = (rekMl.includes("AMAN") || rekMl.includes("KRITIS"))
+      ? "ml_server" : "fallback";
+
+    try {
+      const nextLabel = `Minggu ${aktualMingguan.length + 1}`;
+
+      await prisma.prediksiLog.create({
+        data: {
+          tipe: 'mingguan',
+          periode_label: nextLabel,
+          key: 'total',
+          nilai_prediksi: prediksiKg,
+          sumber: sumberPrediksi,
+        },
+      });
+
+      for (const k of kategoriPrediksi) {
+        await prisma.prediksiLog.create({
+          data: {
+            tipe: 'kategori',
+            periode_label: nextLabel,
+            key: k.kategori,
+            nilai_prediksi: k.prediksi_kg,
+            sumber: sumberPrediksi,
+          },
+        });
+      }
+    } catch {
+      // Gagal simpan log — jangan sampai mengganggu response utama
+    }
+
+    // ─── 8. Hitung akurasi dari riwayat prediksi ───
+    const semingguLalu = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    let rataError: number | null = null;
+
+    try {
+      const prediksiLalu = await prisma.prediksiLog.findMany({
+        where: {
+          tipe: 'mingguan',
+          key: 'total',
+          created_at: { gte: semingguLalu },
+          nilai_aktual: { not: null },
+          selisih_persen: { not: null },
+        },
+        orderBy: { created_at: 'desc' },
+        take: 4,
+      });
+
+      if (prediksiLalu.length > 0) {
+        rataError = Number(
+          (prediksiLalu.reduce((s, p) => s + Math.abs(p.selisih_persen || 0), 0) / prediksiLalu.length).toFixed(1)
+        );
+      }
+    } catch {
+      // Akurasi tidak tersedia — lanjutkan
+    }
+
     // ─── Response ───
     const responseData = {
       ringkasan: {
@@ -250,6 +317,7 @@ export async function GET() {
         ...kapasitasMl,
       },
       grafik_kategori: kategoriStats,
+      grafik_kategori_prediksi: kategoriPrediksi,
       grafik_mingguan: {
         aktual: aktualMingguan,
         prediksi: {
@@ -260,6 +328,13 @@ export async function GET() {
       alert_sistem: {
         is_alert: isAlert,
         pesan: alertPesan,
+      },
+      akurasi: {
+        rata_rata_error_persen: rataError,
+        jumlah_data_prediksi: rataError !== null ? 4 : 0,
+        label_akurasi: rataError !== null
+          ? (rataError <= 10 ? 'Tinggi' : rataError <= 25 ? 'Sedang' : 'Rendah')
+          : 'Belum Tersedia',
       },
     };
 

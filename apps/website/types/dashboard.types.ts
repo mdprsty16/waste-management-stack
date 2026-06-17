@@ -38,6 +38,19 @@ export interface KategoriStatItem {
   total_kg: number;
 }
 
+/** Data prediksi per kategori */
+export interface KategoriPrediksiItem {
+  kategori: string;
+  prediksi_kg: number;
+}
+
+/** Ringkasan akurasi prediksi */
+export interface AkurasiPrediksi {
+  rata_rata_error_persen: number | null;
+  jumlah_data_prediksi: number;
+  label_akurasi: string;
+}
+
 /** Response agregator dari GET /api/dashboard */
 export interface DashboardResponse {
   ringkasan: {
@@ -69,6 +82,8 @@ export interface DashboardResponse {
     }>;
   };
   grafik_kategori: KategoriStatItem[];
+  grafik_kategori_prediksi: KategoriPrediksiItem[];
   grafik_mingguan: GrafikMingguan;
   alert_sistem: AlertSistem;
+  akurasi: AkurasiPrediksi;
 }

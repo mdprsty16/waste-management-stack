@@ -100,5 +100,47 @@ export async function createTransaksiService(
     details: detailsPayload,
   });
 
+  // 4. Backfill nilai aktual ke prediksi_log (non-blocking)
+  try {
+    const year = tanggal.getFullYear();
+    const month = tanggal.getMonth();
+    const dayOfMonth = tanggal.getDate();
+    const weekNum = Math.ceil(dayOfMonth / 7);
+    const periodeLabel = `Minggu ${weekNum}`;
+
+    // Hitung total aktual untuk minggu ini
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+    const weekStart = new Date(firstDayOfMonth);
+    weekStart.setDate(Math.max(1, (weekNum - 1) * 7 + 1));
+    const weekEnd = new Date(year, month, Math.min((weekNum) * 7, lastDayOfMonth.getDate()));
+    weekEnd.setHours(23, 59, 59, 999);
+    weekStart.setHours(0, 0, 0, 0);
+
+    const agg = await prisma.transaksi.aggregate({
+      _sum: { total_berat_kg: true },
+      where: { tanggal: { gte: weekStart, lte: weekEnd } },
+    });
+    const totalAktual = agg._sum.total_berat_kg || 0;
+
+    const existing = await prisma.prediksiLog.findFirst({
+      where: { tipe: 'mingguan', key: 'total', periode_label: periodeLabel },
+      orderBy: { created_at: 'desc' },
+    });
+
+    if (existing && existing.nilai_aktual === null) {
+      const selisih = existing.nilai_prediksi > 0
+        ? Number((((totalAktual - existing.nilai_prediksi) / existing.nilai_prediksi) * 100).toFixed(1))
+        : 0;
+
+      await prisma.prediksiLog.update({
+        where: { id: existing.id },
+        data: { nilai_aktual: Number(totalAktual.toFixed(2)), selisih_persen: selisih },
+      });
+    }
+  } catch {
+    // Gagal update akurasi — tidak mengganggu response utama
+  }
+
   return { success: true, data, status: 201 };
 }

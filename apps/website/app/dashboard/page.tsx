@@ -86,8 +86,10 @@ export default function DashboardOverviewPage() {
     transaksi_terbaru,
     kapasitas,
     grafik_kategori,
+    grafik_kategori_prediksi,
     grafik_mingguan,
     alert_sistem,
+    akurasi,
   } = data;
 
   // Data untuk BarChart
@@ -448,9 +450,30 @@ export default function DashboardOverviewPage() {
           iconBg="bg-purple-100" iconColor="text-purple-700" />
       </div>
 
+      {/* AKURASI PREDIKSI */}
+      {akurasi.rata_rata_error_persen !== null && (
+        <div className="flex items-center gap-3 px-2">
+          <div className={`w-3 h-3 rounded-full ${akurasi.rata_rata_error_persen <= 10 ? 'bg-green-500' : akurasi.rata_rata_error_persen <= 25 ? 'bg-amber-500' : 'bg-red-500'}`} />
+          <span className="text-sm font-semibold text-gray-600">
+            Akurasi Prediksi: <span className="text-gray-900">{akurasi.label_akurasi}</span>
+          </span>
+          <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+            Error {akurasi.rata_rata_error_persen}%
+          </span>
+          <span className="text-xs text-gray-400">
+            ({akurasi.jumlah_data_prediksi} data terakhir)
+          </span>
+        </div>
+      )}
+
       {/* 2 GRAFIK UTAMA */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <BarChart data={barChartData} title="Distribusi Sampah per Kategori (Kg)" isLoading={false} />
+        <BarChart
+          data={barChartData}
+          prediksiData={grafik_kategori_prediksi}
+          title="Distribusi Sampah per Kategori (Kg)"
+          isLoading={false}
+        />
         <WeeklyTrendChart
           data={{
             aktual: grafik_mingguan.aktual,

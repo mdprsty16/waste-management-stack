@@ -57,3 +57,8 @@ export type Pengaturan = Prisma.PengaturanModel
  * 
  */
 export type Pengangkutan = Prisma.PengangkutanModel
+/**
+ * Model PrediksiLog
+ * 
+ */
+export type PrediksiLog = Prisma.PrediksiLogModel

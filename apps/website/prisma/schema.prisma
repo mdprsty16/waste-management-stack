@@ -124,3 +124,19 @@ model Pengangkutan {
 
   @@map("pengangkutan")
 }
+
+model PrediksiLog {
+  id              String   @id @default(uuid())
+  tipe            String   @db.VarChar(20)    // 'mingguan' | 'kategori' | 'kapasitas'
+  periode_label   String   @db.VarChar(50)    // "Minggu 5 Juni 2026"
+  key             String   @db.VarChar(50)    // "total" atau nama kategori
+  nilai_aktual    Float?   @db.Float          // diisi belakangan saat data riil masuk
+  nilai_prediksi  Float    @db.Float
+  selisih_persen  Float?   @db.Float          // dihitung otomatis
+  sumber          String   @db.VarChar(20)    // 'ml_server' | 'fallback'
+  created_at      DateTime @default(now()) @db.Timestamp(0)
+  updated_at      DateTime @updatedAt @db.Timestamp(0)
+
+  @@index([tipe, created_at])
+  @@map("prediksi_log")
+}

@@ -58,7 +58,8 @@ export const ModelName = {
   Transaksi: 'Transaksi',
   DetailTransaksi: 'DetailTransaksi',
   Pengaturan: 'Pengaturan',
-  Pengangkutan: 'Pengangkutan'
+  Pengangkutan: 'Pengangkutan',
+  PrediksiLog: 'PrediksiLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -177,6 +178,22 @@ export const PengangkutanScalarFieldEnum = {
 export type PengangkutanScalarFieldEnum = (typeof PengangkutanScalarFieldEnum)[keyof typeof PengangkutanScalarFieldEnum]
 
 
+export const PrediksiLogScalarFieldEnum = {
+  id: 'id',
+  tipe: 'tipe',
+  periode_label: 'periode_label',
+  key: 'key',
+  nilai_aktual: 'nilai_aktual',
+  nilai_prediksi: 'nilai_prediksi',
+  selisih_persen: 'selisih_persen',
+  sumber: 'sumber',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type PrediksiLogScalarFieldEnum = (typeof PrediksiLogScalarFieldEnum)[keyof typeof PrediksiLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -265,4 +282,15 @@ export const PengangkutanOrderByRelevanceFieldEnum = {
 } as const
 
 export type PengangkutanOrderByRelevanceFieldEnum = (typeof PengangkutanOrderByRelevanceFieldEnum)[keyof typeof PengangkutanOrderByRelevanceFieldEnum]
+
+
+export const PrediksiLogOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tipe: 'tipe',
+  periode_label: 'periode_label',
+  key: 'key',
+  sumber: 'sumber'
+} as const
+
+export type PrediksiLogOrderByRelevanceFieldEnum = (typeof PrediksiLogOrderByRelevanceFieldEnum)[keyof typeof PrediksiLogOrderByRelevanceFieldEnum]
 

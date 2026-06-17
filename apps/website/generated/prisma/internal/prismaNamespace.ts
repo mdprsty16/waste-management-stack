@@ -391,7 +391,8 @@ export const ModelName = {
   Transaksi: 'Transaksi',
   DetailTransaksi: 'DetailTransaksi',
   Pengaturan: 'Pengaturan',
-  Pengangkutan: 'Pengangkutan'
+  Pengangkutan: 'Pengangkutan',
+  PrediksiLog: 'PrediksiLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "nasabah" | "kategoriSampah" | "jenisSampah" | "transaksi" | "detailTransaksi" | "pengaturan" | "pengangkutan"
+    modelProps: "admin" | "nasabah" | "kategoriSampah" | "jenisSampah" | "transaksi" | "detailTransaksi" | "pengaturan" | "pengangkutan" | "prediksiLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -939,6 +940,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PrediksiLog: {
+      payload: Prisma.$PrediksiLogPayload<ExtArgs>
+      fields: Prisma.PrediksiLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PrediksiLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PrediksiLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload>
+        }
+        findFirst: {
+          args: Prisma.PrediksiLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PrediksiLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload>
+        }
+        findMany: {
+          args: Prisma.PrediksiLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload>[]
+        }
+        create: {
+          args: Prisma.PrediksiLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload>
+        }
+        createMany: {
+          args: Prisma.PrediksiLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PrediksiLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload>
+        }
+        update: {
+          args: Prisma.PrediksiLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.PrediksiLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PrediksiLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PrediksiLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrediksiLogPayload>
+        }
+        aggregate: {
+          args: Prisma.PrediksiLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePrediksiLog>
+        }
+        groupBy: {
+          args: Prisma.PrediksiLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PrediksiLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PrediksiLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PrediksiLogCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1078,6 +1145,22 @@ export const PengangkutanScalarFieldEnum = {
 export type PengangkutanScalarFieldEnum = (typeof PengangkutanScalarFieldEnum)[keyof typeof PengangkutanScalarFieldEnum]
 
 
+export const PrediksiLogScalarFieldEnum = {
+  id: 'id',
+  tipe: 'tipe',
+  periode_label: 'periode_label',
+  key: 'key',
+  nilai_aktual: 'nilai_aktual',
+  nilai_prediksi: 'nilai_prediksi',
+  selisih_persen: 'selisih_persen',
+  sumber: 'sumber',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type PrediksiLogScalarFieldEnum = (typeof PrediksiLogScalarFieldEnum)[keyof typeof PrediksiLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1166,6 +1249,17 @@ export const PengangkutanOrderByRelevanceFieldEnum = {
 } as const
 
 export type PengangkutanOrderByRelevanceFieldEnum = (typeof PengangkutanOrderByRelevanceFieldEnum)[keyof typeof PengangkutanOrderByRelevanceFieldEnum]
+
+
+export const PrediksiLogOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tipe: 'tipe',
+  periode_label: 'periode_label',
+  key: 'key',
+  sumber: 'sumber'
+} as const
+
+export type PrediksiLogOrderByRelevanceFieldEnum = (typeof PrediksiLogOrderByRelevanceFieldEnum)[keyof typeof PrediksiLogOrderByRelevanceFieldEnum]
 
 
 
@@ -1326,6 +1420,7 @@ export type GlobalOmitConfig = {
   detailTransaksi?: Prisma.DetailTransaksiOmit
   pengaturan?: Prisma.PengaturanOmit
   pengangkutan?: Prisma.PengangkutanOmit
+  prediksiLog?: Prisma.PrediksiLogOmit
 }
 
 /* Types for Logging */
