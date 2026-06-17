@@ -116,13 +116,17 @@ export async function GET() {
 
     // ─── 2. Tarik data aktual dari Prisma per minggu ───
     const aktualData: { label: string; total_kg: number }[] = [];
+    const now = new Date();
 
     for (const range of weekRanges) {
-      // Set waktu start ke 00:00:00 dan end ke 23:59:59
+      // Skip minggu yang belum dimulai agar tidak mengirim trailing 0 ke ML
+      if (range.start > now) continue;
+
       const startDate = new Date(range.start);
       startDate.setHours(0, 0, 0, 0);
 
-      const endDate = new Date(range.end);
+      // Jika minggu ini masih berjalan, batasi end hingga hari ini
+      const endDate = range.end > now ? new Date(now) : new Date(range.end);
       endDate.setHours(23, 59, 59, 999);
 
       const aggregate = await prisma.transaksi.aggregate({

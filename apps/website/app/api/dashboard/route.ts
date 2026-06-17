@@ -179,9 +179,14 @@ export async function GET() {
 
     const aktualMingguan: { label: string; total_kg: number }[] = [];
     for (const range of weekRanges) {
+      // Skip minggu yang belum dimulai agar tidak mengirim trailing 0 ke ML
+      if (range.start > now) continue;
+
       const start = new Date(range.start);
       start.setHours(0, 0, 0, 0);
-      const end = new Date(range.end);
+
+      // Jika minggu ini masih berjalan, batasi end hingga hari ini
+      const end = range.end > now ? new Date(now) : new Date(range.end);
       end.setHours(23, 59, 59, 999);
 
       const agg = await prisma.transaksi.aggregate({
