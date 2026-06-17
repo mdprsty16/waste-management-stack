@@ -153,7 +153,7 @@ export async function GET() {
     const responseData = {
       grafik_mingguan: {
         aktual: aktualData,
-        prediksi_minggu_depan: {
+        prediksi: {
           label: `Minggu ${nextWeekNum} (Prediksi ML)`,
           total_kg: mlResult.predicted_kg,
         },

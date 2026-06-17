@@ -130,83 +130,227 @@ export default function DashboardOverviewPage() {
       hour: "2-digit", minute: "2-digit",
     });
 
+    const SEP = "=".repeat(68);
+    const DASH = "-".repeat(48);
+
     const baris = (...cols: unknown[]) => cols.map(String).join(",") + "\n";
 
+    // ─── Helper: hitung perubahan week-over-week ───
+    const aktual = grafik_mingguan.aktual;
+    const perubahanMingguan = aktual.map((a, i) => {
+      if (i === 0) return { ...a, perubahan: null, pct: null };
+      const prev = aktual[i - 1].total_kg;
+      const diff = a.total_kg - prev;
+      const pct = prev > 0 ? ((diff / prev) * 100) : 0;
+      return { ...a, perubahan: diff, pct };
+    });
+
+    const totalAktual = aktual.reduce((s, a) => s + a.total_kg, 0);
+    const rataAktual = aktual.length > 0 ? totalAktual / aktual.length : 0;
+    const maxAktual = aktual.length > 0 ? Math.max(...aktual.map((a) => a.total_kg)) : 0;
+    const minAktual = aktual.length > 0 ? Math.min(...aktual.map((a) => a.total_kg)) : 0;
+    const labelMax = aktual.find((a) => a.total_kg === maxAktual)?.label || "-";
+    const labelMin = aktual.find((a) => a.total_kg === minAktual)?.label || "-";
+
+    // Tren keseluruhan (bandingkan first vs last)
+    const firstVal = aktual.length > 0 ? aktual[0].total_kg : 0;
+    const lastVal = aktual.length > 1 ? aktual[aktual.length - 1].total_kg : 0;
+    const trenArah = lastVal > firstVal ? "Meningkat" : lastVal < firstVal ? "Menurun" : "Stabil";
+    const trenPct = firstVal > 0 ? (((lastVal - firstVal) / firstVal) * 100).toFixed(1) : "0";
+
+    const prediksi = grafik_mingguan.prediksi;
+
+    // Distribusi kategori (urutkan menurun)
+    const kategoriSorted = [...grafik_kategori].sort((a, b) => b.total_kg - a.total_kg);
+    const totalKategori = kategoriSorted.reduce((s, k) => s + k.total_kg, 0);
+
+    // ─── BUAT CSV ───
     let csv = "";
     csv += "LAPORAN BULANAN BANK SAMPAH SAMPUL BERKASIH (BSSB)\n";
     csv += "IKMP - Kuningan, Jawa Barat\n";
-    csv += "=".repeat(60) + "\n\n";
+    csv += SEP + "\n\n";
 
-    // ─── HEADER ───
+    // ═══════════════ HEADER ═══════════════
     csv += "PERIODE LAPORAN\n";
+    csv += DASH + "\n";
     csv += baris("Bulan", monthName);
     csv += baris("Tanggal Cetak", tgl);
     csv += "\n";
 
-    // ─── RINGKASAN ───
+    // ═══════════════ A. RINGKASAN ═══════════════
     csv += "A. RINGKASAN STATISTIK\n";
-    csv += "-".repeat(40) + "\n";
+    csv += DASH + "\n";
     csv += baris("Indikator", "Nilai");
-    csv += baris("Total Nasabah Aktif", ringkasan.total_nasabah);
-    csv += baris("Total Sampah Terkumpul (Kg)", ringkasan.total_sampah_kg);
-    csv += baris("Total Saldo Warga (Rp)", ringkasan.total_saldo_rupiah);
-    csv += baris("Total Transaksi", ringkasan.total_transaksi);
+    csv += baris("Total Nasabah Aktif", ringkasan.total_nasabah.toLocaleString("id-ID"));
+    csv += baris("Total Sampah Terkumpul (Kg)", ringkasan.total_sampah_kg.toLocaleString("id-ID"));
+    csv += baris("Total Saldo Warga (Rp)", ringkasan.total_saldo_rupiah.toLocaleString("id-ID"));
+    csv += baris("Total Transaksi", ringkasan.total_transaksi.toLocaleString("id-ID"));
+    const rataPerTrx = ringkasan.total_transaksi > 0 ? ringkasan.total_sampah_kg / ringkasan.total_transaksi : 0;
+    csv += baris("Rata-rata Sampah per Transaksi (Kg)", `${rataPerTrx.toFixed(2)}`);
+    csv += baris("Rata-rata Transaksi per Hari", `${(ringkasan.total_transaksi / 30).toFixed(1)}`);
     csv += "\n";
 
-    // ─── KAPASITAS GUDANG ───
+    // ═══════════════ B. KAPASITAS GUDANG ═══════════════
+    const statusKapasitas = kapasitas.persentase >= 90 ? "KRITIS - Segera Angkut" :
+      kapasitas.persentase >= kapasitas.threshold_persen ? "PERHATIAN - Mendekati Penuh" :
+      "AMAN";
+    const sisaKapasitas = kapasitas.max_volume_m3 - kapasitas.current_volume_m3;
+
     csv += "B. KAPASITAS GUDANG\n";
-    csv += "-".repeat(40) + "\n";
+    csv += DASH + "\n";
     csv += baris("Indikator", "Nilai");
-    csv += baris("Volume Terpakai (m³)", kapasitas.current_volume_m3);
-    csv += baris("Kapasitas Maksimal (m³)", kapasitas.max_volume_m3);
-    csv += baris("Persentase Terpakai (%)", kapasitas.persentase);
+    csv += baris("Volume Terpakai (m3)", `${kapasitas.current_volume_m3.toFixed(2)}`);
+    csv += baris("Kapasitas Maksimal (m3)", `${kapasitas.max_volume_m3.toFixed(2)}`);
+    csv += baris("Sisa Kapasitas (m3)", `${sisaKapasitas.toFixed(2)}`);
+    csv += baris("Persentase Terpakai (%)", `${kapasitas.persentase.toFixed(1)}`);
+    csv += baris("Ambang Batas (%)", `${kapasitas.threshold_persen}%`);
+    csv += baris("Status", statusKapasitas);
     csv += baris("Estimasi Hari Penuh", kapasitas.estimated_days_remaining);
-    csv += baris("Rekomendasi AI", kapasitas.recommendation);
+    csv += baris("Rekomendasi AI", kapasitas.recommendation || "-");
     csv += "\n";
 
-    // ─── DISTRIBUSI KATEGORI ───
+    // ═══════════════ C. DISTRIBUSI KATEGORI ═══════════════
     csv += "C. DISTRIBUSI SAMPAH PER KATEGORI\n";
-    csv += "-".repeat(40) + "\n";
-    csv += baris("Kategori", "Total (Kg)", "Persentase (%)");
-    const totalKategori = grafik_kategori.reduce((s, k) => s + k.total_kg, 0);
-    grafik_kategori.forEach((k) => {
+    csv += DASH + "\n";
+    csv += baris("Peringkat", "Kategori", "Total (Kg)", "Persentase (%)");
+    kategoriSorted.forEach((k, i) => {
       const pct = totalKategori > 0 ? ((k.total_kg / totalKategori) * 100).toFixed(1) : "0";
-      csv += baris(k.kategori, k.total_kg, pct);
+      csv += baris(`#${i + 1}`, k.kategori, k.total_kg.toFixed(1), pct);
     });
+    csv += baris("", "TOTAL", totalKategori.toFixed(1), "100.0");
     csv += "\n";
 
-    // ─── TREN MINGGUAN ───
-    csv += "D. TREN SAMPAH MINGGUAN + PREDIKSI ML\n";
-    csv += "-".repeat(60) + "\n";
-    csv += baris("Minggu", "Total (Kg)", "Sumber");
-    grafik_mingguan.aktual.forEach((a) => { csv += baris(a.label, a.total_kg, "Aktual"); });
-    csv += baris(grafik_mingguan.prediksi.label, grafik_mingguan.prediksi.total_kg, "Prediksi ML");
+    // ═══════════════ D. TREN MINGGUAN ═══════════════
+    csv += "D. TREN SAMPAH MINGGUAN + ANALISIS PERUBAHAN\n";
+    csv += DASH + "\n";
+    csv += baris("Minggu", "Total (Kg)", "Perubahan (Kg)", "Perubahan (%)", "Sumber");
+    perubahanMingguan.forEach((a) => {
+      const perubahanStr = a.perubahan !== null
+        ? `${a.perubahan >= 0 ? "+" : ""}${a.perubahan.toFixed(1)}`
+        : "-";
+      const pctStr = a.pct !== null
+        ? `${a.pct >= 0 ? "+" : ""}${a.pct.toFixed(1)}%`
+        : "-";
+      csv += baris(a.label, a.total_kg.toFixed(1), perubahanStr, pctStr, "Aktual");
+    });
+    // Baris prediksi dengan perbandingan terhadap minggu terakhir aktual
+    const lastAktual = aktual.length > 0 ? aktual[aktual.length - 1].total_kg : 0;
+    const predDiff = prediksi.total_kg - lastAktual;
+    const predPct = lastAktual > 0 ? ((predDiff / lastAktual) * 100).toFixed(1) : "0";
+    csv += baris(
+      prediksi.label,
+      prediksi.total_kg.toFixed(1),
+      `${predDiff >= 0 ? "+" : ""}${predDiff.toFixed(1)}`,
+      `${predDiff >= 0 ? "+" : ""}${predPct}%`,
+      "Prediksi ML"
+    );
+    csv += DASH + "\n";
+    csv += baris("Total " + aktual.length + " Minggu", totalAktual.toFixed(1), "", "", "");
+    csv += baris("Rata-rata per Minggu", rataAktual.toFixed(1), "", "", "");
+    csv += baris("Nilai Tertinggi", `${maxAktual.toFixed(1)} (${labelMax})`, "", "", "");
+    csv += baris("Nilai Terendah", `${minAktual.toFixed(1)} (${labelMin})`, "", "", "");
+    csv += baris("Tren Keseluruhan", `${trenArah} (${trenPct}%)`, "", "", "");
     csv += "\n";
 
-    // ─── FORECAST SIMULASI ───
+    // ═══════════════ E. PERBANDINGAN AKTUAL VS PREDIKSI ═══════════════
+    const selisihPrediksi = prediksi.total_kg - rataAktual;
+    const pctVsRata = rataAktual > 0 ? ((selisihPrediksi / rataAktual) * 100).toFixed(1) : "0";
+    const estimasiArmada = Math.ceil(prediksi.total_kg / 500);
+
+    csv += "E. PERBANDINGAN AKTUAL VS PREDIKSI\n";
+    csv += DASH + "\n";
+    csv += baris("Indikator", "Nilai");
+    csv += baris("Total Aktual (" + aktual.length + " Minggu)", `${totalAktual.toFixed(1)} Kg`);
+    csv += baris("Rata-rata Aktual per Minggu", `${rataAktual.toFixed(1)} Kg`);
+    csv += baris("Nilai Tertinggi Aktual", `${maxAktual.toFixed(1)} Kg (${labelMax})`);
+    csv += baris("Nilai Terendah Aktual", `${minAktual.toFixed(1)} Kg (${labelMin})`);
+    csv += baris("Prediksi Minggu Depan", `${prediksi.total_kg.toFixed(1)} Kg`);
+    csv += baris("Selisih (Prediksi vs Rata-rata)", `${selisihPrediksi >= 0 ? "+" : ""}${selisihPrediksi.toFixed(1)} Kg (${pctVsRata}%)`);
+    csv += baris("Perbandingan vs Minggu Terakhir", `${predDiff >= 0 ? "+" : ""}${predDiff.toFixed(1)} Kg (${predPct}%)`);
+    csv += baris("Estimasi Armada Dibutuhkan", `${estimasiArmada} unit`);
+    csv += baris("Tren Keseluruhan", `${trenArah} (${trenPct}%)`);
+    csv += "\n";
+
+    // ═══════════════ F. SIMULASI PREDIKSI KAPASITAS ═══════════════
     if (kapasitas.forecast_simulation_steps && kapasitas.forecast_simulation_steps.length > 0) {
-      csv += "E. SIMULASI PREDIKSI KAPASITAS (7 Hari)\n";
-      csv += "-".repeat(60) + "\n";
-      csv += baris("Hari", "Tanggal", "Prediksi (m³)", "Akumulasi (m³)");
-      kapasitas.forecast_simulation_steps.slice(0, 7).forEach((s: Record<string, unknown>) => {
-        csv += baris(s.hari, s.tanggal, s.prediksi_masuk_m3, s.akumulasi_total_m3);
+      csv += "F. SIMULASI PREDIKSI KAPASITAS HARIAN (7 Hari ke Depan)\n";
+      csv += DASH + "\n";
+      csv += baris("Hari", "Tanggal", "Prediksi Masuk (m3)", "Akumulasi (m3)", "Sisa (m3)");
+      kapasitas.forecast_simulation_steps.slice(0, 7).forEach((s) => {
+        const sisa = Math.max(0, kapasitas.max_volume_m3 - s.akumulasi_total_m3);
+        csv += baris(s.hari, s.tanggal, s.prediksi_masuk_m3.toFixed(2), s.akumulasi_total_m3.toFixed(2), sisa.toFixed(2));
       });
       csv += "\n";
     }
 
-    // ─── REKOMENDASI ───
-    csv += "F. REKOMENDASI OPERASIONAL\n";
-    csv += "-".repeat(40) + "\n";
-    csv += baris("Status", alert_sistem.is_alert ? "⚠️ URGENT" : "✅ AMAN");
-    csv += baris("Estimasi Volume Depan (Kg)", grafik_mingguan.prediksi.total_kg);
-    csv += baris("Estimasi Armada Dibutuhkan", `${Math.ceil(grafik_mingguan.prediksi.total_kg / 500)} unit`);
-    csv += baris("Catatan AI", alert_sistem.pesan);
+    // ═══════════════ G. WAWASAN & ANALISIS ═══════════════
+    csv += "G. WAWASAN & ANALISIS DATA\n";
+    csv += DASH + "\n";
+
+    // Kategori dominan
+    const topKategori = kategoriSorted[0];
+    const topKategoriPct = totalKategori > 0 && topKategori
+      ? ((topKategori.total_kg / totalKategori) * 100).toFixed(1) : "0";
+    csv += baris("Kategori Dominan", topKategori
+      ? `${topKategori.kategori} (${topKategoriPct}% dari total)` : "-");
+
+    // Minggu dengan volume tertinggi
+    csv += baris("Minggu Tersibuk", `${labelMax} (${maxAktual.toFixed(1)} Kg)`);
+
+    // Minggu dengan volume terendah
+    csv += baris("Minggu Sepi", `${labelMin} (${minAktual.toFixed(1)} Kg)`);
+
+    // Analisis perubahan
+    if (perubahanMingguan.length >= 2) {
+      const lastChange = perubahanMingguan[perubahanMingguan.length - 1];
+      if (lastChange.pct !== null) {
+        const arah = lastChange.pct > 0 ? "kenaikan" : "penurunan";
+        csv += baris("Perubahan Terakhir", `${arah} ${Math.abs(lastChange.pct).toFixed(1)}% dari minggu sebelumnya`);
+      }
+    }
+
+    // Kategori dengan pertumbuhan potensial
+    const kateKecil = kategoriSorted.length >= 2 ? kategoriSorted[kategoriSorted.length - 1] : null;
+    if (kateKecil && topKategori) {
+      const rasio = kateKecil.total_kg > 0 && topKategori.total_kg > 0
+        ? (topKategori.total_kg / kateKecil.total_kg).toFixed(1) : "0";
+      csv += baris("Potensi Pengembangan", `${kateKecil.kategori} masih rendah (${kateKecil.total_kg.toFixed(1)} Kg), ${rasio}x dari ${topKategori.kategori}`);
+    }
     csv += "\n";
 
-    // ─── FOOTER ───
-    csv += "=".repeat(60) + "\n";
+    // ═══════════════ H. REKOMENDASI OPERASIONAL ═══════════════
+    csv += "H. REKOMENDASI OPERASIONAL\n";
+    csv += DASH + "\n";
+    csv += baris("Indikator", "Keterangan");
+    const statusLabel = alert_sistem.is_alert ? "PERLU TINDAKAN" :
+      kapasitas.persentase >= kapasitas.threshold_persen ? "WASPADA" : "AMAN";
+    csv += baris("Status", statusLabel);
+    csv += baris("Estimasi Volume Depan (Kg)", prediksi.total_kg.toFixed(1));
+    csv += baris("Estimasi Armada Dibutuhkan", `${estimasiArmada} unit`);
+    csv += baris("Sisa Kapasitas Gudang (m3)", `${sisaKapasitas.toFixed(2)}`);
+    csv += baris("Catatan AI", `"${alert_sistem.pesan}"`);
+    csv += baris("Rekomendasi Gudang", kapasitas.recommendation || "-");
+
+    // Rekomendasi dinamis
+    let rekomendasiTambah = "";
+    if (kapasitas.persentase >= 90) {
+      rekomendasiTambah = "SEGERA lakukan pengangkutan. Kapasitas gudang hampir penuh.";
+    } else if (kapasitas.persentase >= kapasitas.threshold_persen) {
+      rekomendasiTambah = "Jadwalkan pengangkutan dalam 3-4 hari ke depan.";
+    } else if (prediksi.total_kg > rataAktual * 1.3) {
+      rekomendasiTambah = "Waspada potensi lonjakan. Persiapkan armada tambahan.";
+    } else {
+      rekomendasiTambah = "Operasional berjalan normal. Pantau perkembangan mingguan.";
+    }
+    csv += baris("Rekomendasi Sistem", rekomendasiTambah);
+    csv += "\n";
+
+    // ═══════════════ FOOTER ═══════════════
+    csv += SEP + "\n";
     csv += "Dicetak otomatis melalui Sistem BSSB\n";
     csv += `Copyright © ${now.getFullYear()} BSSB IKMP Kuningan\n`;
+    csv += "Laporan ini mencakup data aktual transaksi dan prediksi ML.\n";
+    csv += `Prediksi menggunakan model ML Linear Regression (Ridge).\n`;
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
@@ -310,7 +454,7 @@ export default function DashboardOverviewPage() {
         <WeeklyTrendChart
           data={{
             aktual: grafik_mingguan.aktual,
-            prediksi_minggu_depan: grafik_mingguan.prediksi,
+            prediksi: grafik_mingguan.prediksi,
           }}
           title="Tren Sampah Mingguan + Prediksi ML"
         />

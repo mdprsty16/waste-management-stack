@@ -18,7 +18,7 @@ export default function WeeklyTrendChart({
 }: WeeklyTrendChartProps) {
   const allPoints = [
     ...data.aktual.map((d) => d.total_kg),
-    data.prediksi_minggu_depan.total_kg,
+    data.prediksi.total_kg,
   ];
   const maxVal = Math.max(...allPoints, 1);
 
@@ -41,9 +41,9 @@ export default function WeeklyTrendChart({
 
   const prediksiCoord = {
     x: padX + ((totalPoints - 1) / Math.max(totalPoints - 1, 1)) * chartW,
-    y: padY + chartH - (data.prediksi_minggu_depan.total_kg / maxVal) * chartH,
-    label: data.prediksi_minggu_depan.label,
-    value: data.prediksi_minggu_depan.total_kg,
+    y: padY + chartH - (data.prediksi.total_kg / maxVal) * chartH,
+    label: data.prediksi.label,
+    value: data.prediksi.total_kg,
   };
 
   const aktualPath = aktualCoords

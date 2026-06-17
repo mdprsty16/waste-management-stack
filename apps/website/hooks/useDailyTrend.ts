@@ -11,7 +11,7 @@ import type { DailyTrendData } from "@/types/dashboard.types";
 const INITIAL_DATA: DailyTrendData = {
   grafik_mingguan: {
     aktual: [],
-    prediksi_minggu_depan: { label: "Prediksi", total_kg: 0 },
+    prediksi: { label: "Prediksi", total_kg: 0 },
   },
   alert_sistem: {
     is_alert: false,

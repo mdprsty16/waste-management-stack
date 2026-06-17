@@ -1,6 +1,5 @@
 // ============================================================
-// Dashboard Types — Interface untuk data dashboard
-// Digunakan oleh: hooks/useDailyTrend.ts, hooks/useKategoriStats.ts
+// Dashboard Types — Interface untuk data dashboard & laporan
 // ============================================================
 
 /** Data tren mingguan aktual dari DB */
@@ -18,7 +17,7 @@ export interface PrediksiMingguDepan {
 /** Grafik mingguan gabungan aktual + prediksi */
 export interface GrafikMingguan {
   aktual: WeeklyAktual[];
-  prediksi_minggu_depan: PrediksiMingguDepan;
+  prediksi: PrediksiMingguDepan;
 }
 
 /** Status alert sistem */
@@ -37,4 +36,39 @@ export interface DailyTrendData {
 export interface KategoriStatItem {
   kategori: string;
   total_kg: number;
+}
+
+/** Response agregator dari GET /api/dashboard */
+export interface DashboardResponse {
+  ringkasan: {
+    total_nasabah: number;
+    total_sampah_kg: number;
+    total_saldo_rupiah: number;
+    total_transaksi: number;
+  };
+  transaksi_terbaru: Array<{
+    id: string;
+    nasabah: string;
+    berat_kg: number;
+    total_harga: number;
+    kategori: string;
+    tanggal: string;
+  }>;
+  kapasitas: {
+    current_volume_m3: number;
+    max_volume_m3: number;
+    persentase: number;
+    threshold_persen: number;
+    estimated_days_remaining: number | string;
+    recommendation?: string;
+    forecast_simulation_steps?: Array<{
+      hari: string;
+      tanggal: string;
+      prediksi_masuk_m3: number;
+      akumulasi_total_m3: number;
+    }>;
+  };
+  grafik_kategori: KategoriStatItem[];
+  grafik_mingguan: GrafikMingguan;
+  alert_sistem: AlertSistem;
 }
