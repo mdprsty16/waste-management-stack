@@ -79,6 +79,10 @@ export default function WeeklyTrendChart({
         </div>
       </div>
 
+      <p className="text-xs text-gray-400 -mt-4 mb-4">
+        Berdasarkan data {data.aktual.length} minggu terakhir &middot; {data.prediksi.label}
+      </p>
+
       {allPoints.length <= 1 ? (
         <div className="h-56 flex flex-col items-center justify-center text-gray-400 gap-3">
           <svg className="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
@@ -273,7 +277,7 @@ export default function WeeklyTrendChart({
               fill="#d97706"
               fontWeight="700"
             >
-              Prediksi
+              {data.prediksi.label}
             </text>
           </g>
         </svg>
