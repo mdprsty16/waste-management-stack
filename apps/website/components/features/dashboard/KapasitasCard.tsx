@@ -1,8 +1,22 @@
 "use client";
-import { KapasitasData } from "@/hooks/useKapasitas";
+
+interface KapasitasCardData {
+  current_volume_m3: number;
+  max_volume_m3: number;
+  threshold_persen: number;
+  percentage: number;
+  estimated_days_remaining: number | string;
+  recommendation?: string;
+  forecast_simulation_steps?: Array<{
+    hari: string;
+    tanggal: string;
+    prediksi_masuk_m3: number;
+    akumulasi_total_m3: number;
+  }>;
+}
 
 interface Props {
-  data: KapasitasData | null;
+  data: KapasitasCardData | null;
   isLoading: boolean;
   onOpenSettings: () => void;
   onOpenPengangkutan: () => void;
@@ -13,10 +27,42 @@ export default function KapasitasCard({ data, isLoading, onOpenSettings, onOpenP
     return <div className="animate-pulse bg-gray-200 h-48 rounded-3xl w-full"></div>;
   }
 
-  const { current_volume_m3, max_volume_m3, threshold_persen, percentage, estimated_days_remaining } = data;
+  const { current_volume_m3, max_volume_m3, threshold_persen, percentage, estimated_days_remaining, recommendation } = data;
 
   const isOverThreshold = percentage >= threshold_persen;
   const barColor = isOverThreshold ? 'bg-red-500' : 'bg-green-500';
+
+  // Tentukan warna rekomendasi berdasarkan isi teks
+  const recColor = recommendation?.includes('KRITIS')
+    ? 'bg-red-50 text-red-800 border-red-200'
+    : recommendation?.includes('PERINGATAN')
+    ? 'bg-amber-50 text-amber-800 border-amber-200'
+    : recommendation?.includes('AMAN')
+    ? 'bg-blue-50 text-blue-800 border-blue-200'
+    : 'bg-gray-50 text-gray-600 border-gray-200';
+
+  const recIconColor = recommendation?.includes('KRITIS')
+    ? 'text-red-600'
+    : recommendation?.includes('PERINGATAN')
+    ? 'text-amber-600'
+    : recommendation?.includes('AMAN')
+    ? 'text-blue-600'
+    : 'text-gray-400';
+
+  const recHeadColor = recommendation?.includes('KRITIS')
+    ? 'text-red-900'
+    : recommendation?.includes('PERINGATAN')
+    ? 'text-amber-900'
+    : recommendation?.includes('AMAN')
+    ? 'text-blue-900'
+    : 'text-gray-700';
+
+  // Teks yang ditampilkan di area prediksi AI
+  const recText = recommendation
+    ? recommendation
+    : typeof estimated_days_remaining === 'number'
+    ? `Diperkirakan penuh dalam ${estimated_days_remaining} hari`
+    : (estimated_days_remaining || 'Memuat prediksi AI...');
 
   return (
     <div className="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 flex flex-col justify-between h-full w-full">
@@ -69,13 +115,13 @@ export default function KapasitasCard({ data, isLoading, onOpenSettings, onOpenP
       )}
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-auto">
-        <div className="flex items-start gap-3 bg-blue-50 text-blue-800 p-4 rounded-xl flex-1 border border-blue-100 w-full">
-          <svg className="w-6 h-6 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className={`flex items-start gap-3 p-4 rounded-xl flex-1 border w-full ${recColor}`}>
+          <svg className={`w-6 h-6 flex-shrink-0 mt-0.5 ${recIconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
           <div className="text-sm font-medium">
-            <span className="font-extrabold text-blue-900 block mb-0.5">Prediksi AI (Kapasitas Gudang)</span> 
-            {data.recommendation ? data.recommendation : (typeof estimated_days_remaining === "number" ? `Diperkirakan penuh dalam ${estimated_days_remaining} hari` : estimated_days_remaining)}
+            <span className={`font-extrabold block mb-0.5 ${recHeadColor}`}>Prediksi AI (Kapasitas Gudang)</span>
+            {recText}
           </div>
         </div>
         <button

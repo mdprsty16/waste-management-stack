@@ -98,10 +98,11 @@ export async function GET() {
     };
 
     try {
+      // Coba ambil data 30 hari terakhir, jika kosong ambil semua data yang ada
       const dateThreshold = new Date();
       dateThreshold.setDate(dateThreshold.getDate() - 30);
 
-      const details = await prisma.detailTransaksi.findMany({
+      let details = await prisma.detailTransaksi.findMany({
         where: { transaksi: { tanggal: { gte: dateThreshold } } },
         include: {
           transaksi: { select: { tanggal: true } },
@@ -109,6 +110,18 @@ export async function GET() {
         },
         orderBy: { transaksi: { tanggal: "asc" as const } },
       });
+
+      // Fallback: jika data 30 hari terakhir kosong, gunakan semua data yang ada
+      if (details.length === 0) {
+        details = await prisma.detailTransaksi.findMany({
+          include: {
+            transaksi: { select: { tanggal: true } },
+            jenis_sampah: { select: { densitas_kg_per_m3: true } },
+          },
+          orderBy: { transaksi: { tanggal: "asc" as const } },
+          take: 200, // Batasi agar tidak overload
+        });
+      }
 
       if (maxVolume > 0 && details.length > 0) {
         const rawTx = details.map((d) => ({
@@ -127,7 +140,7 @@ export async function GET() {
             current_fill_m3: currentVolumeRounded,
             raw_transactions: rawTx,
           }),
-          signal: AbortSignal.timeout(5000),
+          signal: AbortSignal.timeout(8000),
         });
 
         if (mlRes.ok) {
@@ -144,10 +157,20 @@ export async function GET() {
             recommendation: mlData.recommendation,
             forecast_simulation_steps: steps,
           };
+        } else {
+          const errText = await mlRes.text();
+          console.error(`[ML] Error ${mlRes.status}:`, errText);
         }
+      } else if (maxVolume === 0) {
+        kapasitasMl = {
+          estimated_days_remaining: "Kapasitas gudang belum diatur",
+          recommendation: "Silakan atur kapasitas gudang terlebih dahulu melalui pengaturan.",
+          forecast_simulation_steps: [],
+        };
       }
-    } catch {
+    } catch (mlErr) {
       // ML server unavailable — gunakan default
+      console.error("[ML] Server tidak tersedia:", mlErr instanceof Error ? mlErr.message : mlErr);
     }
 
     // ─── 6. Weekly Trend + Prediksi ───
