@@ -12,8 +12,8 @@ const ROOT = path.resolve(process.cwd(), "..", "..");
 const ML_BUILD = path.join(ROOT, "apps", "ml-build");
 const ML_SERVING = path.join(ROOT, "apps", "ml-serving");
 const RAW_CSV = path.join(ML_BUILD, "data", "raw", "dataset_modelling_waste.csv");
-const MODEL_SRC = path.join(ML_BUILD, "model", "ridge_waste_model.pkl");
-const MODEL_DST = path.join(ML_SERVING, "models", "ridge_waste_model.pkl");
+const MODEL_SRC = path.join(ML_BUILD, "model", "rf_waste_model.pkl");
+const MODEL_DST = path.join(ML_SERVING, "models", "rf_waste_model.pkl");
 const ML_SERVER_URL = process.env.ML_SERVER_URL || "http://127.0.0.1:8000";
 
 /**

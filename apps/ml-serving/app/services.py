@@ -5,7 +5,7 @@ from datetime import timedelta
 import os
 
 # Ini mendeteksi lokasi file .pkl di folder /models
-MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "ridge_waste_model.pkl")
+MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "rf_waste_model.pkl")
 
 def load_model():
     """Load atau reload model dari disk. Dipanggil saat start & reload."""
@@ -72,25 +72,23 @@ def run_recursive_forecast(threshold_m3: float, current_fill_m3: float, raw_tran
         # Ekstraksi fitur kalender
         day_name = new_date.day_name()
         is_monday = 1 if day_name == 'Monday' else 0
-        is_saturday = 1 if day_name == 'Saturday' else 0
-        is_low_traffic = 1 if day_name in ['Wednesday', 'Friday'] else 0
+        is_friday = 1 if day_name == 'Friday' else 0
         
-        # Ekstraksi Fitur Lag (6 dan 9 hari ke belakang)
+        # Ekstraksi fitur lag & rolling sesuai train.py (4 fitur)
         vol_values = current_df['volume_m3'].values
-        lag_6d = vol_values[-6] if len(vol_values) >= 6 else np.mean(vol_values)
-        lag_9d = vol_values[-9] if len(vol_values) >= 9 else np.mean(vol_values)
+        lag_1d = vol_values[-1] if len(vol_values) >= 1 else 0.0
+        rolling_3d_val = np.mean(vol_values[-3:]) if len(vol_values) >= 3 else np.mean(vol_values)
         
-        # EWM 3D (Exponential moving average) dari nilai log
-        ewm_3d = current_df['log_volume_m3'].ewm(span=3, adjust=False).mean().iloc[-1]
+        monday_weekend_interaction = is_monday * lag_1d
+        volume_acceleration = lag_1d / (rolling_3d_val + 1e-5)
+        lag_10d = vol_values[-10] if len(vol_values) >= 10 else np.mean(vol_values)
         
-        # Susun fitur persis sesuai urutan training Ridge (6 kolom)
+        # Susun fitur persis sesuai urutan training Random Forest (4 kolom)
         X_new = pd.DataFrame([{
-            "is_monday": is_monday,
-            "is_saturday": is_saturday,
-            "is_low_traffic": is_low_traffic,
-            "lag_6d": lag_6d,
-            "lag_9d": lag_9d,
-            "ewm_3d": ewm_3d
+            "monday_weekend_interaction": monday_weekend_interaction,
+            "lag_10d": lag_10d,
+            "volume_acceleration": volume_acceleration,
+            "is_friday": is_friday
         }])
         
         # Prediksi nilai Log

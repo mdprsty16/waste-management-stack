@@ -352,7 +352,7 @@ export default function DashboardOverviewPage() {
     csv += "Dicetak otomatis melalui Sistem BSSB\n";
     csv += `Copyright © ${now.getFullYear()} BSSB IKMP Kuningan\n`;
     csv += "Laporan ini mencakup data aktual transaksi dan prediksi ML.\n";
-    csv += `Prediksi menggunakan model ML Linear Regression (Ridge).\n`;
+    csv += `Prediksi menggunakan model ML Random Forest.\n`;
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);

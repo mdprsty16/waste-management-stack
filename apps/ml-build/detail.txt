@@ -87,14 +87,16 @@ TAHAP B: INISIALISASI LOOP FORECASTING REKURSIF
    b. Ekstraksi Fitur Kalender Otomatis pada tanggal baru tersebut:
       - nama_hari = tanggal_baru.dt.day_name()
       - is_monday = 1 jika Senin, else 0
-      - is_saturday = 1 jika Sabtu, else 0
-      - is_low_traffic = 1 jika Rabu atau Jumat, else 0
-   c. Hitung Fitur Lags & EWM secara dinamis dari data gabungan:
-      - 'lag_6d' & 'lag_9d' (mengambil nilai volume asli beberapa baris ke belakang).
-      - 'ewm_3d' (menghitung rata-rata eksponensial bergerak 3 hari terakhir).
+      - is_friday = 1 jika Jumat, else 0
+   c. Hitung Fitur Lags & Rolling secara dinamis dari data gabungan:
+      - 'lag_1d' (volume hari sebelumnya).
+      - 'rolling_3d' (rata-rata 3 volume terakhir).
+      - 'monday_weekend_interaction' = is_monday * lag_1d.
+      - 'volume_acceleration' = lag_1d / (rolling_3d + epsilon).
+      - 'lag_10d' (volume 10 hari sebelumnya).
    d. Isolasi baris baru tersebut menjadi vektor fitur X:
-      👉 ["is_monday", "is_saturday", "is_low_traffic", "lag_6d", "lag_9d", "ewm_3d"]
-   e. Prediksi Volume menggunakan model Ridge:
+      👉 ["monday_weekend_interaction", "lag_10d", "volume_acceleration", "is_friday"]
+   e. Prediksi Volume menggunakan model Random Forest:
       - model.predict(X) -> menghasilkan nilai skala LOG.
       - Inversi balik: prediksi_m3 = np.expm1(nilai_log)
    f. Update Dataframe & Akumulasi:

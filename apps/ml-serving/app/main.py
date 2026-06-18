@@ -10,7 +10,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "ridge_waste_model.pkl")
+MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "rf_waste_model.pkl")
 
 # Endpoint Pengecekan server hidup atau mati
 @app.get("/")

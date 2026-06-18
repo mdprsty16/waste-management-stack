@@ -165,11 +165,11 @@ POST /api/ml/retrain
   ├─ Step 2: Run preprocessing.py
   │          (cleaning, agregasi, Sunday→Monday merge, feature engineering)
   │
-  ├─ Step 3: Run train.py (Ridge Regression)
-  │          (hyperparameter tuning alpha, evaluasi MAE/RMSE/MAPE/R²)
+  ├─ Step 3: Run train.py (Random Forest Regression)
+  │          (hyperparameter tuning max_depth/min_samples_leaf, evaluasi MAE/RMSE/MAPE/R²)
   │
   ├─ Step 4: Copy model ke ml-serving/models/
-  │          (ridge_waste_model.pkl)
+  │          (rf_waste_model.pkl)
   │
   └─ Step 5: Reload model di FastAPI via /api/v1/admin/reload-model
              (tanpa restart container)
@@ -184,7 +184,7 @@ POST /api/ml/retrain
       "✅ Dataset: 156 baris → .../dataset_modelling_waste.csv",
       "✅ Preprocessing selesai",
       "✅ Training selesai",
-      "✅ Model tersimpan di .../ridge_waste_model.pkl",
+      "✅ Model tersimpan di .../rf_waste_model.pkl",
       "✅ ML server reloaded"
     ],
     "metrics": {
