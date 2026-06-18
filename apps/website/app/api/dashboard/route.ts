@@ -66,25 +66,37 @@ export async function GET() {
     const maxVolume = pengaturan?.kapasitas_maksimal_m3 || 0;
     const thresholdPersen = pengaturan?.threshold_persen || 80;
 
-    // Hitung volume dari total berat dengan estimasi densitas rata-rata (~150 kg/m³)
-    // Pendekatan robust: hindari volume negatif akibat data pengangkutan tidak akurat
-    const allDetails = await prisma.detailTransaksi.findMany({
-      include: {
-        jenis_sampah: { select: { densitas_kg_per_m3: true } },
-      },
+    // Hitung volume gudang secara kronologis (event sourcing) untuk mencegah 'utang' volume
+    // akibat data pengangkutan historis yang over-estimasi.
+    const semuaTransaksi = await prisma.transaksi.findMany({
+      select: { created_at: true, total_volume_m3: true }
     });
-    const totalBeratKg = allDetails.reduce((sum, d) => sum + d.berat_kg, 0);
-    const AVG_DENSITY = 150; // kg/m³ — rata-rata densitas sampah campuran
-    const estimatedVolume = totalBeratKg / AVG_DENSITY;
+    const semuaPengangkutan = await prisma.pengangkutan.findMany({
+      select: { created_at: true, volume_m3_diangkut: true }
+    });
 
-    // Kurangi volume yang sudah diangkut (pengangkutan) — dengan cap aman
-    const volKeluarAgg = await prisma.pengangkutan.aggregate({
-      _sum: { volume_m3_diangkut: true },
-    });
-    const totalPickup = volKeluarAgg._sum.volume_m3_diangkut || 0;
-    // Cegah pengangkutan melebihi total volume yang pernah masuk
-    const reasonablePickup = Math.min(totalPickup, estimatedVolume);
-    const currentVolume = Math.min(Math.max(0, estimatedVolume - reasonablePickup), maxVolume);
+    const events: { date: Date; type: 'in' | 'out'; volume: number }[] = [
+      ...semuaTransaksi.map(t => ({ date: new Date(t.created_at), type: 'in' as const, volume: t.total_volume_m3 || 0 })),
+      ...semuaPengangkutan.map(p => ({ date: new Date(p.created_at), type: 'out' as const, volume: p.volume_m3_diangkut || 0 }))
+    ];
+
+    // Sort ascending by date
+    events.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    let currentVolume = 0;
+    for (const ev of events) {
+      if (ev.type === 'in') {
+        currentVolume += ev.volume;
+      } else {
+        currentVolume -= ev.volume;
+        if (currentVolume < 0) currentVolume = 0; // Reset ke 0, cegah utang volume
+      }
+    }
+
+    if (maxVolume > 0 && currentVolume > maxVolume) {
+      currentVolume = maxVolume;
+    }
+
     // Bulatkan ke 2 desimal — hindari float artifact MySQL
     const currentVolumeRounded = Math.round(currentVolume * 100) / 100;
     const kapasitasPersen = maxVolume > 0 ? Math.round((currentVolumeRounded / maxVolume) * 10000) / 100 : 0;
