@@ -8,7 +8,7 @@ export const getApiDocs = async () => {
       info: {
         title: "Waste Management Stack API (EcoOil Connect)",
         version: "1.0.0",
-        description: "Dokumentasi API terpusat untuk platform EcoOil Connect. Digunakan sebagai acuan utama integrasi tim Frontend dan Mobile.",
+        description: "Dokumentasi API terpusat untuk platform waste management bssb. Digunakan sebagai acuan utama integrasi tim Frontend dan Mobile.",
       },
       components: {
         securitySchemes: {
