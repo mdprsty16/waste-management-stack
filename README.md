@@ -191,6 +191,9 @@ cp model/rf_waste_model.pkl ../ml-serving/models/
 ### Target
 `log_volume_m3` — Volume sampah harian (log-transformed)
 
+### Download Model
+- **Google Drive:** [Download Model ML](https://drive.google.com/drive/folders/15tcjEbxuLsF_4ZsbjBl-4YLDXEBno2Yx?usp=sharing)
+
 ### Output
 - **Model file:** `apps/ml-build/model/rf_waste_model.pkl`
 - **Serving copy:** `apps/ml-serving/models/rf_waste_model.pkl`
