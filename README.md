@@ -99,7 +99,7 @@ waste-management-stack/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/<owner>/waste-management-stack.git
+git clone https://github.com/mdprsty16/waste-management-stack.git
 cd waste-management-stack
 ```
 
@@ -245,11 +245,6 @@ docker compose up -d
 docker build -t waste-management-website apps/website
 docker build -t waste-management-ml-serving apps/ml-serving
 ```
-
-### Login Admin
-- **URL:** `http://localhost:4500/login`
-- **Username:** `admin`
-- **Password:** `password123`
 
 ### Dokumentasi API
 - **Swagger UI:** `http://localhost:4500/api-docs`
