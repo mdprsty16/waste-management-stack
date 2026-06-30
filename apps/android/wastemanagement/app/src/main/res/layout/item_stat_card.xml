@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card_rounded"
+    android:padding="18dp"
+    android:elevation="4dp">
+
+    <!-- Icon -->
+    <FrameLayout
+        android:id="@+id/iconContainer"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="14dp">
+
+        <ImageView
+            android:id="@+id/ivStatIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            tools:src="@android:drawable/ic_menu_myplaces"
+            android:contentDescription="@null" />
+    </FrameLayout>
+
+    <!-- Label -->
+    <TextView
+        android:id="@+id/tvStatLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray_500"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp"
+        tools:text="Total Nasabah" />
+
+    <!-- Value -->
+    <TextView
+        android:id="@+id/tvStatValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray_900"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        tools:text="1,234" />
+</LinearLayout>

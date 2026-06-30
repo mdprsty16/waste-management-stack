@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">Waste Management</string>
+
+    <!-- Landing Page -->
+    <string name="landing_logo_alt">Logo BSSB</string>
+    <string name="landing_org_name">BSSB</string>
+    <string name="landing_org_subtitle">IKMP KUNINGAN</string>
+    <string name="landing_headline">Kelola Bank Sampah\nLebih Mudah &amp; Modern</string>
+    <string name="landing_description">Catat setoran, kelola data warga, dan pantau laporan keuangan bank sampah dalam satu aplikasi yang simpel.</string>
+    <string name="landing_feature_1">Pencatatan transaksi otomatis</string>
+    <string name="landing_feature_2">Laporan keuangan real-time</string>
+    <string name="landing_feature_3">Manajemen data nasabah</string>
+    <string name="landing_cta">Masuk Dashboard</string>
+    <string name="landing_copyright">© %d Bank Sampah Sampul Berkasih — IKMP Kuningan</string>
+
+    <!-- Login Page -->
+    <string name="login_title">Masuk ke Akun Admin</string>
+    <string name="login_subtitle">Silakan masuk menggunakan akun admin Anda</string>
+    <string name="login_username_label">Username</string>
+    <string name="login_username_hint">Masukkan username Anda</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_password_hint">Masukkan password Anda</string>
+    <string name="login_button">Masuk Aplikasi</string>
+    <string name="login_loading">Memproses…</string>
+    <string name="login_error_title">Login Gagal</string>
+    <string name="login_forgot">Lupa password? Hubungi admin pusat BSSB</string>
+    <string name="login_back">Kembali</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Ringkasan Hari Ini</string>
+    <string name="dashboard_subtitle">Data per Hari Ini</string>
+    <string name="dashboard_login_time">Login: %s</string>
+    <string name="dashboard_loading">Memuat Data Dashboard…</string>
+    <string name="dashboard_loading_sub">Mengambil data realtime dan prediksi ML</string>
+    <string name="dashboard_logout">Keluar</string>
+
+    <!-- Stat Cards -->
+    <string name="stat_nasabah">Total Nasabah</string>
+    <string name="stat_sampah">Sampah Terkumpul</string>
+    <string name="stat_saldo">Total Saldo Warga</string>
+    <string name="stat_transaksi">Total Transaksi</string>
+
+    <!-- ML Alert Banner -->
+    <string name="alert_ml_title">🚨 Alert Prediksi ML</string>
+    <string name="alert_ml_badge">URGENT</string>
+    <string name="alert_ml_dismiss">Tutup</string>
+
+    <!-- ML Weekly Trend -->
+    <string name="trend_title">Tren Sampah Mingguan + Prediksi ML</string>
+    <string name="trend_legend_actual">Aktual DB</string>
+    <string name="trend_legend_predict">Prediksi ML</string>
+    <string name="trend_prediction_label">Prediksi Minggu Depan</string>
+    <string name="trend_no_data">Data belum tersedia</string>
+
+    <!-- ML Kategori Stats -->
+    <string name="kategori_title">Distribusi Sampah per Kategori (Kg)</string>
+    <string name="kategori_no_data">Belum ada data kategori</string>
+
+    <!-- Transaksi Terbaru -->
+    <string name="recent_transactions_title">Riwayat Transaksi Terbaru</string>
+    <string name="recent_transactions_empty">Belum ada transaksi di database.</string>
+    <string name="transaction_status_done">Selesai</string>
+
+    <!-- Format -->
+    <string name="format_kg">%s Kg</string>
+    <string name="format_rupiah">Rp %s</string>
+
+    <!-- Additional Landing Page Sections -->
+    <string name="landing_about_badge">TENTANG KAMI</string>
+    <string name="landing_about_title">Bank Sampah Sampul Berkasih</string>
+    <string name="landing_about_desc">Organisasi pengelolaan sampah berbasis masyarakat di bawah naungan IKMP Kuningan, Jawa Barat. Kami percaya bahwa setiap sampah memiliki nilai — dan melalui kerja sama komunitas, kita bisa menciptakan lingkungan yang lebih bersih sekaligus memberikan manfaat ekonomi bagi warga sekitar.</string>
+    <string name="landing_visi_title">Visi</string>
+    <string name="landing_visi_desc">Menjadi bank sampah percontohan yang unggul dalam pengelolaan sampah berkelanjutan dan berdaya guna bagi masyarakat Kuningan.</string>
+    <string name="landing_misi_title">Misi</string>
+    <string name="landing_misi_desc">1. Mengedukasi masyarakat tentang pentingnya pemilahan sampah.\n2. Meningkatkan pendapatan warga melalui tabungan sampah.\n3. Mengurangi volume sampah yang masuk ke TPA.\n4. Membangun jaringan kerja sama untuk pengelolaan sampah.</string>
+
+    <string name="landing_stats_badge">DATA REALTIME</string>
+    <string name="landing_stats_title">BSSB dalam Angka</string>
+    <string name="landing_stats_desc">Data langsung dari sistem — terus diperbarui secara otomatis</string>
+    <string name="landing_stat_nasabah">Nasabah Aktif</string>
+    <string name="landing_stat_sampah">Kg Terkumpul</string>
+    <string name="landing_stat_terolah">Sampah Terolah</string>
+    <string name="landing_stat_hemat">Rupiah Dihemat</string>
+
+    <string name="landing_features_badge">FITUR UTAMA</string>
+    <string name="landing_features_title">Kemudahan Untuk Pengelola</string>
+    <string name="landing_features_desc">Tampilan besar, jelas, dan mudah digunakan oleh semua kalangan umur.</string>
+    
+    <string name="landing_features_warga_title">Data Warga</string>
+    <string name="landing_features_warga_desc">Menambah, mencari, dan mengelola data warga anggota penyetor sampah dengan cepat dan mudah.</string>
+    <string name="landing_features_transaksi_title">Catat Transaksi</string>
+    <string name="landing_features_transaksi_desc">Pilih warga, pilih jenis sampah, masukkan berat. Sistem menghitung total harga otomatis!</string>
+    <string name="landing_features_grafik_title">Laporan &amp; Grafik</string>
+    <string name="landing_features_grafik_desc">Pantau total sampah terkumpul dan uang keluar setiap bulan lewat grafik yang jelas.</string>
+
+    <string name="landing_categories_badge">KATEGORI SAMPAH</string>
+    <string name="landing_categories_title">Jenis Sampah yang Diterima</string>
+    <string name="landing_categories_desc">Pilahlah sampah Anda sebelum disetorkan ke Bank Sampah untuk mempermudah pemrosesan.</string>
+
+    <string name="landing_cat_organik_title">Organik</string>
+    <string name="landing_cat_organik_desc">Sampah yang berasal dari sisa makhluk hidup dan dapat terurai alami. Diolah menjadi kompos bernilai guna.</string>
+    <string name="landing_cat_organik_examples">Contoh: Sisa sayuran, kulit buah, daun kering, cangkang telur, dll.</string>
+    <string name="landing_cat_organik_tips">Tips: Pisahkan dari plastik pembungkus sebelum dibuang.</string>
+
+    <string name="landing_cat_nonorganik_title">Non-Organik</string>
+    <string name="landing_cat_nonorganik_desc">Sampah yang tidak mudah terurai alami namun dapat didaur ulang dan memiliki nilai jual ekonomi tinggi.</string>
+    <string name="landing_cat_nonorganik_examples">Contoh: Botol plastik, koran, kardus, kaleng logam, botol kaca, dll.</string>
+    <string name="landing_cat_nonorganik_tips">Tips: Bersihkan dan keringkan sebelum disetor agar bernilai tinggi.</string>
+
+    <string name="landing_cat_b3_title">B3 (Berbahaya &amp; Beracun)</string>
+    <string name="landing_cat_b3_desc">Sampah dari bahan berbahaya atau beracun yang memerlukan penanganan khusus agar tidak mencemari lingkungan.</string>
+    <string name="landing_cat_b3_examples">Contoh: Baterai bekas, bohlam lampu, kemasan obat-obatan, botol aerosol, dll.</string>
+    <string name="landing_cat_b3_tips">Tips: Kumpulkan di wadah khusus yang aman dan jauh dari anak-anak.</string>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutStepRoot"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="12dp"
+    android:background="@drawable/bg_feature_item"
+    android:layout_marginEnd="8dp">
+
+    <!-- Day (e.g. T+1) -->
+    <TextView
+        android:id="@+id/tvStepDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blue_800"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        tools:text="T+1" />
+
+    <!-- Date (e.g. 07-01) -->
+    <TextView
+        android:id="@+id/tvStepDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray_500"
+        android:textSize="10sp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="6dp"
+        tools:text="07-01" />
+
+    <!-- Accumulation Volume (e.g. 13.15 m³) -->
+    <TextView
+        android:id="@+id/tvStepVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray_900"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:text="13.15 m³" />
+
+    <!-- Delta Volume (e.g. +0.57 m³) -->
+    <TextView
+        android:id="@+id/tvStepDelta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/emerald_600"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        tools:text="+0.57 m³" />
+</LinearLayout>
